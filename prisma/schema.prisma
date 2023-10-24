@@ -30,14 +30,37 @@ model User {
   projectIds      String[] @db.ObjectId
   projects        Projects[] @relation(fields: [projectIds], references: [id])
 
+  participantProjectIds String[] @db.ObjectId
+  participantProjects   Tasks[] @relation("participant", fields: [participantProjectIds], references: [id])
+
   tasks           Tasks[]
+  accounts        Account[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Projects {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   title           String?
+  createdByWho    String?
   createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
   isGroup         Boolean?
 
   taskIds         String[] @db.ObjectId
@@ -50,12 +73,16 @@ model Projects {
 model Tasks {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   title           String?
+  status          String?
   image           String?
   createdAt       DateTime @default(now())
-  userId          String   @db.ObjectId
+
+  participantId   String[] @db.ObjectId
+  participant     User[] @relation("participant", fields: [participantId], references: [id])
 
   projectId       String @db.ObjectId
   project         Projects @relation(fields: [projectId], references: [id])
 
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creatorId       String   @db.ObjectId
+  creator         User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }

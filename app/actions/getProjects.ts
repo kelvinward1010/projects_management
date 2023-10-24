@@ -10,6 +10,9 @@ const getProjects = async () => {
 
     try {
         const projects  = await prisma.projects.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
             where: {
                 userIds: {
                     has: currentUser.id
@@ -17,12 +20,20 @@ const getProjects = async () => {
             },
             include: {
                 users: true,
-                tasks: true
+                tasks: {
+                    include: {
+                        creator: true,
+                        participant: true
+                    }
+                }
             }
         });
 
+        console.log(projects)
+
         return projects;
     } catch (error: any) {
+        console.log(error)
         return [];
     }
 };

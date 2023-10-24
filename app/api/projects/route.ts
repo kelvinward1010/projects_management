@@ -30,6 +30,7 @@ export async function POST(
                 data: {
                     title,
                     isGroup,
+                    createdByWho: currentUser?.id,
                     users: {
                         connect: [
                             ...members.map((member: { value: string }) => ({
