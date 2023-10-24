@@ -20,7 +20,7 @@ const Sidebar: React.FC<Props> = ({ user }) => {
                     <div>
                         {routes.map((item) => (
                             <SidebarItem 
-                                key={item?.href}
+                                key={item?.label}
                                 icon={item?.icon}
                                 label={item?.label}
                                 onClick={item.onClick}

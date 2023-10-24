@@ -7,7 +7,9 @@ const LayoutHome: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     return (
         <div className="h-full bg-white">
-            <Header />
+            <div className="">
+                <Header />
+            </div>
             <div className="h-full mx-auto relative">
                 <div className="h-full flex flex-row">
                     <div className="basic-64 text-black">

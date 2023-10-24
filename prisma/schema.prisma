@@ -12,18 +12,50 @@ datasource db {
 
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  name_Id        String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  coverImage     String?
-  profileImage   String?
-  hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  name_Id         String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  coverImage      String?
+  profileImage    String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   followingIds    String[] @db.ObjectId
   followersCount  String[] @db.ObjectId
   hasNotification Boolean?
+
+  projectIds      String[] @db.ObjectId
+  projects        Projects[] @relation(fields: [projectIds], references: [id])
+
+  tasks           Tasks[]
+}
+
+model Projects {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  title           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  isGroup         Boolean?
+
+  taskIds         String[] @db.ObjectId
+  tasks           Tasks[]
+  
+  userIds         String[] @db.ObjectId
+  users           User[]   @relation(fields: [userIds], references: [id])
+}
+
+model Tasks {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  title           String?
+  image           String?
+  createdAt       DateTime @default(now())
+  userId          String   @db.ObjectId
+
+  projectId       String @db.ObjectId
+  project         Projects @relation(fields: [projectId], references: [id])
+
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
