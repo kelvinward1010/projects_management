@@ -10,7 +10,7 @@ const getTasks = async (
             },
             include: {
                 creator: true,
-                participant: true,
+                seen: true,
             },
             orderBy: {
                 createdAt: 'asc'

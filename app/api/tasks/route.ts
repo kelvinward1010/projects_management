@@ -34,7 +34,7 @@ export async function POST(
                 creator: {
                     connect: { id: currentUser.id }
                 },
-                participant: {
+                seen: {
                     connect: {
                         id: currentUser.id
                     }

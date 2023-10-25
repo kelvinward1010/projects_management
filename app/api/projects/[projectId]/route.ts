@@ -27,7 +27,7 @@ export async function DELETE(
                 tasks: {
                     include: {
                         creator: true,
-                        participant: true
+                        seen: true
                     }
                 }
             }
@@ -40,7 +40,7 @@ export async function DELETE(
         let updatedProject = [...(currentUser?.projectIds || [])]
         updatedProject = updatedProject.filter((id) => id !== params.projectId)
 
-        let updatedParticipantProjectIds = [...(currentUser?.participantProjectIds || [])];
+        let updatedParticipantProjectIds = [...(currentUser?.seenTaskIds || [])];
 
         existingProject?.tasks?.forEach((task) => {
             updatedParticipantProjectIds = updatedParticipantProjectIds.filter((id) => id !== task.id)
@@ -53,7 +53,7 @@ export async function DELETE(
                 },
                 data: {
                     projectIds: updatedProject,
-                    participantProjectIds: updatedParticipantProjectIds
+                    seenTaskIds: updatedParticipantProjectIds
                 }
             });
         })
