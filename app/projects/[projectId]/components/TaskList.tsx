@@ -4,6 +4,8 @@ import TaskItem from './TaskItem'
 import HeaderProjects from '../../components/HeaderProjects';
 import CreateTaskModal from '../modal/CreateTaskModel';
 import { Projects } from '@prisma/client';
+import DeleteModal from '../../components/modals/DeleteModal';
+import HeaderTop from '../../components/HeaderTop';
 
 interface Props{
     project: any;
@@ -12,7 +14,9 @@ interface Props{
 function TaskList({project}: Props) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const handleOpenModalCreate = () => setIsModalOpen(true);
+    const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const taskArray = project?.tasks;
     const reverseArray: [] = taskArray.slice().reverse();
 
@@ -23,7 +27,13 @@ function TaskList({project}: Props) {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
-            <HeaderProjects title='List task' create={handleOpenModalCreate}/>
+            <DeleteModal
+                projectId={project?.id}
+                isOpen={isModalOpenDelete}
+                onClose={() => setIsModalOpenDelete(false)}
+            />
+            <HeaderTop title={project?.title} hadleDelete={handleOpenModalDelete}/>
+            <HeaderProjects title='Tasks' create={handleOpenModalCreate}/>
             <div className='px-5'>
                 {reverseArray?.map((pjct: any) => (
                     <TaskItem task={pjct} key={pjct?.id}/>

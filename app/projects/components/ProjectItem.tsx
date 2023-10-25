@@ -2,8 +2,9 @@
 import { workCompletionRateFormula } from '@/app/equation'
 import { Projects } from '@prisma/client'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineDelete, AiOutlineDoubleRight } from 'react-icons/ai'
+import DeleteModal from './modals/DeleteModal'
 
 interface Props {
     project: any;
@@ -62,20 +63,9 @@ function ProjectItem({project}:Props) {
                         >
                             <AiOutlineDoubleRight />
                         </button>
-                        <button
-                            className='
-                                text-2xl
-                                px-3
-                                hover:text-red-600
-                                font-medium
-                            '
-                            onClick={() => {}}
-                        >
-                            <AiOutlineDelete />
-                        </button>
                     </div>
                 </div>
-                <div className='
+                {(completePrecent || unfinishedPercent) ? <div className='
                     w-full
                     h-4
                     flex
@@ -86,7 +76,7 @@ function ProjectItem({project}:Props) {
                             width: `${completePrecent}%`,
                             height: '100%',
                         }}
-                        className='flex justify-center items-center bg-lime-500'
+                        className='flex text-white justify-center items-center bg-lime-500'
                     >
                         {completePrecent === 0 ? null : (completePrecent+"%")}
                     </div>
@@ -95,11 +85,11 @@ function ProjectItem({project}:Props) {
                             width: `${unfinishedPercent}%`,
                             height: '100%',
                         }}
-                        className='flex justify-center items-center bg-[#FF0000]'
+                        className='flex text-white justify-center items-center bg-[#FF0000]'
                     >
                         {unfinishedPercent === 0 ? null : (unfinishedPercent+"%")}
                     </div>
-                </div>
+                </div>: null}
             </div>
         </>
     )

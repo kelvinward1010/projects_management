@@ -23,7 +23,6 @@ export async function POST(
         const newTask = await prisma.tasks.create({
             include: {
                 creator: true,
-                participant: true
             },
             data: {
                 title: title,

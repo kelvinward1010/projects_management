@@ -43,7 +43,6 @@ const Avatar: React.FC<AvatarProps> = ({
                     borderRadius: '100%'
                 }}
                 alt="Avatar"
-                onClick={() =>{}}
                 src={image || '/images/placeholder.jpg'}
             />
         </div>

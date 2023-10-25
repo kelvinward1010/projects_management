@@ -31,7 +31,7 @@ model User {
   projects        Projects[] @relation(fields: [projectIds], references: [id])
 
   participantProjectIds String[] @db.ObjectId
-  participantProjects   Tasks[] @relation("participant", fields: [participantProjectIds], references: [id])
+  participantProjects   Tasks[] @relation("Participant", fields: [participantProjectIds], references: [id])
 
   tasks           Tasks[]
   accounts        Account[]
@@ -78,7 +78,7 @@ model Tasks {
   createdAt       DateTime @default(now())
 
   participantId   String[] @db.ObjectId
-  participant     User[] @relation("participant", fields: [participantId], references: [id])
+  participant     User[] @relation("Participant", fields: [participantId], references: [id])
 
   projectId       String @db.ObjectId
   project         Projects @relation(fields: [projectId], references: [id])

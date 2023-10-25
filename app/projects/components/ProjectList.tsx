@@ -23,7 +23,7 @@ function ProjectList({projects, users}:Props) {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
-            <HeaderProjects create={handleOpenModalCreate} title='List project'/>
+            <HeaderProjects create={handleOpenModalCreate} title='Projects'/>
             <div className='px-5'>
                 {projects?.map((project) => (
                     <ProjectItem key={project?.id} project={project} />
