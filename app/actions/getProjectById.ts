@@ -1,5 +1,4 @@
 import prisma from "@/app/libs/prismadb";
-import getCurrentUser from "./getCurrentUser";
 
 const getProjectById = async (
     projectId: string
@@ -11,6 +10,7 @@ const getProjectById = async (
             },
             include: {
                 users: true,
+                tasks: true
             },
         });
 

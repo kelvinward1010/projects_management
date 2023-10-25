@@ -29,8 +29,6 @@ const getProjects = async () => {
             }
         });
 
-        console.log(projects)
-
         return projects;
     } catch (error: any) {
         console.log(error)

@@ -6,14 +6,16 @@ import CreateTaskModal from '../modal/CreateTaskModel';
 import { Projects } from '@prisma/client';
 
 interface Props{
-    project: Projects;
+    project: any;
 }
 
 function TaskList({project}: Props) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModalCreate = () => setIsModalOpen(true);
-    
+    const taskArray = project?.tasks;
+    const reverseArray: [] = taskArray.slice().reverse();
+
     return (
         <>
             <CreateTaskModal
@@ -23,7 +25,9 @@ function TaskList({project}: Props) {
             />
             <HeaderProjects title='List task' create={handleOpenModalCreate}/>
             <div className='px-5'>
-                <TaskItem />
+                {reverseArray?.map((pjct: any) => (
+                    <TaskItem task={pjct} key={pjct?.id}/>
+                ))}
             </div>
         </>
     )

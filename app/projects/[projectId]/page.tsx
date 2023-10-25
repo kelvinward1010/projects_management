@@ -13,7 +13,7 @@ const ProjectPageId = async ({ params }: { params: Props }) => {
     
     return (
         <div>
-            <TaskList project={project as Projects}/>
+            <TaskList project={project}/>
         </div>
     )
 }

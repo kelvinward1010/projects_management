@@ -14,29 +14,14 @@ import { toast } from 'react-hot-toast';
 import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/buttons/Button';
-import { Select } from 'antd';
 import SelectTask from '../input/Select';
+import { optionsStatus } from '@/app/config/options';
 
 interface Props {
     isOpen?: boolean;
     onClose: () => void;
     project: Projects;
 }
-
-const optionsStatus = [
-    {
-        value: 'Todo',
-        title: 'Todo',
-    },
-    {
-        value: 'Improgress',
-        title: 'Improgress',
-    },
-    {
-        value: 'Done',
-        title: 'Done',
-    },
-]
 
 const CreateTaskModal: React.FC<Props> = ({
     isOpen,
