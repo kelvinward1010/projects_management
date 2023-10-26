@@ -47,7 +47,6 @@ const CreateTaskModal: React.FC<Props> = ({
     });
 
     const status = watch('status');
-    console.log(status)
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);

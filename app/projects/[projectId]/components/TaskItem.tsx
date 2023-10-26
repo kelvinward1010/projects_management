@@ -13,12 +13,11 @@ import DeleteModal from '../modal/DeleteModal';
 import { InfoCircleOutlined } from "@ant-design/icons";
 import Info from './Info';
 import IssuesInTask from './IssuesInTask';
+import useIssues from '@/app/hooks/useIssues';
 
 interface Props {
     task?: Tasks;
 }
-
-const { Title, Text } = Typography;
 
 function TaskItem({ task }: Props) {
 
@@ -31,6 +30,9 @@ function TaskItem({ task }: Props) {
 
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
+
+    const dataIssues = useIssues(task?.id as string);
+    const getdeep = dataIssues?.data?.issues;
 
     const {
         register,
@@ -71,6 +73,7 @@ function TaskItem({ task }: Props) {
 
         return formatDistanceToNowStrict(new Date(task?.createdAt));
     }, [task?.createdAt])
+
     
     return (
         <>
@@ -125,6 +128,7 @@ function TaskItem({ task }: Props) {
                             <IssuesInTask 
                                 title={task?.title}
                                 task={task}
+                                listIssues={getdeep}
                             />
                         </Modal>
                     </div>

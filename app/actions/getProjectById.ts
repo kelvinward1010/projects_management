@@ -10,7 +10,7 @@ const getProjectById = async (
             },
             include: {
                 users: true,
-                tasks: true
+                tasks: true,
             },
         });
 

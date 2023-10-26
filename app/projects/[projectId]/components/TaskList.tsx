@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import TaskItem from './TaskItem'
 import HeaderProjects from '../../components/HeaderProjects';
 import CreateTaskModal from '../modal/CreateTaskModel';
-import { Projects } from '@prisma/client';
 import DeleteModal from '../../components/modals/DeleteModal';
 import HeaderTop from '../../components/HeaderTop';
 
@@ -19,7 +18,7 @@ function TaskList({project}: Props) {
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const taskArray = project?.tasks;
     const reverseArray: [] = taskArray.slice().reverse();
-
+    
     return (
         <>
             <CreateTaskModal

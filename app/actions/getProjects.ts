@@ -23,7 +23,12 @@ const getProjects = async () => {
                 tasks: {
                     include: {
                         creator: true,
-                        seen: true
+                        seen: true,
+                        issues: {
+                            include: {
+                                task: true
+                            }
+                        }
                     }
                 }
             }

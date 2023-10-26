@@ -1,8 +1,6 @@
 import React from 'react'
-import HeaderProjects from '../components/HeaderProjects'
-import TaskList from './components/TaskList'
 import getProjectById from '@/app/actions/getProjectById'
-import { Projects } from '@prisma/client'
+import TaskList from './components/TaskList'
 
 interface Props {
     projectId: string

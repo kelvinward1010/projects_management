@@ -12,13 +12,13 @@ import Button from '@/app/components/buttons/Button';
 interface ConfirmModalProps {
     isOpen?: boolean;
     onClose: () => void;
-    taskId?: string;
+    issuesId?: string;
 }
 
-const DeleteModal: React.FC<ConfirmModalProps> = ({
+const DeleteIssuesModal: React.FC<ConfirmModalProps> = ({
     isOpen,
     onClose,
-    taskId
+    issuesId
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
     const handleDelete = useCallback(() => {
         setIsLoading(true);
 
-        axios.delete(`/api/tasks/${taskId}`)
+        axios.delete(`/api/issues/${issuesId}`)
             .then(() => {
                 onClose();
                 router.refresh();
@@ -34,9 +34,9 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false)
-                toast.success('Task has been deleted!')
+                toast.success('Issues has been deleted!')
             })
-    },[router, taskId, onClose]);
+    },[router, issuesId, onClose]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -75,11 +75,11 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                     >
-                        Delete Task
+                        Delete Issues
                     </Dialog.Title>
                     <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            Are you sure you want to delete this task? This action cannot be undone.
+                            Are you sure you want to delete this Issues? This action cannot be undone.
                         </p>
                     </div>
                 </div>
@@ -104,4 +104,4 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
     )
 }
 
-export default DeleteModal;
+export default DeleteIssuesModal;

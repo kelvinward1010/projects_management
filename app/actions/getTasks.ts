@@ -11,6 +11,7 @@ const getTasks = async (
             include: {
                 creator: true,
                 seen: true,
+                issues: true
             },
             orderBy: {
                 createdAt: 'asc'

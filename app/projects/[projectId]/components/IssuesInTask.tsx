@@ -4,21 +4,29 @@ import HeaderProjects from '../../components/HeaderProjects';
 import { Tasks } from '@prisma/client';
 import IssuesList from './IssuesList';
 import { useRouter } from 'next/navigation';
-import { FieldValues, useForm } from 'react-hook-form';
-import { Button, Col, Flex, Input, Row, Select, Typography } from 'antd';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Col, Flex, Row, Select, Typography } from 'antd';
 import { optionsStatus } from '@/app/config/options';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Button from '@/app/components/buttons/Button';
+import InputIssues from '../input/InputIssues';
+import TextareaIssues from '../input/TextareaIssues';
+import { dataTaskId } from '@/app/config/data';
+import useIssues from '@/app/hooks/useIssues';
 
 interface Props {
     title?: string | null;
-    task?: Tasks;
+    task?: any;
+    listIssues?: any;
 }
 
 const { Title } = Typography;
-const { TextArea } = Input;
 
 function IssuesInTask({
     title,
-    task
+    task,
+    listIssues
 }:Props) {
 
     const router = useRouter();
@@ -26,6 +34,8 @@ function IssuesInTask({
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModalCreate = () => setIsModalOpen(!isModalOpen);
+
+    const {mutate: mutateIssues } = useIssues(task?.id as string);
 
     const {
         register,
@@ -45,6 +55,25 @@ function IssuesInTask({
 
     const status = watch('status');
 
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        setIsLoading(true);
+
+        axios.post('/api/issues', {
+            ...data,
+            taskId: task?.id
+        })
+            .then(() => {
+                router.refresh();
+                mutateIssues()
+                setIsModalOpen(false);
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Issues has been created!')
+            });
+    }
+
     return (
         <div>
             <HeaderProjects 
@@ -63,21 +92,20 @@ function IssuesInTask({
                     items-center
                     justify-between
                 '>
-                    <form className='w-full'>
+                    <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                         <div className='px-2'>
                             <Title level={4}>Create a issues in Task</Title>
                             <div className='mt-5'>
                                 <Row justify={'space-between'} style={{width:'100%'}}>
                                     <Col span={13}>
-                                        <Flex vertical>
-                                            <Title level={5}>Title issues</Title>
-                                            <Input
-                                                disabled={isLoading}
-                                                placeholder='Title issues...'
-                                                id='title'
-                                                required
-                                            />
-                                        </Flex>
+                                        <InputIssues
+                                            disabled={isLoading}
+                                            label="Title"
+                                            id="title"
+                                            errors={errors}
+                                            required
+                                            register={register}
+                                        />
                                     </Col>
                                     <Col span={7}>
                                         <Flex vertical>
@@ -94,34 +122,29 @@ function IssuesInTask({
                                 </Row>
                                 <Row className='mt-4'>
                                     <Col span={24}>
-                                        <Flex vertical>
-                                            <Title level={5}>Description issues</Title>
-                                            <TextArea 
-                                                disabled={isLoading}
-                                                rows={4} 
-                                                placeholder="Description issues here..."
-                                                maxLength={6}
-                                                id='desc' 
-                                            />
-                                        </Flex>
+                                        <TextareaIssues
+                                            disabled={isLoading}
+                                            label="Description"
+                                            id="desc"
+                                            errors={errors}
+                                            required
+                                            register={register}
+                                        />
                                     </Col>
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col span={24}>
                                         <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                                            <Button 
-                                                type="primary"
-                                                danger
+                                            <Button
+                                                disabled={isLoading}
                                                 onClick={() => setIsModalOpen(false)}
+                                                type="button"
+                                                secondary
                                             >
                                                 Cancel
                                             </Button>
-                                            <Button 
-                                                type="primary"
-                                                className='bg-sky-600'
-                                                onClick={() => console.log("???")}
-                                            >
-                                                Save
+                                            <Button disabled={isLoading} type="submit">
+                                                Create
                                             </Button>
                                         </Flex>
                                     </Col>
@@ -131,9 +154,7 @@ function IssuesInTask({
                     </form>
                 </div>
             )}
-            <div className='mt-5'>
-                <IssuesList />
-            </div>
+            <IssuesList task={task} listIssues={listIssues}/>
         </div>
     )
 }

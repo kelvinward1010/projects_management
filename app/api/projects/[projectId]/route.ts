@@ -27,7 +27,8 @@ export async function DELETE(
                 tasks: {
                     include: {
                         creator: true,
-                        seen: true
+                        seen: true,
+                        issues: true
                     }
                 }
             }
