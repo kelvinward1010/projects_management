@@ -57,6 +57,16 @@ export async function DELETE(
                 }
             });
         })
+        existingProject?.tasks?.forEach(async (task) => {
+            await prisma.tasks.delete({
+                where: {
+                    id: task?.id
+                },
+                include: {
+                    project: true
+                }
+            })
+        })
 
         const deletedProject = await prisma.projects.deleteMany({
             where: {

@@ -6,7 +6,7 @@ import { AiOutlineFileAdd } from 'react-icons/ai'
 const { Title } = Typography;
 
 interface Props {
-  title?: string;
+  title?: string | null;
   create?: () => void;
 }
 

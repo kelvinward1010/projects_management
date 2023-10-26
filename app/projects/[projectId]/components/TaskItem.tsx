@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlinePlusSquare } from 'react-icons/ai';
 import DeleteModal from '../modal/DeleteModal';
 import { InfoCircleOutlined } from "@ant-design/icons";
+import Info from './Info';
+import IssuesInTask from './IssuesInTask';
 
 interface Props {
     task?: Tasks;
@@ -22,12 +24,13 @@ function TaskItem({ task }: Props) {
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenInfo, setIsModalOpenInfo] = useState(false);
+    const [isModalOpenIssuesInTask, setIsModalOpenIssuesInTask] = useState(false);
 
-    const handleOpenModalCreate = () => setIsModalOpen(true);
-    
+
+    const handleOpenModalDelete = () => setIsModalOpenDelete(true);
 
     const {
         register,
@@ -73,8 +76,8 @@ function TaskItem({ task }: Props) {
         <>
             <DeleteModal
                 taskId={task?.id}
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isModalOpenDelete}
+                onClose={() => setIsModalOpenDelete(false)}
             />
             <div className='
                 my-2
@@ -108,19 +111,38 @@ function TaskItem({ task }: Props) {
                             value={task?.status}
                         />
                     </div>
+                    <div className='mx-2 mt-1.5 hover:text-sky-600'>
+                        <button className='text-2xl' onClick={()=>setIsModalOpenIssuesInTask(true)}>
+                            <AiOutlinePlusSquare />
+                        </button>
+                        <Modal 
+                            title="Issues Task" 
+                            open={isModalOpenIssuesInTask} 
+                            onCancel={() => setIsModalOpenIssuesInTask(false)}
+                            onOk={() => setIsModalOpenIssuesInTask(false)}
+                            width={1200}
+                        >
+                            <IssuesInTask 
+                                title={task?.title}
+                                task={task}
+                            />
+                        </Modal>
+                    </div>
                     <div className='mx-2 hover:text-sky-600'>
                         <button className='text-2xl' onClick={() => setIsModalOpenInfo(true)}>
                             <InfoCircleOutlined />
                         </button>
-                        <Modal title="Information Task" open={isModalOpenInfo} onCancel={() => setIsModalOpenInfo(false)}>
-                            <div className='flex gap-2'>
-                                <Title level={5}>Title:</Title>
-                                <Text>{task?.title}</Text>
-                            </div>
-                            <div className='flex gap-2'>
-                                <Title level={5}>Create At:</Title>
-                                <Text>{createdAt}</Text>
-                            </div>
+                        <Modal 
+                            title="Information Task" 
+                            open={isModalOpenInfo} 
+                            onCancel={() => setIsModalOpenInfo(false)}
+                        >
+                            <Info 
+                                createdAt={createdAt}
+                                createdBy={task?.creatorId}
+                                title={task?.title}
+                                projectId={task?.projectId}
+                            />
                         </Modal>
                     </div>
                     <button
@@ -130,7 +152,7 @@ function TaskItem({ task }: Props) {
                             font-medium
                             pr-2
                         '
-                        onClick={handleOpenModalCreate}
+                        onClick={handleOpenModalDelete}
                     >
                         <AiOutlineDelete />
                     </button>
