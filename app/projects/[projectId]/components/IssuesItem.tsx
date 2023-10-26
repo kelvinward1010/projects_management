@@ -1,6 +1,5 @@
 "use client"
 import React, { useCallback, useState } from 'react'
-import DeleteIssuesModal from '../modal/DeleteIssuesModal';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';

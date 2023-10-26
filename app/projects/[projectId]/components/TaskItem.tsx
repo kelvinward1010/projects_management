@@ -8,12 +8,13 @@ import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { AiOutlineDelete, AiOutlinePlusSquare } from 'react-icons/ai';
+import { AiFillSliders, AiOutlineDelete, AiOutlinePlusSquare } from 'react-icons/ai';
 import DeleteModal from '../modal/DeleteModal';
 import { InfoCircleOutlined } from "@ant-design/icons";
 import Info from './Info';
 import IssuesInTask from './IssuesInTask';
 import useIssues from '@/app/hooks/useIssues';
+import BoardInTask from './board/BoardInTask';
 
 interface Props {
     task?: Tasks;
@@ -27,6 +28,8 @@ function TaskItem({ task }: Props) {
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenInfo, setIsModalOpenInfo] = useState(false);
     const [isModalOpenIssuesInTask, setIsModalOpenIssuesInTask] = useState(false);
+    const [isModalOpenBoard, setIsModalOpenBoard] = useState(false);
+
 
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
@@ -92,7 +95,7 @@ function TaskItem({ task }: Props) {
                 items-center
                 justify-between
                 cursor-pointer
-                hover:bg-teal-700
+                hover:bg-teal-500
                 hover:text-white
             '>
                 <p
@@ -114,7 +117,26 @@ function TaskItem({ task }: Props) {
                             value={task?.status}
                         />
                     </div>
-                    <div className='mx-2 mt-1.5 hover:text-sky-600'>
+                    <div className='mx-2 mt-1.5 hover:text-sky-700'>
+                        <button
+                            className='
+                                text-2xl
+                            '
+                            onClick={() => setIsModalOpenBoard(true)}
+                        >
+                            <AiFillSliders />
+                        </button>
+                        <Modal 
+                            title="Board for Task" 
+                            open={isModalOpenBoard} 
+                            onCancel={() => setIsModalOpenBoard(false)}
+                            onOk={() => setIsModalOpenBoard(false)}
+                            width={1500}
+                        >
+                            <BoardInTask task={getdeep}/>
+                        </Modal>
+                    </div>
+                    <div className='mx-2 mt-1.5 hover:text-sky-700'>
                         <button className='text-2xl' onClick={()=>setIsModalOpenIssuesInTask(true)}>
                             <AiOutlinePlusSquare />
                         </button>
@@ -132,7 +154,7 @@ function TaskItem({ task }: Props) {
                             />
                         </Modal>
                     </div>
-                    <div className='mx-2 hover:text-sky-600'>
+                    <div className='mx-2 hover:text-sky-700'>
                         <button className='text-2xl' onClick={() => setIsModalOpenInfo(true)}>
                             <InfoCircleOutlined />
                         </button>

@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react'
 import IssuesItem from './IssuesItem'
-import useIssues from '@/app/hooks/useIssues';
-import { useRouter } from 'next/navigation';
-
 
 
 interface Props {
@@ -11,7 +7,6 @@ interface Props {
 }
 
 function IssuesList({
-    task,
     listIssues
 }:Props) {
     
