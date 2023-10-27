@@ -9,10 +9,12 @@ interface Props {
 function IssuesList({
     listIssues
 }:Props) {
+
+    const reverseArray: [] = listIssues.slice().reverse();
     
     return (
         <div className='overflow-y-auto text-md mt-5' style={{height:'600px'}}>
-            {listIssues?.map((issue: any) => (
+            {reverseArray?.map((issue: any) => (
                 <IssuesItem key={issue?.id} issue={issue}/>
             ))}
         </div>

@@ -1,10 +1,7 @@
 "use client"
 import { workCompletionRateFormula } from '@/app/equation'
-import { Projects } from '@prisma/client'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { AiOutlineDelete, AiOutlineDoubleRight } from 'react-icons/ai'
-import DeleteModal from './modals/DeleteModal'
+import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
     project: any;

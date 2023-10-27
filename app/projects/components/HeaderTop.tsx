@@ -13,10 +13,10 @@ function HeaderTop({
     title,
     hadleDelete
 }: Props) {
-  return (
-    <>
-        <div
-            className='
+    return (
+        <>
+            <div
+                className='
                 h-16
                 w-full
                 flex
@@ -24,10 +24,10 @@ function HeaderTop({
                 p-5
                 items-center
             '
-        >
-            <Title level={2}>{title}</Title>  
-            <button
-                className="
+            >
+                <Title level={2}>{title}</Title>
+                <button
+                    className="
                     w-52
                     h-9
                     bg-red-500
@@ -39,14 +39,14 @@ function HeaderTop({
                     rounded-md
                     shadow-lg
                 "
-                onClick={hadleDelete}
-            >
-                <AiOutlineDelete />
-                Delete
-            </button>
-        </div>
-    </>
-  )
+                    onClick={hadleDelete}
+                >
+                    <AiOutlineDelete />
+                    Delete
+                </button>
+            </div>
+        </>
+    )
 }
 
 export default HeaderTop

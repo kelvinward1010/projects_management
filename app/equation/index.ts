@@ -4,7 +4,7 @@ export const workCompletionRateFormula = (array: any) => {
      
     const arrResult: any[] = []
 
-    array.forEach((item: any) => {
+    array?.forEach((item: any) => {
         if (item.status === "Done") {
             return arrResult.push(item)
         }

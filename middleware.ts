@@ -11,5 +11,6 @@ export const config = {
         "/home/:path*",
         "/board/:path*",
         "/projects/:path*",
+        "/issues/:path*",
     ]
 };

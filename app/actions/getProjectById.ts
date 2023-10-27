@@ -4,7 +4,7 @@ const getProjectById = async (
     projectId: string
 ) => {
     try {
-        const conversation = await prisma.projects.findUnique({
+        const project = await prisma.projects.findUnique({
             where: {
                 id: projectId
             },
@@ -14,7 +14,7 @@ const getProjectById = async (
             },
         });
 
-        return conversation;
+        return project;
     } catch (error: any) {
         console.log(error, 'SERVER_ERROR')
         return null;

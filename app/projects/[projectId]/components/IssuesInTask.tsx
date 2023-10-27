@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 import HeaderProjects from '../../components/HeaderProjects';
-import { Tasks } from '@prisma/client';
 import IssuesList from './IssuesList';
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -12,7 +11,6 @@ import toast from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
 import InputIssues from '../input/InputIssues';
 import TextareaIssues from '../input/TextareaIssues';
-import { dataTaskId } from '@/app/config/data';
 import useIssues from '@/app/hooks/useIssues';
 
 interface Props {

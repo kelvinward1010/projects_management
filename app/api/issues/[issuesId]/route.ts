@@ -8,6 +8,36 @@ interface IParams {
     
 }
 
+export async function POST(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const body = await request.json();
+        const {
+            title,
+            status,
+            desc,
+        } = body;
+
+        const updatedIssue = await prisma.issues.update({
+            where: {
+                id: params?.issuesId
+            },
+            data: {
+                status: status,
+                title: title,
+                desc: desc
+            },
+        });
+
+        return NextResponse.json(updatedIssue)
+    } catch (error) {
+        console.log(error, 'ERROR_MESSAGES')
+        return new NextResponse('Error', { status: 500 });
+    }
+}
+
 export async function DELETE(
     request: Request,
     { params }: { params: IParams }
