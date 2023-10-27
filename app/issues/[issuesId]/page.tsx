@@ -1,6 +1,7 @@
 import getIssueById from "@/app/actions/getIssueById"
 import HeaderIssues from "../components/HeaderIssues"
 import BodyIssues from "../components/BodyIssues"
+import getCurrentUser from "@/app/actions/getCurrentUser"
 
 
 interface Props {
@@ -9,12 +10,13 @@ interface Props {
 
 const IssuesPage = async ({ params }: { params: Props }) =>{
   const issuestId = params.issuesId
-  const issue = await getIssueById(issuestId)
+  const issue = await getIssueById(issuestId);
+  const currentUser = await getCurrentUser();
 
   return (
     <div>
       <HeaderIssues issue={issue}/>
-      <BodyIssues issue={issue}/>
+      <BodyIssues issue={issue} currentUser={currentUser}/>
     </div>
   )
 }

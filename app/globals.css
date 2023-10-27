@@ -15,3 +15,23 @@ body,
 body {
   @apply h-full bg-black text-white
 } */
+
+.edit-modal .ant-btn-primary{
+  background: teal;
+}
+
+.modal-edit .ant-btn-default{
+  color: white;
+  border: none;
+}
+
+.modal-edit .ant-btn-primary{
+  color: white;
+}
+.modal-edit .ant-btn-default:hover,
+.modal-edit .ant-btn-primary:hover,
+.ant-modal-footer:hover{
+  background: white !important;
+  color: white !important;
+  border: none;
+}

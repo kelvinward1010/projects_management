@@ -15,6 +15,7 @@ export async function POST(
         const {
             title,
             status,
+            image,
         } = body;
 
         const updatedTask = await prisma.tasks.update({
@@ -23,6 +24,7 @@ export async function POST(
             },
             data: {
                 status: status,
+                image: image,
                 title: title
             },
         });

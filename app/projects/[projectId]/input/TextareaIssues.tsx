@@ -39,7 +39,6 @@ function TextareaIssues({
                 autoComplete={id}
                 disabled={disabled}
                 {...register(id, { required})}
-                maxLength={10}
                 className='
                     border-2
                     border-sky-600

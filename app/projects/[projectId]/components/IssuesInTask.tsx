@@ -12,6 +12,9 @@ import Button from '@/app/components/buttons/Button';
 import InputIssues from '../input/InputIssues';
 import TextareaIssues from '../input/TextareaIssues';
 import useIssues from '@/app/hooks/useIssues';
+import Image from 'next/image';
+import { CldUploadButton } from 'next-cloudinary';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 
 interface Props {
     title?: string | null;
@@ -48,10 +51,19 @@ function IssuesInTask({
             title: '',
             desc: '',
             status: '',
+            image: '',
         }
     });
 
     const status = watch('status');
+
+    const image = watch('image');
+
+    const handleUpload = (result: any) => {
+        setValue('image', result.info.secure_url, {
+            shouldValidate: true
+        });
+    }
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
@@ -116,6 +128,37 @@ function IssuesInTask({
                                                 value={status}
                                             />
                                         </Flex>
+                                    </Col>
+                                </Row>
+                                <Row className='mt-4'>
+                                    <Col span={24}>
+                                        <div className="mt-2 flex items-center gap-x-3">
+                                            {image && <Image
+                                                width="100"
+                                                height="100"
+                                                className="rounded"
+                                                src={image}
+                                                alt="Avatar"
+                                            />}
+                                            <CldUploadButton
+                                                options={{ maxFiles: 1 }}
+                                                onUpload={handleUpload}
+                                                uploadPreset="jucsyqyi"
+                                            >
+                                                <Button
+                                                    disabled={isLoading}
+                                                    secondary
+                                                    type="button"
+                                                >
+                                                    <div className='text-md flex justify-center items-center gap-4'> 
+                                                        <span className='text-xl'>
+                                                            <AiOutlineCloudUpload/>
+                                                        </span>
+                                                        Upload Image
+                                                    </div>
+                                                </Button>
+                                            </CldUploadButton>
+                                        </div>
                                     </Col>
                                 </Row>
                                 <Row className='mt-4'>

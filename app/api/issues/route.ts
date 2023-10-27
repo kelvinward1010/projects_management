@@ -19,6 +19,7 @@ export async function POST(
             title,
             status,
             desc,
+            image,
             taskId,
         } = body;
 
@@ -32,6 +33,7 @@ export async function POST(
                 title: title,
                 status: status,
                 desc: desc,
+                image: image,
                 userId: currentUser.id,
                 taskId: taskId,
             }

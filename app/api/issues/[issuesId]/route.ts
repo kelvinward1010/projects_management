@@ -17,6 +17,7 @@ export async function POST(
         const {
             title,
             status,
+            image,
             desc,
         } = body;
 
@@ -27,7 +28,8 @@ export async function POST(
             data: {
                 status: status,
                 title: title,
-                desc: desc
+                desc: desc,
+                image: image,
             },
         });
 
