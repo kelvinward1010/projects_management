@@ -43,6 +43,7 @@ function IssuesInTask({
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: {
             errors,
         }
@@ -74,6 +75,7 @@ function IssuesInTask({
         })
             .then(() => {
                 router.refresh();
+                reset()
                 mutateIssues()
                 setIsModalOpen(false);
             })

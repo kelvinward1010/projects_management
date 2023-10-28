@@ -27,7 +27,7 @@ const InputComment: React.FC<PostInputProps> = ({
 }) => {
     return (
         <>
-            <TextArea
+            <input
                 id={id}
                 typeof={type}
                 autoComplete={id}
@@ -35,10 +35,12 @@ const InputComment: React.FC<PostInputProps> = ({
                 className="
                     border-2
                     border-teal-600
-                    text-xl
+                    w-full
+                    h-9
+                    p-5
+                    rounded
                 "
                 placeholder={placeholder}
-                autoSize
             />
         </>
     )

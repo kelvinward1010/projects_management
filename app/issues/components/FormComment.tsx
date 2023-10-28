@@ -3,27 +3,37 @@
 import Avatar from "@/app/components/Avatar";
 import { User } from "@prisma/client";
 import { Col, Flex, Row, Typography } from "antd";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import InputComment from "./InputComment";
 import Button from "@/app/components/buttons/Button";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import useComments from "@/app/hooks/useComments";
 
 const { Title, Text } = Typography;
 
 interface Props {
     currentUser?: User;
+    issue?: any;
 }
 
 function FormComment({
-    currentUser
+    currentUser,
+    issue
 }:Props) {
 
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const {mutate: useMutate} = useComments(issue?.id)
 
     const {
         register,
         handleSubmit,
         setValue,
+        watch,
+        reset,
         formState: {
             errors,
         }
@@ -34,8 +44,29 @@ function FormComment({
         }
     });
 
+    const image = watch('content');
+
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        setIsLoading(true);
+
+        axios.post('/api/comments', {
+            ...data,
+            issueId: issue?.id
+        })
+            .then(() => {
+                router.refresh();
+                // useMutate();
+                reset();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Comment has been created!')
+            });
+    }
+
     return (
-        <>
+        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
             <Flex justify={'flex-start'} align={'center'}>
                 <Avatar 
                     user={currentUser as User} 
@@ -64,7 +95,7 @@ function FormComment({
                     </Flex>
                 </Col>
             </Row>
-        </>
+        </form>
     )
 }
 

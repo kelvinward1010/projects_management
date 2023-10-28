@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { AiFillEdit } from "react-icons/ai";
 import BodyModalEditIssues from "./BodyModalEditIssues";
 import FormComment from "./FormComment";
+import CommentList from "./CommentList";
 
 
 const { Title, Text } = Typography;
@@ -142,7 +143,10 @@ function BodyIssues({
                         </div>
                         <Row>
                             <Col span={24} className="border-2 border-t-teal-600 p-10">
-                                <FormComment currentUser={currentUser} />
+                                <FormComment currentUser={currentUser} issue={issue}/>
+                            </Col>
+                            <Col span={24} className="my-5">
+                                <CommentList currentUser={currentUser} issue={issue}/>
                             </Col>
                         </Row>
                     </div>
