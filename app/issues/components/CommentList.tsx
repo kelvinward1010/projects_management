@@ -13,11 +13,11 @@ function CommentList({
     issue
 }:Props) {
     const reverseArray: [] = issue?.comments?.slice().reverse();
-    const user = useUser(issue?.userId)
+    
     return (
         <>
             {reverseArray?.map((comment: Comment) => (
-                <CommentItem currentUser={currentUser} user={user.data as User} comment={comment} key={comment?.id}/>
+                <CommentItem currentUser={currentUser} comment={comment} key={comment?.id}/>
             ))}
         </>
     )

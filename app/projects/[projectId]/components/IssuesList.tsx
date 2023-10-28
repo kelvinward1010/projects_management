@@ -7,15 +7,16 @@ interface Props {
 }
 
 function IssuesList({
-    listIssues
+    listIssues,
+    task
 }:Props) {
 
-    const reverseArray: [] = listIssues.slice().reverse();
+    const reverseArray: [] = listIssues?.slice().reverse();
     
     return (
         <div className='overflow-y-auto text-md mt-5' style={{height:'600px'}}>
             {reverseArray?.map((issue: any) => (
-                <IssuesItem key={issue?.id} issue={issue}/>
+                <IssuesItem task={task} key={issue?.id} issue={issue}/>
             ))}
         </div>
     )

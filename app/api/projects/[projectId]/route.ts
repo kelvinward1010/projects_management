@@ -83,3 +83,40 @@ export async function DELETE(
         return NextResponse.json(null);
     }
 }
+
+
+export async function GET(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser?.id) {
+            return NextResponse.json(null);
+        }
+
+        const project = await prisma.projects.findUnique({
+            where: {
+                id: params?.projectId
+            },
+            include: {
+                users: true,
+                tasks: {
+                    include: {
+                        creator: true,
+                        seen: true,
+                        issues: {
+                            include: {
+                                comments: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        return NextResponse.json(project)
+    } catch (error) {
+        return NextResponse.json(null);
+    }
+}

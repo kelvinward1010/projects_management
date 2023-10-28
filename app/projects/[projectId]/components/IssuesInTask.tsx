@@ -15,6 +15,7 @@ import useIssues from '@/app/hooks/useIssues';
 import Image from 'next/image';
 import { CldUploadButton } from 'next-cloudinary';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+import useProject from '@/app/hooks/useProject';
 
 interface Props {
     title?: string | null;
@@ -36,7 +37,11 @@ function IssuesInTask({
 
     const handleOpenModalCreate = () => setIsModalOpen(!isModalOpen);
 
-    const {mutate: mutateIssues } = useIssues(task?.id as string);
+    const {data: dataTask, mutate: mutateIssues } = useIssues(task?.id as string);
+
+    const {data: dataProject, mutate: mutateProject} = useProject(dataTask?.projectId)
+
+    const users = dataProject?.users
 
     const {
         register,
@@ -53,11 +58,12 @@ function IssuesInTask({
             desc: '',
             status: '',
             image: '',
+            assignto: '',
         }
     });
 
     const status = watch('status');
-
+    const assignto = watch('assignto');
     const image = watch('image');
 
     const handleUpload = (result: any) => {
@@ -130,6 +136,19 @@ function IssuesInTask({
                                                 value={status}
                                             />
                                         </Flex>
+                                        <Flex vertical>
+                                            <Title level={5}>Assign To</Title>
+                                            <Select
+                                                disabled={isLoading}
+                                                onChange={(value) => setValue('assignto', value)}
+                                                style={{ width: "100%" }}
+                                                options={users?.map((user: any) => ({
+                                                    value: user?.id,
+                                                    label: user?.name
+                                                }))}
+                                                value={assignto}
+                                            />
+                                        </Flex>
                                     </Col>
                                 </Row>
                                 <Row className='mt-4'>
@@ -147,18 +166,12 @@ function IssuesInTask({
                                                 onUpload={handleUpload}
                                                 uploadPreset="jucsyqyi"
                                             >
-                                                <Button
-                                                    disabled={isLoading}
-                                                    secondary
-                                                    type="button"
-                                                >
-                                                    <div className='text-md flex justify-center items-center gap-4'> 
-                                                        <span className='text-xl'>
-                                                            <AiOutlineCloudUpload/>
-                                                        </span>
-                                                        Upload Image
-                                                    </div>
-                                                </Button>
+                                                <div className='text-md flex justify-center items-center gap-4'> 
+                                                    <span className='text-xl'>
+                                                        <AiOutlineCloudUpload/>
+                                                    </span>
+                                                    Upload Image
+                                                </div>
                                             </CldUploadButton>
                                         </div>
                                     </Col>

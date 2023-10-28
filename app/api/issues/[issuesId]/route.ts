@@ -5,7 +5,6 @@ import prisma from "@/app/libs/prismadb";
 
 interface IParams {
     issuesId?: string;
-    
 }
 
 export async function POST(
@@ -18,6 +17,7 @@ export async function POST(
             title,
             status,
             image,
+            assignto,
             desc,
         } = body;
 
@@ -29,6 +29,7 @@ export async function POST(
                 status: status,
                 title: title,
                 desc: desc,
+                assignto: assignto,
                 image: image,
             },
         });

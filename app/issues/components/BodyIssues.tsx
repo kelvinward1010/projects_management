@@ -12,6 +12,7 @@ import { AiFillEdit } from "react-icons/ai";
 import BodyModalEditIssues from "./BodyModalEditIssues";
 import FormComment from "./FormComment";
 import CommentList from "./CommentList";
+import useProject from "@/app/hooks/useProject";
 
 
 const { Title, Text } = Typography;
@@ -28,9 +29,12 @@ function BodyIssues({
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const {mutate: mutateIssues } = useIssues(issue?.taskId as string);
+    const {data: dataTask, mutate: mutateIssues } = useIssues(issue?.taskId as string);
     const [isModalOpenEditIssue, setIsModalOpenEditIssue] = useState(false);
+    const {data: dataProject, mutate: mutateProject} = useProject(dataTask?.projectId)
 
+    const users = dataProject?.users
+    
     const {
         register,
         handleSubmit,
@@ -45,8 +49,11 @@ function BodyIssues({
             status: issue?.status,
             desc: issue?.desc,
             image: issue?.image,
+            assignto: issue?.assignto,
         }
     });
+
+    const assignto = watch('assignto');
 
     const handleChangeOptionStatus = (data: any) => {
         setIsLoading(true);
@@ -54,6 +61,24 @@ function BodyIssues({
 
         axios.post(`/api/issues/${issue?.id}`, {
             status: data,
+        })
+            .then(() => {
+                mutateIssues()
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Issues in Task has been updated!')
+            });
+    }
+
+    const handleChangeOptionAssign = (data: any) => {
+        setIsLoading(true);
+        setValue('assignto', data)
+
+        axios.post(`/api/issues/${issue?.id}`, {
+            assignto: data,
         })
             .then(() => {
                 mutateIssues()
@@ -151,15 +176,28 @@ function BodyIssues({
                         </Row>
                     </div>
                 </Col>
-                <Col span={5} className="border-2 border-teal-600 py-5">
-                    <div className='flex gap-2 justify-center items-center w-60'>
-                        <span>status:</span>
+                <Col span={5} className="border-2 border-teal-600 p-5">
+                    <div className='flex flex-col gap-y-2 justify-start mb-2'>
+                        <span className="text-md font-medium">Status:</span>
                         <Select
                             disabled={isLoading}
                             onChange={handleChangeOptionStatus}
-                            style={{ width: "60%" }}
+                            style={{ width: "100%" }}
                             options={optionsStatus}
                             value={issue?.status}
+                        />
+                    </div>
+                    <div className='flex flex-col gap-y-2 justify-start mb-2'>
+                        <span className="text-md font-medium">Assigned:</span>
+                        <Select
+                            disabled={isLoading}
+                            onChange={handleChangeOptionAssign}
+                            style={{ width: "100%" }}
+                            options={users?.map((user: any) => ({
+                                value: user?.id,
+                                label: user?.name
+                            }))}
+                            value={issue?.assignto}
                         />
                     </div>
                 </Col>

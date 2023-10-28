@@ -18,7 +18,7 @@ const getTaskById = async (
                 id: taskId,
             },
             include: {
-                issues: true
+                issues: true,
             }
         });
 

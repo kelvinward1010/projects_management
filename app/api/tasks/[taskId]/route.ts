@@ -88,9 +88,9 @@ export async function GET(
             include: {
                 issues: {
                     include: {
-                        task: true
+                        task: true,
                     }
-                }
+                },
             }
         });
 

@@ -10,7 +10,7 @@ interface SelectProps {
     disabled?: boolean;
 }
 
-const Select: React.FC<SelectProps> = ({
+const SelectConFig: React.FC<SelectProps> = ({
     label,
     value,
     onChange,
@@ -50,4 +50,4 @@ const Select: React.FC<SelectProps> = ({
     );
 }
 
-export default Select;
+export default SelectConFig;

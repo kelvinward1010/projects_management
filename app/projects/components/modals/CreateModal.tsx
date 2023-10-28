@@ -13,7 +13,7 @@ import { User } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
-import Select from '@/app/components/inputs/Select';
+import SelectConFig from '@/app/components/inputs/SelectConFig';
 import Button from '@/app/components/buttons/Button';
 
 interface Props {
@@ -92,7 +92,7 @@ const CreateModal: React.FC<Props> = ({
                                 required
                                 register={register}
                             />
-                            <Select
+                            <SelectConFig
                                 disabled={isLoading}
                                 label="Members"
                                 options={users.map((user) => ({

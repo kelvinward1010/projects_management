@@ -1,76 +1,55 @@
 "use client"
-
-import Avatar from "@/app/components/Avatar";
-import { User } from "@prisma/client";
-import { Col, Flex, Row, Typography } from "antd";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import InputComment from "./InputComment";
-import Button from "@/app/components/buttons/Button";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import useComments from "@/app/hooks/useComments";
-import { CldUploadButton } from "next-cloudinary";
-import { AiFillPicture } from "react-icons/ai";
-import Image from "next/image";
-
-const { Title, Text } = Typography;
+import React, { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form';
+import { Col, Flex, Row, Select, Typography } from 'antd';
+import { optionsStatus } from '@/app/config/options';
+import Button from '@/app/components/buttons/Button';
+import Avatar from '@/app/components/Avatar';
+import InputComment from './InputComment';
+import { User } from '@prisma/client';
+import { CldUploadButton } from 'next-cloudinary';
+import { AiFillPicture } from 'react-icons/ai';
+import Image from 'next/image';
 
 interface Props {
     currentUser?: User;
-    issue?: any;
+    onSubmit: (data: any) => void;
+    comment?: any;
+
 }
 
-function FormComment({
-    currentUser,
-    issue
+const { Text } = Typography;
+
+function BodyModalEditComment({
+    onSubmit,
+    comment,
+    currentUser
 }:Props) {
 
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    //const {mutate: useMutate} = useComments(issue?.id)
 
     const {
         register,
         handleSubmit,
         setValue,
         watch,
-        reset,
         formState: {
             errors,
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            content: '',
-            image: '',
+            content: comment?.content,
+            image: comment?.image,
         }
     });
 
+    const status = watch('status');
     const image = watch('image');
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
             shouldValidate: true
         });
-    }
-
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
-        axios.post('/api/comments', {
-            ...data,
-            issueId: issue?.id
-        })
-            .then(() => {
-                router.refresh();
-                reset();
-            })
-            .catch(() => toast.error('Something went wrong!'))
-            .finally(() => {
-                setIsLoading(false);
-                toast.success('Comment has been created!')
-            });
     }
 
     return (
@@ -117,11 +96,8 @@ function FormComment({
             <Row className='mt-5'>
                 <Col span={24}>
                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                        <Button disabled={isLoading} onClick={() => reset()} type="button" danger>
-                            Cancel
-                        </Button>
                         <Button disabled={isLoading} type="submit">
-                            Comment
+                            Update Comment
                         </Button>
                     </Flex>
                 </Col>
@@ -130,4 +106,4 @@ function FormComment({
     )
 }
 
-export default FormComment
+export default BodyModalEditComment

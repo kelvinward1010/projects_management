@@ -96,6 +96,7 @@ model Issues {
   title              String?
   status             String?
   desc               String?
+  assignto           String?
   image              String?   
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt

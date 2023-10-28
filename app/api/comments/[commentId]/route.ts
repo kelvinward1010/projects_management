@@ -7,6 +7,35 @@ interface IParams {
     commentId?: string;
 }
 
+
+export async function POST(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const body = await request.json();
+        const {
+            content,
+            image,
+        } = body;
+
+        const updatedComment = await prisma.comment.update({
+            where: {
+                id: params?.commentId
+            },
+            data: {
+                content: content,
+                image: image,
+            },
+        });
+
+        return NextResponse.json(updatedComment)
+    } catch (error) {
+        console.log(error, 'ERROR_MESSAGES')
+        return new NextResponse('Error', { status: 500 });
+    }
+}
+
 export async function DELETE(
     request: Request,
     { params }: { params: IParams }

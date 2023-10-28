@@ -9,13 +9,16 @@ import useIssues from '@/app/hooks/useIssues';
 import { Select } from 'antd';
 import { optionsStatus } from '@/app/config/options';
 import { FieldValues, useForm } from 'react-hook-form';
+import { Tasks } from '@prisma/client';
 
 interface Props {
-    issue: any
+    issue: any,
+    task: Tasks,
 }
 
 function IssuesItem({
-    issue
+    issue,
+    task
 }:Props) {
 
     const router = useRouter();
