@@ -1,7 +1,7 @@
 "use client"
 import { optionsStatus } from "@/app/config/options";
 import useIssues from "@/app/hooks/useIssues";
-import { Col, Modal, Row, Select, Typography } from "antd";
+import { Col, DatePicker, Modal, Row, Select, Typography } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -13,9 +13,16 @@ import BodyModalEditIssues from "./BodyModalEditIssues";
 import FormComment from "./FormComment";
 import CommentList from "./CommentList";
 import useProject from "@/app/hooks/useProject";
+import useUser from "@/app/hooks/useUser";
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { daysdifference } from "@/app/equation";
 
 
 const { Title, Text } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 interface Props {
     issue?: any;
@@ -31,7 +38,8 @@ function BodyIssues({
     const [isLoading, setIsLoading] = useState(false);
     const {data: dataTask, mutate: mutateIssues } = useIssues(issue?.taskId as string);
     const [isModalOpenEditIssue, setIsModalOpenEditIssue] = useState(false);
-    const {data: dataProject, mutate: mutateProject} = useProject(dataTask?.projectId)
+    const {data: dataProject} = useProject(dataTask?.projectId);
+    const {data: user} = useUser(issue?.userId);
 
     const users = dataProject?.users
     
@@ -50,6 +58,7 @@ function BodyIssues({
             desc: issue?.desc,
             image: issue?.image,
             assignto: issue?.assignto,
+            timework: issue?.timework,
         }
     });
 
@@ -87,7 +96,7 @@ function BodyIssues({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false);
-                toast.success('Issues in Task has been updated!')
+                toast.success('Assigned user has been updated!')
             });
     }
 
@@ -108,6 +117,27 @@ function BodyIssues({
                 toast.success('Issues has been updated!')
             });
     }
+
+    const onChange = (date: any, dateString: any) => {
+
+        setIsLoading(true);
+        setValue('timework', date)
+
+        axios.post(`/api/issues/${issue?.id}`, {
+            timework: date,
+        })
+            .then(() => {
+                mutateIssues()
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Time has been updated!')
+            });
+    };
+
+    const getTime = daysdifference(issue?.timework[0],issue?.timework[1])
 
     return (
         <>
@@ -176,7 +206,11 @@ function BodyIssues({
                         </Row>
                     </div>
                 </Col>
-                <Col span={5} className="border-2 border-teal-600 p-5">
+                <Col span={6} className="border-2 border-teal-600 p-5">
+                    <div className='flex gap-y-2 justify-start mb-2'>
+                        <span className="text-md font-medium mr-2">Issue created by:</span>
+                        <Text>{user?.name}</Text>
+                    </div>
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Status:</span>
                         <Select
@@ -199,6 +233,23 @@ function BodyIssues({
                             }))}
                             value={issue?.assignto}
                         />
+                    </div>
+                    <div className='flex flex-col gap-y-2 justify-start mb-2'>
+                        <span className="text-md font-medium">Time setup:</span>
+                        <RangePicker 
+                            showTime 
+                            onChange={onChange} 
+                            defaultValue={
+                                [dayjs(issue?.timework[0], dateFormat), dayjs(issue?.timework[1], dateFormat)]
+                                || null
+                            }
+                            format={dateFormat}
+                            className="date-picker"
+                        />
+                    </div>
+                    <div className='flex gap-y-2 justify-start mb-2'>
+                        <span className="text-md font-medium mr-2">Work execution time:</span>
+                        <Text>{getTime || null}</Text>
                     </div>
                 </Col>
             </Row>

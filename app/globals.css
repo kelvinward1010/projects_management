@@ -35,3 +35,7 @@ body {
   color: white !important;
   border: none;
 }
+
+.ant-picker-ranges .ant-btn-sm{
+  background: teal;
+}

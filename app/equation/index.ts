@@ -17,3 +17,26 @@ export const workCompletionRateFormula = (array: any) => {
     
     return comparingArray
 }
+
+
+export function daysdifference(firstDate: any, secondDate: any) {
+    let startDay = new Date(firstDate);
+    let endDay = new Date(secondDate);
+
+    let millisBetween = endDay.getTime() - startDay.getTime();
+
+    let days = Math.floor(millisBetween / 1000 / 60 / 60 / 24);
+    millisBetween -= days * 1000 * 60 * 60 * 24;
+
+    let hours = Math.floor(millisBetween / 1000 / 60 / 60);
+    millisBetween -= hours * 1000 * 60 * 60;
+
+    let minutes = Math.floor(millisBetween / 1000 / 60);
+    millisBetween -= minutes * 1000 * 60;
+
+    let seconds = Math.floor(millisBetween / 1000);
+
+    const timestep = days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây"
+
+    return timestep
+}

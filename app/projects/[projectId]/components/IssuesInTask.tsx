@@ -4,7 +4,7 @@ import HeaderProjects from '../../components/HeaderProjects';
 import IssuesList from './IssuesList';
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Col, Flex, Row, Select, Typography } from 'antd';
+import { Col, DatePicker, Flex, Row, Select, Typography } from 'antd';
 import { optionsStatus } from '@/app/config/options';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -16,6 +16,9 @@ import Image from 'next/image';
 import { CldUploadButton } from 'next-cloudinary';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import useProject from '@/app/hooks/useProject';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { daysdifference } from "@/app/equation";
 
 interface Props {
     title?: string | null;
@@ -24,6 +27,9 @@ interface Props {
 }
 
 const { Title } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 function IssuesInTask({
     title,
@@ -59,12 +65,16 @@ function IssuesInTask({
             status: '',
             image: '',
             assignto: '',
+            timework: []
         }
     });
 
     const status = watch('status');
     const assignto = watch('assignto');
     const image = watch('image');
+    const timework = watch('timework');
+    const desc = watch('desc');
+    const textTitle = watch('title');
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
@@ -73,12 +83,11 @@ function IssuesInTask({
     }
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
-        axios.post('/api/issues', {
-            ...data,
-            taskId: task?.id
-        })
+        (status && desc && textTitle && timework && assignto) ?
+            axios.post('/api/issues', {
+                ...data,
+                taskId: task?.id
+            })
             .then(() => {
                 router.refresh();
                 reset()
@@ -89,7 +98,8 @@ function IssuesInTask({
             .finally(() => {
                 setIsLoading(false);
                 toast.success('Issues has been created!')
-            });
+            })
+        : toast.error('You need to complete the information!')
     }
 
     return (
@@ -147,6 +157,15 @@ function IssuesInTask({
                                                     label: user?.name
                                                 }))}
                                                 value={assignto}
+                                            />
+                                        </Flex>
+                                        <Flex vertical>
+                                            <Title level={5}>Set Time</Title>
+                                            <RangePicker 
+                                                showTime 
+                                                onChange={(value) => setValue('timework', value)}
+                                                format={dateFormat}
+                                                value={timework}
                                             />
                                         </Flex>
                                     </Col>

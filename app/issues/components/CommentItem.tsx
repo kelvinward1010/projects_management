@@ -53,7 +53,6 @@ function CommentItem({
         })
             .then(() => {
                 router.refresh();
-                // mutateIssues()
                 setIsModalOpenEditComment(false);
             })
             .catch(() => toast.error('Something went wrong!'))

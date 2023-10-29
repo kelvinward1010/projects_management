@@ -6,7 +6,7 @@ import Sidebar from "./sidebar/Sidebar";
 const LayoutHome: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     return (
-        <div className="h-fit bg-white">
+        <div className="min-h-screen bg-white">
             <div className="">
                 <Header />
             </div>
