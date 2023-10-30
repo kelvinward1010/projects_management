@@ -128,3 +128,114 @@ export const takeLengthStatusProjects = (arr: any[]) => {
         lengthDone
     }
 }
+
+
+export const configData = (arr: any[]) => {
+
+    const lenthData = takeLengthStatusProjects(arr)
+
+    let mapData = arr?.map((item) => {
+        const newDate = new Date(item?.completionTime)
+        const month = newDate?.getMonth() + 1;
+
+        const recentlyDate = new Date();
+        const recentlyDateMonth = recentlyDate?.getMonth() + 1;
+
+        return ({
+            month: month ? month : recentlyDateMonth,
+            value: month ? lenthData.lengthDone : lenthData.lengthTodo,
+            type: month ? 'Done' : 'Todo'
+        })
+    }) ?? []
+
+    let cachedObject: any = {};
+    mapData?.map((item) => (cachedObject[item?.value] = item));
+    mapData = Object.values(cachedObject);
+
+    const monthTypes = [
+        {
+            text: 'Jan',
+            number: 1,
+        },
+        {
+            text: 'Feb',
+            number: 2,
+        },
+        {
+            text: 'Mar',
+            number: 3,
+        },
+        {
+            text: 'Apr',
+            number: 4,
+        },
+        {
+            text: 'May',
+            number: 5,
+        },
+        {
+            text: 'Jun',
+            number: 6,
+        },
+        {
+            text: 'Jul',
+            number: 7,
+        },
+        {
+            text: 'Aug',
+            number: 8,
+        },
+        {
+            text: 'Seb',
+            number: 9,
+        },
+        {
+            text: 'Oct',
+            number: 10,
+        },
+        {
+            text: 'Nov',
+            number: 11,
+        },
+        {
+            text: 'Dec',
+            number: 12,
+        },
+    ]
+
+    var data: any[] = [];
+
+    for(let i = 1; i <= 12; i++) {
+        mapData.map((item) => {
+            if(i === item?.month){
+                return data?.push({
+                    month: item?.month,
+                    value: item?.value,
+                    type: item?.type,
+                })
+            }else{
+                return data?.push({
+                    month: i,
+                    value: 0,
+                    type: item?.type,
+                })
+            }
+        })
+    }
+
+    var dataEnd: any[] = [];
+
+    for(let j in monthTypes){
+        data?.map((item) => {
+            if(monthTypes[j]?.number === item.month){
+                return dataEnd?.push({
+                    month: monthTypes[j]?.text,
+                    value: item.value,
+                    type: item.type,
+                })
+            }
+        })
+    }
+
+    return dataEnd;
+}

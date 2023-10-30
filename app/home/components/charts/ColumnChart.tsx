@@ -8,91 +8,96 @@ function ColumnChart() {
     const data = [
         {
             "month": "Jan",
-            "value": 3,
-            "type": "Done"
+            "value": 0,
+            "type": "Todo"
         },
         {
             "month": "Jan",
-            "value": 2,
+            "value": 0,
+            "type": "Done"
+        },
+        {
+            "month": "Feb",
+            "value": 0,
             "type": "Todo"
         },
         {
             "month": "Feb",
-            "value": 1,
-            "type": "Todo"
-        },
-        {
-            "month": "Feb",
-            "value": 2,
+            "value": 0,
             "type": "Done"
         },
         {
             "month": "Mar",
-            "value": 1,
+            "value": 0,
             "type": "Todo"
         },
         {
             "month": "Mar",
-            "value": 5,
+            "value": 0,
             "type": "Done"
         },
         {
             "month": "Apr",
-            "value": 1,
-            "type": "Done"
+            "value": 0,
+            "type": "Todo"
         },
         {
             "month": "Apr",
-            "value": 3,
-            "type": "Todo"
-        },
-        {
-            "month": "May",
-            "value": 4,
+            "value": 0,
             "type": "Done"
         },
         {
             "month": "May",
-            "value": 2,
+            "value": 0,
             "type": "Todo"
         },
         {
-            "month": "June",
-            "value": 1,
+            "month": "May",
+            "value": 0,
             "type": "Done"
         },
         {
-            "month": "June",
-            "value": 6,
+            "month": "Jun",
+            "value": 0,
             "type": "Todo"
         },
         {
-            "month": "July",
-            "value": 2,
+            "month": "Jun",
+            "value": 0,
             "type": "Done"
         },
         {
-            "month": "July",
-            "value": 3,
+            "month": "Jul",
+            "value": 0,
+            "type": "Todo"
+        },
+        {
+            "month": "Jul",
+            "value": 0,
+            "type": "Done"
+        },
+        {
+            "month": "Aug",
+            "value": 0,
             "type": "Todo"
         },
         {
             "month": "Aug",
-            "value": 2,
+            "value": 0,
             "type": "Done"
         },
         {
-            "month": "Aug",
-            "value": 3,
+            "month": "Seb",
+            "value": 0,
             "type": "Todo"
         },
         {
-            "month": "Sep",
-            "value": 3,
+            "month": "Seb",
+            "value": 0,
             "type": "Done"
         },
         {
-            "month": "Sep",
+            "month": "Oct",
             "value": 1,
             "type": "Todo"
         },
@@ -102,8 +107,8 @@ function ColumnChart() {
             "type": "Done"
         },
         {
-            "month": "Oct",
-            "value": 3,
+            "month": "Nov",
+            "value": 0,
             "type": "Todo"
         },
         {
@@ -112,21 +117,16 @@ function ColumnChart() {
             "type": "Done"
         },
         {
-            "month": "Nov",
-            "value": 2,
+            "month": "Dec",
+            "value": 0,
             "type": "Todo"
         },
         {
             "month": "Dec",
-            "value": 4,
+            "value": 0,
             "type": "Done"
-        },
-        {
-            "month": "Dec",
-            "value": 1,
-            "type": "Todo"
-        },
-    ];
+        }
+    ]
 
     
     const config = {
@@ -142,7 +142,7 @@ function ColumnChart() {
     };
 
     return (
-        <div className="bg-white w-4/5 mt-5">
+        <div className="bg-white w-full mt-5">
             <LineChart {...config} />
         </div>
     )

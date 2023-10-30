@@ -4,6 +4,7 @@ import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import ChartPieProjects from './charts/ChartPieProjects';
+import { configData } from '@/app/equation';
 
 const { Title } = Typography;
 
@@ -20,7 +21,7 @@ function HeaderProjects({
 }:Props) {
 
     const [isModalOpenCharts, setIsModalOpenCharts] = useState(false);
-    
+    configData(projects)
     return (
         <div
             className='
