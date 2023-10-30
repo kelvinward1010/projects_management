@@ -31,7 +31,7 @@ function TaskList({project}: Props) {
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}
             />
-            <HeaderTop title={project?.title} hadleDelete={handleOpenModalDelete}/>
+            <HeaderTop project={project} title={project?.title} hadleDelete={handleOpenModalDelete}/>
             <HeaderProjects title='Tasks' create={handleOpenModalCreate}/>
             <div className='px-5'>
                 {reverseArray?.map((pjct: any) => (

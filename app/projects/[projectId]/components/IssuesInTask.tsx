@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react'
-import HeaderProjects from '../../components/HeaderProjects';
 import IssuesList from './IssuesList';
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -18,7 +17,9 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import useProject from '@/app/hooks/useProject';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { daysdifference } from "@/app/equation";
+import HeaderInTask from './HeaderInTask';
+import { totalWorkTime } from '@/app/equation';
+
 
 interface Props {
     title?: string | null;
@@ -26,7 +27,7 @@ interface Props {
     listIssues?: any;
 }
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY/MM/DD HH:mm:ss';
 dayjs.extend(customParseFormat);
@@ -102,11 +103,14 @@ function IssuesInTask({
         : toast.error('You need to complete the information!')
     }
 
+    const timeWork = totalWorkTime(listIssues)
+
     return (
         <div>
-            <HeaderProjects 
+            <HeaderInTask 
                 create={handleOpenModalCreate} 
                 title={title}
+                tasks={task}
             />
             {isModalOpen && (
                 <div className='
@@ -229,7 +233,16 @@ function IssuesInTask({
                     </form>
                 </div>
             )}
-            <IssuesList task={task} listIssues={listIssues}/>
+            <div className='w-full flex flex-col mb-2'>
+                <Title level={5}>1. Total time to complete the job in task</Title>
+                <Text className='ml-5'>
+                    {`${timeWork.days} days ${timeWork.hours} hours ${timeWork.minutes} minutes ${timeWork.seconds} seconds `}
+                </Text>
+            </div>
+            <div className='w-full flex flex-col'>
+                <Title level={5}>2. List issues</Title>
+                <IssuesList task={task} listIssues={listIssues}/>
+            </div>
         </div>
     )
 }

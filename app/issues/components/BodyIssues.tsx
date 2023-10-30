@@ -249,7 +249,7 @@ function BodyIssues({
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Work execution time:</span>
-                        <Text>{getTime || null}</Text>
+                        <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
                     </div>
                 </Col>
             </Row>

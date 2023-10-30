@@ -36,7 +36,77 @@ export function daysdifference(firstDate: any, secondDate: any) {
 
     let seconds = Math.floor(millisBetween / 1000);
 
-    const timestep = days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây"
+    return {
+        days,
+        hours,
+        minutes,
+        seconds,
+    }
+}
 
-    return timestep
+
+export const totalWorkTime = (arr: any[]) => {
+
+    const total = {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    }
+
+    const listTimeAIssue: any[] = []
+
+    arr?.forEach((item) => {
+        const time = item?.timework
+        const timeInAIssue = daysdifference(time?.[0],time?.[1])
+        listTimeAIssue?.push(timeInAIssue)
+    })
+
+    listTimeAIssue?.forEach((item) => {
+        total.days += item?.days;
+        let hours = total.hours += item?.hours;
+        let minutes = total.minutes += item?.minutes;
+        let seconds = total.seconds += item?.seconds;
+
+        const configHours = Math.floor(hours / 24)
+        const configMinutes = Math.floor(minutes / 60)
+        const configSeconds = Math.floor(seconds / 60)
+        if(configHours !== 0){
+            total.days += configHours
+            total.hours -= configHours*24
+        }
+        if(configMinutes !== 0){
+            total.hours += configMinutes;
+            total.minutes -= configMinutes*60
+        }
+        if(configSeconds !== 0){
+            total.minutes += configSeconds;
+            total.seconds -= configSeconds*60
+        }
+    })
+    return total;
+}
+
+
+export const takeLengthStatus = (arr: any[]) => {
+    let lengthDone = 0;
+    let lengthImprogress = 0;
+    let lengthTodo = 0;
+
+    arr?.forEach((item) => {
+        if(item?.status === 'Todo'){
+            lengthTodo += 1;
+        } 
+        if(item?.status === 'Improgress'){
+            lengthImprogress += 1;
+        } 
+        if(item?.status === 'Done'){
+            lengthDone += 1;
+        } 
+    })
+    return {
+        lengthTodo,
+        lengthImprogress,
+        lengthDone
+    }
 }

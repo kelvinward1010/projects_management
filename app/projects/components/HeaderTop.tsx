@@ -1,18 +1,25 @@
-import { Typography } from 'antd';
-import React from 'react'
+"use client"
+import { PieChartOutlined } from '@ant-design/icons';
+import { Modal, Typography } from 'antd';
+import React, { useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai';
+import PieProject from './chart/PieProject';
 
 const { Title } = Typography;
 
 interface Props {
     title?: string;
     hadleDelete?: () => void;
+    project?: any
 }
 
 function HeaderTop({
     title,
-    hadleDelete
+    hadleDelete,
+    project
 }: Props) {
+    const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
+    
     return (
         <>
             <div
@@ -26,24 +33,55 @@ function HeaderTop({
             '
             >
                 <Title level={2}>{title}</Title>
-                <button
-                    className="
-                    w-52
-                    h-9
-                    bg-red-500
-                    text-white
-                    flex
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-md
-                    shadow-lg
-                "
-                    onClick={hadleDelete}
-                >
-                    <AiOutlineDelete />
-                    Delete
-                </button>
+                <div className='flex items-center justify-center'>
+                    <div className='mx-5'>
+                        <button
+                            className="
+                                w-52
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-md
+                                shadow-lg
+                            "
+                            onClick={()=>setIsModalOpenChartPie(true)}
+                        >
+                            <PieChartOutlined />
+                            Pie chart
+                        </button>
+                        <Modal 
+                            title={`Pie chart for project: ${project?.title}`} 
+                            open={isModalOpenChartPie} 
+                            onCancel={() => setIsModalOpenChartPie(false)}
+                            className="modal-edit"
+                            width={1200}
+                        >
+                            <PieProject project={project}/>
+                        </Modal>
+                    </div>
+                    <button
+                        className="
+                        w-52
+                        h-9
+                        bg-red-500
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-md
+                        shadow-lg
+                    "
+                        onClick={hadleDelete}
+                    >
+                        <AiOutlineDelete />
+                        Delete
+                    </button>
+                </div>
             </div>
         </>
     )

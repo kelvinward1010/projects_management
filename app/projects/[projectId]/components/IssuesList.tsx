@@ -14,7 +14,7 @@ function IssuesList({
     const reverseArray: [] = listIssues?.slice().reverse();
     
     return (
-        <div className='overflow-y-auto text-md mt-5' style={{height:'600px'}}>
+        <div className='overflow-y-auto text-md' style={{height:'600px'}}>
             {reverseArray?.map((issue: any) => (
                 <IssuesItem task={task} key={issue?.id} issue={issue}/>
             ))}
