@@ -120,3 +120,33 @@ export async function GET(
         return NextResponse.json(null);
     }
 }
+
+export async function POST(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const body = await request.json();
+        const {
+            title,
+            status,
+            completionTime,
+        } = body;
+
+        const updatedProject = await prisma.projects.update({
+            where: {
+                id: params?.projectId
+            },
+            data: {
+                status: status,
+                title: title,
+                completionTime: completionTime,
+            },
+        });
+
+        return NextResponse.json(updatedProject)
+    } catch (error) {
+        console.log(error, 'ERROR_MESSAGES')
+        return new NextResponse('Error', { status: 500 });
+    }
+}

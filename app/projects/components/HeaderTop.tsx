@@ -3,7 +3,7 @@ import { PieChartOutlined } from '@ant-design/icons';
 import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai';
-import PieProject from './chart/PieProject';
+import ChartPieProject from './charts/ChartPieProject';
 
 const { Title } = Typography;
 
@@ -51,16 +51,16 @@ function HeaderTop({
                             onClick={()=>setIsModalOpenChartPie(true)}
                         >
                             <PieChartOutlined />
-                            Pie chart
+                            Chart
                         </button>
                         <Modal 
-                            title={`Pie chart for project: ${project?.title}`} 
+                            title={`Chart for project: ${project?.title}`} 
                             open={isModalOpenChartPie} 
                             onCancel={() => setIsModalOpenChartPie(false)}
                             className="modal-edit"
-                            width={1200}
+                            width={1400}
                         >
-                            <PieProject project={project}/>
+                            <ChartPieProject project={project}/>
                         </Modal>
                     </div>
                     <button

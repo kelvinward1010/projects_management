@@ -1,16 +1,20 @@
 import { takeLengthStatus } from '@/app/equation';
+import useIssues from '@/app/hooks/useIssues';
 import PieChart from '@ant-design/plots/es/components/pie';
 
 interface Props {
-    project?: any;
+    task?: any;
 }
 
-function PieProject({
-    project
+function ChartTask({
+    task,
 }:Props) {
 
-    const lengthInStatusTasks = takeLengthStatus(project?.tasks)
+    const dataIssues = useIssues(task?.id as string);
+    const getListIssues = dataIssues?.data?.issues;
 
+    const lengthInStatusTasks = takeLengthStatus(getListIssues)
+    
     const data = [
         {
             type: 'Todo',
@@ -62,8 +66,10 @@ function PieProject({
         ],
     };
     return (
-        <PieChart {...config} />
+        <>
+            <PieChart {...config} />
+        </>
     )
 }
 
-export default PieProject
+export default ChartTask

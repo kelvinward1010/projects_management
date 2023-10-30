@@ -3,7 +3,7 @@ import { PieChartOutlined } from '@ant-design/icons';
 import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
-import PieTask from './chart/PieTask';
+import ChartTask from './chart/ChartTask';
 
 const { Title } = Typography;
 
@@ -61,7 +61,7 @@ function HeaderInTask({
                         className="modal-edit"
                         width={1200}
                     >
-                        <PieTask task={tasks}/>
+                        <ChartTask task={tasks}/>
                     </Modal>
                 </div>
                 <button

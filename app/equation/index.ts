@@ -110,3 +110,21 @@ export const takeLengthStatus = (arr: any[]) => {
         lengthDone
     }
 }
+
+export const takeLengthStatusProjects = (arr: any[]) => {
+    let lengthDone = 0;
+    let lengthTodo = 0;
+
+    arr?.forEach((item) => {
+        if(item?.status === ''){
+            lengthTodo += 1;
+        } 
+        if(item?.status === 'Done'){
+            lengthDone += 1;
+        } 
+    })
+    return {
+        lengthTodo,
+        lengthDone
+    }
+}

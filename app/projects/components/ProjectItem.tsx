@@ -1,6 +1,9 @@
 "use client"
 import { workCompletionRateFormula } from '@/app/equation'
+import axios from 'axios';
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
@@ -18,6 +21,28 @@ function ProjectItem({project}:Props) {
 
     const completePrecent = Number(workCompletionRateFormula(project?.tasks).toFixed(3));
     const unfinishedPercent = 100 - completePrecent;
+
+    const currentDate = new Date();
+
+    useEffect(() => {
+        if(unfinishedPercent === 0){
+            axios.post(`/api/projects/${project?.id}`, {
+                completionTime: currentDate,
+                status: 'Done',
+            })
+                .then(() => {
+                    router.refresh();
+                })
+        }else{
+            axios.post(`/api/projects/${project?.id}`, {
+                completionTime: '',
+                status: '',
+            })
+                .then(() => {
+                    router.refresh();
+                })
+        }
+    },[completePrecent, unfinishedPercent, router])
 
     return (
         <>

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import TaskItem from './TaskItem'
-import HeaderProjects from '../../components/HeaderProjects';
+import HeaderInProject from '../../components/HeaderInProject';
 import CreateTaskModal from '../modal/CreateTaskModel';
 import DeleteModal from '../../components/modals/DeleteModal';
 import HeaderTop from '../../components/HeaderTop';
@@ -32,7 +32,7 @@ function TaskList({project}: Props) {
                 onClose={() => setIsModalOpenDelete(false)}
             />
             <HeaderTop project={project} title={project?.title} hadleDelete={handleOpenModalDelete}/>
-            <HeaderProjects title='Tasks' create={handleOpenModalCreate}/>
+            <HeaderInProject title='Tasks' create={handleOpenModalCreate}/>
             <div className='px-5'>
                 {reverseArray?.map((pjct: any) => (
                     <TaskItem task={pjct} key={pjct?.id}/>

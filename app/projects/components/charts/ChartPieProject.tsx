@@ -1,21 +1,16 @@
 import { takeLengthStatus } from '@/app/equation';
-import ColumnChart from '@/app/home/components/charts/ColumnChart';
-import useIssues from '@/app/hooks/useIssues';
 import PieChart from '@ant-design/plots/es/components/pie';
 
 interface Props {
-    task?: any;
+    project?: any;
 }
 
-function PieTask({
-    task,
+function ChartPieProject({
+    project
 }:Props) {
 
-    const dataIssues = useIssues(task?.id as string);
-    const getListIssues = dataIssues?.data?.issues;
+    const lengthInStatusTasks = takeLengthStatus(project?.tasks)
 
-    const lengthInStatusTasks = takeLengthStatus(getListIssues)
-    
     const data = [
         {
             type: 'Todo',
@@ -67,10 +62,8 @@ function PieTask({
         ],
     };
     return (
-        <>
-            <PieChart {...config} />
-        </>
+        <PieChart {...config} />
     )
 }
 
-export default PieTask
+export default ChartPieProject

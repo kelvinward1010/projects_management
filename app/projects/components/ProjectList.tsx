@@ -15,7 +15,7 @@ function ProjectList({projects, users}:Props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModalCreate = () => setIsModalOpen(true);
-    
+
     return (
         <>
             <CreateModal
@@ -23,7 +23,11 @@ function ProjectList({projects, users}:Props) {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
-            <HeaderProjects create={handleOpenModalCreate} title='Projects'/>
+            <HeaderProjects 
+                create={handleOpenModalCreate} 
+                title='Projects'
+                projects={projects}
+            />
             <div className='px-5'>
                 {projects?.map((project) => (
                     <ProjectItem key={project?.id} project={project} />

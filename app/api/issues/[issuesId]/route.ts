@@ -20,6 +20,7 @@ export async function POST(
             timework,
             assignto,
             desc,
+            completionTime,
         } = body;
 
         const updatedIssue = await prisma.issues.update({
@@ -33,6 +34,7 @@ export async function POST(
                 timework: timework,
                 assignto: assignto,
                 image: image,
+                completionTime: completionTime,
             },
         });
 
