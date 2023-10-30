@@ -1,4 +1,5 @@
 import { takeLengthStatus } from '@/app/equation';
+import ColumnChart from '@/app/home/components/charts/ColumnChart';
 import useIssues from '@/app/hooks/useIssues';
 import PieChart from '@ant-design/plots/es/components/pie';
 
@@ -66,7 +67,9 @@ function PieTask({
         ],
     };
     return (
-        <PieChart {...config} />
+        <>
+            <PieChart {...config} />
+        </>
     )
 }
 

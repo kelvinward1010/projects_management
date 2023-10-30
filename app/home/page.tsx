@@ -1,11 +1,11 @@
 "use client"
-import { signOut } from 'next-auth/react'
 import React from 'react'
+import PageHome from './components/PageHome'
 
 function Home() {
   return (
     <div>
-        <button onClick={() => signOut()}>Get Out</button>
+        <PageHome />
     </div>
   )
 }

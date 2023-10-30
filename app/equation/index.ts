@@ -22,7 +22,7 @@ export const workCompletionRateFormula = (array: any) => {
 export function daysdifference(firstDate: any, secondDate: any) {
     let startDay = new Date(firstDate);
     let endDay = new Date(secondDate);
-
+    
     let millisBetween = endDay.getTime() - startDay.getTime();
 
     let days = Math.floor(millisBetween / 1000 / 60 / 60 / 24);
