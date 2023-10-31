@@ -1,7 +1,7 @@
 "use client"
 import { PieChartOutlined } from '@ant-design/icons';
 import { Modal, Typography } from 'antd';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import ChartPieProjects from './charts/ChartPieProjects';
 import { configData } from '@/app/equation';
@@ -21,7 +21,7 @@ function HeaderProjects({
 }:Props) {
 
     const [isModalOpenCharts, setIsModalOpenCharts] = useState(false);
-    configData(projects)
+
     return (
         <div
             className='
@@ -38,7 +38,7 @@ function HeaderProjects({
                 <div className='mx-5'>
                     <button
                         className="
-                            w-52
+                            w-32
                             h-9
                             bg-sky-700
                             text-white
@@ -66,7 +66,7 @@ function HeaderProjects({
                 </div>
                 <button
                     className="
-                        w-52
+                        w-32
                         h-9
                         bg-sky-700
                         text-white

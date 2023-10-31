@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { AiOutlineDelete, AiOutlinePlusSquare } from 'react-icons/ai';
 import DeleteModal from '../modal/DeleteModal';
 import { InfoCircleOutlined } from "@ant-design/icons";
-import Info from './Info';
+import InfoTask from './InfoTask';
 import IssuesInTask from './IssuesInTask';
 import useIssues from '@/app/hooks/useIssues';
 import { workCompletionRateFormula } from '@/app/equation';
@@ -149,7 +149,7 @@ function TaskItem({ task }: Props) {
                                 open={isModalOpenInfo} 
                                 onCancel={() => setIsModalOpenInfo(false)}
                             >
-                                <Info 
+                                <InfoTask 
                                     createdAt={createdAt}
                                     createdBy={task?.creatorId}
                                     title={task?.title}

@@ -10,7 +10,7 @@ interface Props {
     projectId?: string | null;
 }
 
-function Info({
+function InfoTask({
     createdAt,
     createdBy,
     title,
@@ -38,4 +38,4 @@ function Info({
   )
 }
 
-export default Info
+export default InfoTask

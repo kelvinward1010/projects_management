@@ -39,3 +39,16 @@ body {
 .ant-picker-ranges .ant-btn-sm{
   background: teal;
 }
+
+.range-time .ant-picker-input input{
+  color: black !important;
+}
+
+.pick-time .ant-picker-input input{
+  color: black !important;
+}
+
+.ant-modal-header .ant-modal-title{
+  color: teal;
+  font-size: 20px;
+}

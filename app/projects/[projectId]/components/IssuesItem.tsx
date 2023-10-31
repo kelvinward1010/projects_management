@@ -6,10 +6,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
 import useIssues from '@/app/hooks/useIssues';
-import { Select } from 'antd';
+import { Modal, Select } from 'antd';
 import { optionsStatus } from '@/app/config/options';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Tasks } from '@prisma/client';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import InforIssue from './InforIssue';
 
 interface Props {
     issue: any,
@@ -22,11 +24,13 @@ function IssuesItem({
 }:Props) {
 
     const router = useRouter();
-    const [isOpenDelete, setIsOpenDelete] = useState(false);
-    const handleOpenDelete = () => setIsOpenDelete(true);
-
     const [isLoading, setIsLoading] = useState(false);
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
+    const [isModalOpenInfoIssue, setIsModalOpenInfoIssue] = useState(false);
+
+    const handleOpenDelete = () => setIsOpenDelete(true);
     const {mutate: mutateIssues } = useIssues(issue?.taskId as string);
+
 
     const {
         register,
@@ -82,22 +86,29 @@ function IssuesItem({
         return router.push(`/issues/${issue?.id}`)
     };
 
+    const styleBg = (issue: any) => {
+        return issue?.status == 'Done' ? 'green' : issue?.status == 'Improgress' ? 'blue' : 'gray';
+    }
+
 
     return (
         <>
             <div className='
-                my-2
-                h-12
-                w-full
-                border-2
-                border-teal-600
-                flex
-                items-center
-                justify-between
-                cursor-pointer
-                hover:bg-teal-700
-                hover:text-white
-            '>
+                    my-2
+                    h-12
+                    w-full
+                    border-2
+                    border-teal-600
+                    flex
+                    items-center
+                    justify-between
+                    cursor-pointer
+                    text-white
+                    hover:bg-teal-700
+                    hover:text-white
+                '
+                style={{background: `${styleBg(issue)}`}}
+            >
                 <p
                     className='
                         line-clamp-1
@@ -117,6 +128,29 @@ function IssuesItem({
                             value={issue?.status}
                         />
                     </div>
+                    <div className='mx-2 hover:text-sky-700'>
+                        <button className='text-2xl' onClick={() => setIsModalOpenInfoIssue(true)}>
+                            <InfoCircleOutlined />
+                        </button>
+                        <Modal 
+                            title="Information Issue" 
+                            open={isModalOpenInfoIssue} 
+                            onCancel={() => setIsModalOpenInfoIssue(false)}
+                            width={700}
+                        >
+                            <InforIssue issue={issue}/>
+                        </Modal>
+                    </div>
+                    <button
+                        className='
+                            text-2xl
+                            font-medium
+                            pr-2
+                        '
+                        onClick={(e) => handleGoToIssues(e)}
+                    >
+                        <AiOutlineDoubleRight />
+                    </button>
                     {isOpenDelete && 
                     <div className='h-fit w-fit p-2 flex gap-2 justify-center items-center'>
                         <Button
@@ -134,16 +168,6 @@ function IssuesItem({
                             Cancel
                         </Button>
                     </div>}
-                    <button
-                        className='
-                            text-2xl
-                            font-medium
-                            pr-2
-                        '
-                        onClick={(e) => handleGoToIssues(e)}
-                    >
-                        <AiOutlineDoubleRight />
-                    </button>
                     <button
                         className='
                             text-2xl

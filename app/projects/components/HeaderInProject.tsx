@@ -28,7 +28,7 @@ function HeaderInProject({
       <Title level={3}>{title}</Title>  
       <button
           className="
-              w-52
+              w-32
               h-9
               bg-sky-700
               text-white

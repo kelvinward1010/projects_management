@@ -1,11 +1,12 @@
-"use client"
 import React from 'react'
 import PageHome from './components/PageHome'
+import getProjects from '../actions/getProjects';
 
-function Home() {
+async function Home() {
+  const projects = await getProjects();
   return (
     <div>
-        <PageHome />
+        <PageHome projects={projects}/>
     </div>
   )
 }

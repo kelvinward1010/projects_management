@@ -2,8 +2,9 @@
 import { PieChartOutlined } from '@ant-design/icons';
 import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
-import { AiOutlineDelete } from 'react-icons/ai';
+import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
 import ChartPieProject from './charts/ChartPieProject';
+import ScheduleProject from './ScheduleProject';
 
 const { Title } = Typography;
 
@@ -19,6 +20,8 @@ function HeaderTop({
     project
 }: Props) {
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
+    const [isModalOpenSchedule, setIsModalOpenSchedule] = useState(false);
+    const [isModalOpenAllIssues, setIsModalOpenAllIssues] = useState(false);
     
     return (
         <>
@@ -37,7 +40,65 @@ function HeaderTop({
                     <div className='mx-5'>
                         <button
                             className="
-                                w-52
+                                w-32
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-md
+                                shadow-lg
+                            "
+                            onClick={()=>setIsModalOpenSchedule(true)}
+                        >
+                            <AiFillSchedule />
+                            Schedule
+                        </button>
+                        <Modal 
+                            title={`Chedule for: ${project?.title}`} 
+                            open={isModalOpenSchedule} 
+                            onCancel={() => setIsModalOpenSchedule(false)}
+                            className="modal-edit"
+                            width={1400}
+                        >
+                            <ScheduleProject />
+                        </Modal>
+                    </div>
+                    <div className='mx-5'>
+                        <button
+                            className="
+                                w-32
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-md
+                                shadow-lg
+                            "
+                            onClick={()=>setIsModalOpenAllIssues(true)}
+                        >
+                            <AiOutlineIssuesClose />
+                            Issues
+                        </button>
+                        <Modal 
+                            title={`All Issues in: ${project?.title}`} 
+                            open={isModalOpenAllIssues} 
+                            onCancel={() => setIsModalOpenAllIssues(false)}
+                            className="modal-edit"
+                            width={1400}
+                        >
+                            Issues 
+                        </Modal>
+                    </div>
+                    <div className='mx-5'>
+                        <button
+                            className="
+                                w-32
                                 h-9
                                 bg-sky-700
                                 text-white
@@ -65,17 +126,17 @@ function HeaderTop({
                     </div>
                     <button
                         className="
-                        w-52
-                        h-9
-                        bg-red-500
-                        text-white
-                        flex
-                        items-center
-                        justify-center
-                        gap-2
-                        rounded-md
-                        shadow-lg
-                    "
+                            w-32
+                            h-9
+                            bg-red-500
+                            text-white
+                            flex
+                            items-center
+                            justify-center
+                            gap-2
+                            rounded-md
+                            shadow-lg
+                        "
                         onClick={hadleDelete}
                     >
                         <AiOutlineDelete />

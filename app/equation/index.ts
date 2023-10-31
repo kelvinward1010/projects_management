@@ -8,7 +8,7 @@ export const workCompletionRateFormula = (array: any) => {
         if (item.status === "Done") {
             return arrResult.push(item)
         }
-    } )
+    })
 
     const lengthArray = array?.length;
     const lengthResult = arrResult?.length
