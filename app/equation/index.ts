@@ -278,3 +278,13 @@ export const takeDataIssues = (data: any) => {
     return dataEnd;
 }
 
+export const takeDataOptionsUsers = (data: any) => {
+    const users = data?.users;
+
+    const mapData = users?.map((user: any) =>({
+        label: user.name,
+        value: user.id,
+    }))
+    
+    return mapData;
+}

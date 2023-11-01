@@ -78,7 +78,7 @@ function BodyIssue({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false);
-                toast.success('Issues in Task has been updated!')
+                toast.success('Status issue has been updated!')
             });
     }
 

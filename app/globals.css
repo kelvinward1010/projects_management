@@ -61,3 +61,6 @@ body {
   background: rgba(44, 103, 141, 1) !important;
   color: white !important;
 }
+.select-in-table .ant-select-selector{
+  border: none !important;
+}
