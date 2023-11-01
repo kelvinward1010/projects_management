@@ -1,6 +1,6 @@
 import getIssueById from "@/app/actions/getIssueById"
 import HeaderIssues from "../components/HeaderIssues"
-import BodyIssues from "../components/BodyIssues"
+import BodyIssue from "../components/BodyIssue"
 import getCurrentUser from "@/app/actions/getCurrentUser"
 
 
@@ -16,7 +16,7 @@ const IssuesPage = async ({ params }: { params: Props }) =>{
   return (
     <div>
       <HeaderIssues issue={issue}/>
-      <BodyIssues issue={issue} currentUser={currentUser}/>
+      <BodyIssue issue={issue} currentUser={currentUser}/>
     </div>
   )
 }

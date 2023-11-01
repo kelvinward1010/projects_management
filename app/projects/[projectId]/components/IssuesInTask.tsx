@@ -164,7 +164,7 @@ function IssuesInTask({
                                             />
                                         </Flex>
                                         <Flex vertical>
-                                            <Title level={5}>Set Time</Title>
+                                            <Title level={5}>Estimated time for work to be completed:</Title>
                                             <RangePicker 
                                                 showTime 
                                                 onChange={(value) => setValue('timework', value)}

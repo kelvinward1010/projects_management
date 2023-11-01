@@ -29,7 +29,7 @@ interface Props {
     currentUser?: any;
 }
 
-function BodyIssues({
+function BodyIssue({
     issue,
     currentUser
 }:Props) {
@@ -235,7 +235,7 @@ function BodyIssues({
                         />
                     </div>
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
-                        <span className="text-md font-medium">Time setup:</span>
+                        <span className="text-md font-medium">Estimated time for work to be completed:</span>
                         <RangePicker 
                             showTime 
                             onChange={onChange} 
@@ -257,4 +257,4 @@ function BodyIssues({
     )
 }
 
-export default BodyIssues
+export default BodyIssue

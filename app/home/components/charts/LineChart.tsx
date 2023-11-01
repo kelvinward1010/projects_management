@@ -8,7 +8,7 @@ interface Props {
 function ConfigLineChart({
     data
 }: Props) {
-    
+
     const config = {
         data,
         xField: 'month',

@@ -1,4 +1,6 @@
 import _  from "lodash"
+import useUser from "../hooks/useUser"
+import useTask from "../hooks/useTask"
 
 export const workCompletionRateFormula = (array: any) => {
      
@@ -136,10 +138,10 @@ export const configData = (arr: any[]) => {
 
     let mapData = arr?.map((item) => {
         const newDate = new Date(item?.completionTime)
-        const month = newDate?.getMonth() + 1;
+        const month = newDate?.getMonth() +1;
 
         const recentlyDate = new Date();
-        const recentlyDateMonth = recentlyDate?.getMonth() + 1;
+        const recentlyDateMonth = recentlyDate?.getMonth()+1;
 
         return ({
             month: month ? month : recentlyDateMonth,
@@ -149,7 +151,7 @@ export const configData = (arr: any[]) => {
     }) ?? []
 
     let cachedObject: any = {};
-    mapData?.map((item) => (cachedObject[item?.value] = item));
+    mapData?.map((item) => (cachedObject[item?.type] = item));
     mapData = Object.values(cachedObject);
 
     const monthTypes = [
@@ -239,3 +241,40 @@ export const configData = (arr: any[]) => {
 
     return dataEnd;
 }
+
+
+export const takeDataIssues = (data: any) => {
+    
+    const tasks = data?.tasks;
+
+    const listIssues: any[] = [];
+
+    tasks?.forEach((item: any) => {
+        item?.issues?.forEach((issue: any) => {
+            listIssues.push(issue);
+        })
+    })
+
+    const dataEnd = listIssues?.map((item: any) => {
+
+        const user = useUser(item?.assignto)?.data
+
+        const task = useTask(item?.taskId)?.data
+
+        return ({
+            key: item?.id,
+            id: item?.id,
+            name: item?.title,
+            desc: item?.desc,
+            status: item?.status,
+            timework: item?.timework,
+            task: task,
+            userId: item?.userId,
+            completionTime: item?.completionTime,
+            assignto: user
+        })
+    })
+
+    return dataEnd;
+}
+

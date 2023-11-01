@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
 import ChartPieProject from './charts/ChartPieProject';
 import ScheduleProject from './ScheduleProject';
+import BodyIssues from './BodyIssues';
 
 const { Title } = Typography;
 
@@ -92,7 +93,7 @@ function HeaderTop({
                             className="modal-edit"
                             width={1400}
                         >
-                            Issues 
+                            <BodyIssues project={project} />
                         </Modal>
                     </div>
                     <div className='mx-5'>

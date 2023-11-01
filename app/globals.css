@@ -52,3 +52,12 @@ body {
   color: teal;
   font-size: 20px;
 }
+
+.ant-modal-close-icon{
+  color: red !important;
+}
+
+.ant-table-thead .ant-table-cell{
+  background: rgba(44, 103, 141, 1) !important;
+  color: white !important;
+}
