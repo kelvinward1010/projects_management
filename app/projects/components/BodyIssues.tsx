@@ -1,13 +1,13 @@
 import { optionsStatus } from '@/app/config/options';
 import { takeDataIssues, takeDataOptionsUsers } from '@/app/equation';
-import useProject from '@/app/hooks/useProject';
-import { DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
-import { Col, Form, Input, Row, Select, Table, TableColumnType, Typography } from 'antd';
+import { DeleteOutlined, DoubleRightOutlined, SearchOutlined, WarningOutlined } from '@ant-design/icons';
+import { Col, Form, Input, Modal, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
 import axios from 'axios';
 import * as _ from "lodash/fp";
 import { useRouter } from 'next/navigation';
 import React, {useState } from 'react';
 import toast from 'react-hot-toast';
+import Button from '@/app/components/buttons/Button';
 
 const { Text, Title } = Typography;
 
@@ -27,7 +27,7 @@ function BodyIssues({
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [query, setQuery] = useState('');
-    //const {data: dataProject,mutate: mutateProject } = useProject(project?.id as string);
+    const [openModalDeleteInListIssue, setOpenModalDeleteInListIssue] = useState(false)
 
     const users = project?.users
 
@@ -87,6 +87,20 @@ function BodyIssues({
         }else{
             toast.error('Something went wrong!')
         }
+    }
+
+    const handleDelete = (issue: any) => {
+        setIsLoading(true);
+
+        axios.delete(`/api/issues/${issue?.id}`)
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Assigned user has been updated!')
+            });
     }
 
     const handleGoToIssues = (ev: any, issue: any) => {
@@ -166,6 +180,21 @@ function BodyIssues({
             render: (_: any, record: any) => {
                 return (
                     <div className='w-full flex items-center justify-center gap-x-5'>
+                        <div>
+                            <Popconfirm
+                                title="Delete the issue"
+                                description="Are you sure to delete this issue?"
+                                onConfirm={() => handleDelete(record)}
+                                okText="Yes"
+                                cancelText="No"
+                                className='popconfirm'
+                            >
+                                <DeleteOutlined 
+                                    className='cursor-pointer text-xl' 
+                                    style={{color:'red'}}
+                                />
+                            </Popconfirm>
+                        </div>
                         <DoubleRightOutlined 
                             className='cursor-pointer text-xl' 
                             style={{color:'green'}}
