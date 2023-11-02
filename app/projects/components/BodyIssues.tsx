@@ -1,5 +1,6 @@
 import { optionsStatus } from '@/app/config/options';
 import { takeDataIssues, takeDataOptionsUsers } from '@/app/equation';
+import useProject from '@/app/hooks/useProject';
 import { DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Row, Select, Table, TableColumnType, Typography } from 'antd';
 import axios from 'axios';
@@ -26,6 +27,7 @@ function BodyIssues({
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [query, setQuery] = useState('');
+    //const {data: dataProject,mutate: mutateProject } = useProject(project?.id as string);
 
     const users = project?.users
 
@@ -36,7 +38,7 @@ function BodyIssues({
     const dataSelect = _.flow(
         _.filter(
         (item: any) =>
-            item.assignto?.id === chooseUser || chooseUser === 'all'
+            item.assignto === chooseUser || chooseUser === 'all'
         ),
         _.filter(
         (item: any) =>
@@ -44,7 +46,7 @@ function BodyIssues({
         ),
         _.filter(
           (item: any) =>
-            item?.name?.includes(query) || item?.task?.title?.includes(query) ||
+            item?.name?.includes(query) || item?.task?.includes(query) ||
             (query ?? "") === "",
         ),
     )(data);
@@ -108,13 +110,13 @@ function BodyIssues({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Task',
+            title: 'Task ID',
             dataIndex: 'Task',
             key: 'Task',
-            width: '15%',
+            width: '18%',
             render: (_: any, record: any) => {
                 return (
-                    <Text className='line-clamp-1'>{record?.task?.title}</Text>
+                    <Text className='line-clamp-1'>{record?.task}</Text>
                 )
             },
         },
@@ -150,7 +152,7 @@ function BodyIssues({
                             value: user?.id,
                             label: user?.name
                         }))}
-                        value={record?.assignto?.id}
+                        value={record?.assignto}
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
                     />

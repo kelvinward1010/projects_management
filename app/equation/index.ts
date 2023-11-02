@@ -1,6 +1,4 @@
 import _  from "lodash"
-import useUser from "../hooks/useUser"
-import useTask from "../hooks/useTask"
 
 export const workCompletionRateFormula = (array: any) => {
      
@@ -257,10 +255,6 @@ export const takeDataIssues = (data: any) => {
 
     const dataEnd = listIssues?.map((item: any) => {
 
-        const user = useUser(item?.assignto)?.data
-
-        const task = useTask(item?.taskId)?.data
-
         return ({
             key: item?.id,
             id: item?.id,
@@ -268,10 +262,10 @@ export const takeDataIssues = (data: any) => {
             desc: item?.desc,
             status: item?.status,
             timework: item?.timework,
-            task: task,
+            task: item?.taskId,
             userId: item?.userId,
             completionTime: item?.completionTime,
-            assignto: user
+            assignto: item?.assignto
         })
     })
 

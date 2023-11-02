@@ -29,8 +29,8 @@ function IssuesItem({
     const [isModalOpenInfoIssue, setIsModalOpenInfoIssue] = useState(false);
 
     const handleOpenDelete = () => setIsOpenDelete(true);
-    const {mutate: mutateIssues } = useIssues(issue?.taskId as string);
-
+    const {data: dataTask, mutate: mutateIssues } = useIssues(issue?.taskId as string);
+    const {mutate: mutateProject } = useIssues(dataTask?.projectId as string);
 
     const {
         register,
@@ -56,6 +56,7 @@ function IssuesItem({
             status: data,
         })
             .then(() => {
+                mutateProject();
                 mutateIssues()
                 router.refresh();
             })

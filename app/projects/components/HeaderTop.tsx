@@ -4,7 +4,7 @@ import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
 import ChartPieProject from './charts/ChartPieProject';
-import ScheduleProject from './ScheduleProject';
+import ScheduleProject from '../schedule/ScheduleProject';
 import BodyIssues from './BodyIssues';
 
 const { Title } = Typography;
@@ -41,7 +41,7 @@ function HeaderTop({
                     <div className='mx-5'>
                         <button
                             className="
-                                w-32
+                                w-56
                                 h-9
                                 bg-sky-700
                                 text-white
@@ -55,16 +55,16 @@ function HeaderTop({
                             onClick={()=>setIsModalOpenSchedule(true)}
                         >
                             <AiFillSchedule />
-                            Schedule
+                            Schedule Conversation
                         </button>
-                        <Modal 
-                            title={`Chedule for: ${project?.title}`} 
+                        <Modal
                             open={isModalOpenSchedule} 
                             onCancel={() => setIsModalOpenSchedule(false)}
                             className="modal-edit"
                             width={1400}
+                            style={{top: '15px'}}
                         >
-                            <ScheduleProject />
+                            <ScheduleProject project={project} />
                         </Modal>
                     </div>
                     <div className='mx-5'>
@@ -92,6 +92,7 @@ function HeaderTop({
                             onCancel={() => setIsModalOpenAllIssues(false)}
                             className="modal-edit"
                             width={1400}
+                            style={{top: '15px'}}
                         >
                             <BodyIssues project={project} />
                         </Modal>

@@ -8,6 +8,29 @@ body,
   height: 100%;
 }
 
+/*Scoll CSS*/
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: teal; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
+
 /* :root {
   @apply h-full bg-black
 }
@@ -64,3 +87,5 @@ body {
 .select-in-table .ant-select-selector{
   border: none !important;
 }
+
+

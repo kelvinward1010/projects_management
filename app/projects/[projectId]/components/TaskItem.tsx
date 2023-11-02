@@ -30,7 +30,7 @@ function TaskItem({ task }: Props) {
     const [isModalOpenIssuesInTask, setIsModalOpenIssuesInTask] = useState(false);
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
-
+    const {mutate: mutateProject } = useIssues(task?.projectId as string);
     const dataIssues = useIssues(task?.id as string);
     const getdeep = dataIssues?.data?.issues;
 
@@ -57,6 +57,7 @@ function TaskItem({ task }: Props) {
             status: data,
         })
             .then(() => {
+                mutateProject();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))

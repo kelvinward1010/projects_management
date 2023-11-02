@@ -91,8 +91,9 @@ function IssuesInTask({
             })
             .then(() => {
                 router.refresh();
-                reset()
-                mutateIssues()
+                reset();
+                mutateProject();
+                mutateIssues();
                 setIsModalOpen(false);
             })
             .catch(() => toast.error('Something went wrong!'))

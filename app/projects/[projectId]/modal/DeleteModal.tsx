@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Modal from '@/app/components/modals/Modal';
 import { toast } from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
+import useIssues from '@/app/hooks/useIssues';
 
 interface ConfirmModalProps {
     isOpen?: boolean;
@@ -22,6 +23,8 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const {data: dataTask} = useIssues(taskId as string);
+    const {mutate: mutateProject } = useIssues(dataTask?.projectId as string);
 
     const handleDelete = useCallback(() => {
         setIsLoading(true);
@@ -29,6 +32,7 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
         axios.delete(`/api/tasks/${taskId}`)
             .then(() => {
                 onClose();
+                mutateProject();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
