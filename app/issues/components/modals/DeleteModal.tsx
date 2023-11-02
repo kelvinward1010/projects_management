@@ -34,7 +34,7 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false)
-                toast.success('Task has been deleted!')
+                toast.success('Comment has been deleted!')
             })
     },[router, commentId, onClose]);
 

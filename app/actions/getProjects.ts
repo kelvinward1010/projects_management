@@ -30,7 +30,8 @@ const getProjects = async () => {
                             }
                         }
                     }
-                }
+                },
+                scheduleConversation: true
             }
         });
 

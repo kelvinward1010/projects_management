@@ -1,8 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
-import { Col, Flex, Row, Select, Typography } from 'antd';
-import { optionsStatus } from '@/app/config/options';
+import { Col, Flex, Row, Typography } from 'antd';
 import Button from '@/app/components/buttons/Button';
 import Avatar from '@/app/components/Avatar';
 import InputComment from './InputComment';

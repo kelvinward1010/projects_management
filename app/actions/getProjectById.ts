@@ -15,6 +15,7 @@ const getProjectById = async (
                         issues: true
                     }
                 },
+                scheduleConversation: true
             },
         });
 

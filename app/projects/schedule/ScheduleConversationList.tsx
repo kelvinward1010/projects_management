@@ -1,26 +1,20 @@
-import React from 'react'
 import ScheduleConversationItem from './ScheduleConversationItem'
-import { Projects } from '@prisma/client'
 
 interface Props {
-    project?: Projects;
+    project?: any;
 }
 
 function ScheduleConversationList({
     project
 }:Props) {
+
+    const listScheduleCovariations = project?.scheduleConversation
+
     return (
         <div className='px-5 overflow-y-auto h-[800px]'>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
-            <ScheduleConversationItem project={project}/>
+            {listScheduleCovariations?.map((schedule: any) => (
+                <ScheduleConversationItem key={schedule?.id} schedule={schedule} project={project}/>
+            ))}
         </div>
     )
 }

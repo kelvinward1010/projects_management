@@ -112,7 +112,8 @@ export async function GET(
                             }
                         }
                     }
-                }
+                },
+                scheduleConversation: true
             }
         });
         return NextResponse.json(project)

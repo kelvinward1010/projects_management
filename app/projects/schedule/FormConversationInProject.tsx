@@ -1,9 +1,13 @@
 "use client"
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import InputScheduleConversation from './InputScheduleConversation'
 import { CldUploadButton } from 'next-cloudinary';
 import { Projects } from '@prisma/client';
 import { PaperClipOutlined, SendOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     project?: Projects;
@@ -12,6 +16,9 @@ interface Props {
 function FormConversationInProject({
     project
 }:Props) {
+
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -37,9 +44,28 @@ function FormConversationInProject({
         });
     }
 
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        setIsLoading(true);
+        axios.post('/api/schedules', {
+            ...data,
+            projectId: project?.id
+        })
+            .then(() => {
+                router.refresh();
+                reset();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Schedule conversation has been created!')
+            });
+    }
+
+    //console.log(project)
+
     return (
         <>
-            <form className="w-full" onSubmit={() =>{}}>
+            <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                 <div className="mt-5 flex justify-between items-center gap-x-2">
                     <div className="mt-2 flex items-center gap-x-3">
                         <CldUploadButton
