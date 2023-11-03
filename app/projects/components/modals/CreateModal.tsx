@@ -46,23 +46,41 @@ const CreateModal: React.FC<Props> = ({
     });
 
     const members = watch('members');
+    const title = watch('title');
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
 
-        axios.post('/api/projects', {
-            ...data,
-            isGroup: true
-        })
-            .then(() => {
-                router.refresh();
-                onClose();
+        if(members.length > 1) {
+            axios.post('/api/projects', {
+                ...data,
+                isGroup: true
             })
-            .catch(() => toast.error('Something went wrong!'))
-            .finally(() => {
-                setIsLoading(false);
-                toast.success('Project has been created!')
-            });
+                .then(() => {
+                    router.refresh();
+                    onClose();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    setIsLoading(false);
+                    toast.success('Project has been created!')
+                });
+        }else{
+            axios.post('/api/projects', {
+                title: title,
+                userId: members[0]?.value,
+                isGroup: false,
+            })
+                .then(() => {
+                    router.refresh();
+                    onClose();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    setIsLoading(false);
+                    toast.success('Project has been created!')
+                });
+        }
     }
 
     return (

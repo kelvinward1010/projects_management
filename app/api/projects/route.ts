@@ -20,12 +20,11 @@ export async function POST(
             return new NextResponse('Unauthorized', { status: 400 });
         }
 
-        if (!members || members.length === 1 || !title) {
+        if (!title) {
             return new NextResponse('Invalid data', { status: 400 });
         }
-
         
-        if (isGroup) {
+        if (isGroup && members >=2) {
             const newProject = await prisma.projects.create({
                 data: {
                     title,
@@ -75,6 +74,9 @@ export async function POST(
 
         const newProject = await prisma.projects.create({
             data: {
+                title,
+                isGroup,
+                createdByWho: currentUser?.id,
                 users: {
                     connect: [
                         {

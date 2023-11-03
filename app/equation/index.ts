@@ -282,3 +282,26 @@ export const takeDataOptionsUsers = (data: any) => {
     
     return mapData;
 }
+
+export const takeMapDataMembers = (data: any) => {
+    const members = data?.users;
+
+    const mapData = members?.map((member: any) =>({
+        key: member?.id,
+        id: member?.id,
+        name: member?.name,
+        name_Id: member?.name_Id,
+        email: member?.email,
+        avt: member?.image
+    }))
+
+    return mapData;
+}
+
+//Hàm lấy đối tượng khác trong 2 array
+export const takeDataMemberOthers = (projectUsers: any, allUsers: any) => {
+
+    const dataOptionsUsers  = allUsers?.filter((item: any) => !projectUsers?.map((obj: any) => obj.id).includes(item.id));
+
+    return dataOptionsUsers;
+}

@@ -7,7 +7,6 @@ import * as _ from "lodash/fp";
 import { useRouter } from 'next/navigation';
 import React, {useState } from 'react';
 import toast from 'react-hot-toast';
-import Button from '@/app/components/buttons/Button';
 
 const { Text, Title } = Typography;
 
@@ -27,7 +26,6 @@ function BodyIssues({
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [query, setQuery] = useState('');
-    const [openModalDeleteInListIssue, setOpenModalDeleteInListIssue] = useState(false)
 
     const users = project?.users
 

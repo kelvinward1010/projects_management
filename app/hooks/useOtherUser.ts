@@ -11,7 +11,7 @@ const useOtherUser = (project: FullProjectType | { users: User[] }) => {
 
         const otherUser = project.users.filter((user) => user.email !== currentUserEmail);
 
-        return otherUser[0];
+        return otherUser;
     }, [session.data?.user?.email, project.users]);
 
     return otherUser;

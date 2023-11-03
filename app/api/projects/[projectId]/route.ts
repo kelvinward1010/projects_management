@@ -30,7 +30,8 @@ export async function DELETE(
                         seen: true,
                         issues: true
                     }
-                }
+                },
+                scheduleConversation: true,
             }
         });
 
@@ -127,11 +128,21 @@ export async function POST(
     { params }: { params: IParams }
 ) {
     try {
+
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser?.id) {
+            return NextResponse.json(null);
+        }
+
         const body = await request.json();
         const {
             title,
             status,
             completionTime,
+            userId,
+            kickout,
+            members,
         } = body;
 
         const updatedProject = await prisma.projects.update({
@@ -144,6 +155,48 @@ export async function POST(
                 completionTime: completionTime,
             },
         });
+
+        const existingProject = await prisma.projects.findUnique({
+            where: {
+                id: params?.projectId
+            },
+            include: {
+                users: true,
+                tasks: {
+                    include: {
+                        creator: true,
+                        seen: true,
+                        issues: true
+                    }
+                }
+            }
+        });
+
+        if (!existingProject) {
+            return new NextResponse('Invalid ID', { status: 400 });
+        }
+
+        if(kickout && existingProject?.users?.length >=2) {
+            let updatedUserId = [...(existingProject?.userIds || [])];
+            updatedUserId = updatedUserId.filter((id) => id !== userId)
+
+            let updatedUser = [...(existingProject?.users) || currentUser];
+            updatedUser = updatedUser.filter((user) => user?.id !== userId)
+            
+
+            const updatedProject = await prisma.projects.update({
+                where: {
+                    id: params?.projectId
+                },
+                data: {
+                    userIds: updatedUserId,
+                },
+                include: {
+                    users: true
+                }
+            });
+            return NextResponse.json(updatedProject);
+        }
 
         return NextResponse.json(updatedProject)
     } catch (error) {

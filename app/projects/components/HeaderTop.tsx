@@ -1,11 +1,12 @@
 "use client"
-import { PieChartOutlined } from '@ant-design/icons';
+import { PieChartOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
 import ChartPieProject from './charts/ChartPieProject';
 import ScheduleProject from '../schedule/ScheduleProject';
 import BodyIssues from './BodyIssues';
+import BodyMembers from './BodyMembers';
 
 const { Title } = Typography;
 
@@ -23,6 +24,7 @@ function HeaderTop({
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
     const [isModalOpenSchedule, setIsModalOpenSchedule] = useState(false);
     const [isModalOpenAllIssues, setIsModalOpenAllIssues] = useState(false);
+    const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
     
     return (
         <>
@@ -38,7 +40,36 @@ function HeaderTop({
             >
                 <Title level={2}>{title}</Title>
                 <div className='flex items-center justify-center'>
-                    <div className='mx-5'>
+                <div className='mx-2'>
+                        <button
+                            className="
+                                w-36
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-md
+                                shadow-lg
+                            "
+                            onClick={()=>setIsModalOpenMembers(true)}
+                        >
+                            <UserSwitchOutlined />
+                            Members
+                        </button>
+                        <Modal
+                            title="Members"
+                            open={isModalOpenMembers} 
+                            onCancel={() => setIsModalOpenMembers(false)}
+                            className="modal-edit"
+                            width={1400}
+                        >
+                            <BodyMembers project={project}/>
+                        </Modal>
+                    </div>
+                    <div className='mx-2'>
                         <button
                             className="
                                 w-56
@@ -67,7 +98,7 @@ function HeaderTop({
                             <ScheduleProject project={project} />
                         </Modal>
                     </div>
-                    <div className='mx-5'>
+                    <div className='mx-2'>
                         <button
                             className="
                                 w-32
@@ -97,7 +128,7 @@ function HeaderTop({
                             <BodyIssues project={project} />
                         </Modal>
                     </div>
-                    <div className='mx-5'>
+                    <div className='mx-2'>
                         <button
                             className="
                                 w-32
