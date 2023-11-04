@@ -9,7 +9,6 @@ function ListNoti() {
                 <Col span={15}>
                     <Card
                         title="Notifications"
-                        extra={<a href="#">More</a>}
                         className="w-full border-2 border-teal-600"
                     >
                          <Space direction={'vertical'} className="w-full p-5 h-[750px] overflow-y-auto">
