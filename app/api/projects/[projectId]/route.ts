@@ -2,6 +2,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 
 import prisma from "@/app/libs/prismadb";
+import _ from "lodash/fp";
 
 interface IParams {
     projectId?: string;
@@ -142,7 +143,8 @@ export async function POST(
             completionTime,
             userId,
             kickout,
-            members,
+            membersAdd,
+            isAdd,
         } = body;
 
         const updatedProject = await prisma.projects.update({
@@ -168,7 +170,8 @@ export async function POST(
                         seen: true,
                         issues: true
                     }
-                }
+                },
+                scheduleConversation: true,
             }
         });
 
@@ -176,7 +179,27 @@ export async function POST(
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        if(kickout && existingProject?.users?.length >=2) {
+        if(isAdd && existingProject?.users?.length >=1) {
+            let updatedUserId = [...(existingProject?.userIds)];
+            membersAdd?.forEach((it: any) => {
+                updatedUserId?.push(it)
+            })
+
+            const updatedProject = await prisma.projects.update({
+                where: {
+                    id: params?.projectId
+                },
+                data: {
+                    userIds: updatedUserId,
+                },
+                include: {
+                    users: true
+                }
+            });
+            return NextResponse.json(updatedProject);
+        }
+
+        if(kickout && existingProject?.users?.length >2) {
             let updatedUserId = [...(existingProject?.userIds || [])];
             updatedUserId = updatedUserId.filter((id) => id !== userId)
 

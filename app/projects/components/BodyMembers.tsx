@@ -1,5 +1,5 @@
 "use client"
-import { takeMapDataMembers, takeDataMemberOthers } from "@/app/equation";
+import { takeMapDataMembers, takeDataMemberOthers, takeDataIssues } from "@/app/equation";
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Col, Flex, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd"
 import axios from "axios";
@@ -7,8 +7,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import _ from "lodash";
+import * as _ from "lodash/fp";
 import useUsers from "@/app/hooks/useUsers";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import useCurrentUser from "@/app/hooks/useCurrentUser";
 
 const { Title, Text } = Typography;
 
@@ -24,14 +26,11 @@ function BodyMembers({
     const router = useRouter();
     const members = takeMapDataMembers(project);
     const [query, setQuery] = useState('');
-    const users: any = useUsers()?.data
-    const projectUsers: any = project?.users
-
-    const dataOptionsUsers = _.differenceBy(users, projectUsers, 'id');
-
-    const handleChangeSearch = (e: any) => {
-        setQuery(e);
-    };
+    const users: any = useUsers()?.data;
+    const projectUsers: any = project?.users;
+    const currentUser = useCurrentUser()?.data;
+    const dataOptionsUsers = takeDataMemberOthers(projectUsers, users);
+    const dataIssue = takeDataIssues(project);
 
     const dataSearch = _.flow(
         _.filter(
@@ -40,6 +39,44 @@ function BodyMembers({
             (query ?? "") === "",
         ),
     )(members);
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        reset,
+        formState: {
+            errors,
+        }
+    } = useForm<FieldValues>({
+        defaultValues: {
+            membersAdd: []
+        }
+    });
+
+    const membersAdd = watch('membersAdd');
+
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+
+        if(membersAdd.length >= 1) {
+            axios.post(`/api/projects/${project?.id}`, {
+                isAdd : true,
+                membersAdd: membersAdd
+            })
+                .then(() => {
+                    router.refresh();
+                    reset();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    toast.success('Project has been created!')
+                });
+        }else{
+            toast.success('You need to choose at least one person!')
+        }
+    }
+    
 
     const handleUpdateUserKickOut = (data: any) => {
         if(project?.users?.length <= 2) {
@@ -57,6 +94,15 @@ function BodyMembers({
                 .finally(() => {
                     toast.success('User has been kickouted!')
                 });
+            dataIssue?.forEach((issue) => {
+                if(issue?.assignto === data?.id){
+                    axios.post(`/api/issues/${issue?.id}`, {
+                        assignto: '',
+                    })
+                }else{
+                    return;
+                }
+            })
         }else{
             toast.error('Something went wrong!')
         }
@@ -128,7 +174,7 @@ function BodyMembers({
             render: (_: any, record: any) => {
                 return (
                     <div className='w-full flex items-center justify-center gap-x-5'>
-                        <div>
+                        {(currentUser?.id !== record?.id && currentUser?.id === project?.createdByWho) ? <div>
                             <Popconfirm
                                 title="Kick this member out of project"
                                 description="Are you sure to kick this member?"
@@ -142,7 +188,7 @@ function BodyMembers({
                                     style={{color:'red'}}
                                 />
                             </Popconfirm>
-                        </div>
+                        </div>: null}
                         <DoubleRightOutlined 
                             className='cursor-pointer text-xl' 
                             style={{color:'green'}}
@@ -165,7 +211,7 @@ function BodyMembers({
                         <Form.Item label="Add Project" name={"status"}>
                             <Input 
                                 placeholder="Name, email..." 
-                                onChange={(e) => handleChangeSearch(e.target.value)}
+                                onChange={(e) => setQuery(e.target.value)}
                                 suffix={
                                     <SearchOutlined
                                         title="Search"
@@ -175,20 +221,26 @@ function BodyMembers({
                         </Form.Item>
                     </Col>
                     <Col span={7}>
-                        <Form.Item label="Add members" name={"status"}>
+                        {currentUser?.id === project?.createdByWho ? <Form.Item label="Add members" name={"status"}>
                             <Flex className="gap-x-2" align="center" justify="center">
                                 <Select
-                                    onChange={(e) => {}}
+                                    onChange={(value) => setValue('membersAdd', value, {
+                                        shouldValidate: true
+                                    })}
                                     style={{ width: "100%" }}
                                     mode={'multiple'}
                                     options={dataOptionsUsers?.map((user: any) => ({
                                         value: user?.id,
                                         label: user?.name
                                     }))}
+                                    value={membersAdd}
                                 />
-                                <UsergroupAddOutlined className="text-xl text-teal-600 cursor-pointer"/>
+                                <UsergroupAddOutlined 
+                                    className="text-xl text-teal-600 cursor-pointer"
+                                    onClick={onSubmit}
+                                />
                             </Flex>
-                        </Form.Item>
+                        </Form.Item>: null}
                     </Col>
                 </Row>
             </Form>

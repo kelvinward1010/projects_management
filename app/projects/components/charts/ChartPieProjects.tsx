@@ -13,16 +13,16 @@ function ChartPieProjects({
     projects
 }:Props) {
     
-    const lengthInStatusTasks = takeLengthStatusProjects(projects)
+    const lengthInStatusProjects = takeLengthStatusProjects(projects)
     
     const data = [
         {
             type: 'Todo',
-            value: lengthInStatusTasks.lengthTodo,
+            value: lengthInStatusProjects.lengthTodo,
         },
         {
             type: 'Done',
-            value: lengthInStatusTasks.lengthDone,
+            value: lengthInStatusProjects.lengthDone,
         },
     ];
     const config = {

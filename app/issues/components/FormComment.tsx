@@ -10,7 +10,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useComments from "@/app/hooks/useComments";
 import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
 import Image from "next/image";
@@ -29,7 +28,6 @@ function FormComment({
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    //const {mutate: useMutate} = useComments(issue?.id)
 
     const {
         register,

@@ -301,7 +301,100 @@ export const takeMapDataMembers = (data: any) => {
 //Hàm lấy đối tượng khác trong 2 array
 export const takeDataMemberOthers = (projectUsers: any, allUsers: any) => {
 
+    //If use with lodash
+    //_.differenceBy(users, projectUsers, 'id');  import from lodash
+
     const dataOptionsUsers  = allUsers?.filter((item: any) => !projectUsers?.map((obj: any) => obj.id).includes(item.id));
 
     return dataOptionsUsers;
+}
+
+export const takeDataFollowDoneOrNot = (arr: any) => {
+    let listDone: any[] = [];
+    let listNotDone: any[] = [];
+
+    arr.forEach((item: any) => {
+        if(item?.completionTime){
+            listDone?.push(item)
+        }else{
+            listNotDone?.push(item)
+        }
+    })
+
+    return {
+        listDone,
+        listNotDone
+    }
+}
+
+export const takeDataAllTasks = (arr: any) => {
+    
+    let listAllTask: any[] = [];
+
+    arr?.forEach((item: any) => {
+        item?.tasks?.forEach((task: any) => {
+            listAllTask?.push(task)
+        })
+    })
+
+    return listAllTask;
+}
+
+export const takeDataDoneOrImprogressOrTodoInTasks = (arr: any) => {
+    const listall = takeDataAllTasks(arr)
+    let listDone: any[] = [];
+    let listImprogress: any[] = [];
+    let listTodo: any[] = [];
+
+    listall?.forEach((item: any) => {
+        if(item?.status === 'Done'){
+            listDone?.push(item)
+        }else if(item?.status === 'Improgress'){
+            listImprogress?.push(item)
+        }else{
+            listTodo?.push(item)
+        }
+    })
+    return {
+        listDone,
+        listImprogress,
+        listTodo
+    }
+}
+
+export const takeDataAllIssues = (arr: any) => {
+
+    const listall = takeDataAllTasks(arr)
+    
+    let listAllIssue: any[] = [];
+
+    listall?.forEach((item: any) => {
+        item?.issues?.forEach((issue: any) => {
+            listAllIssue?.push(issue)
+        })
+    })
+
+    return listAllIssue;
+}
+
+export const takeDataDoneOrImprogressOrTodoInIssues = (arr: any) => {
+    const listall = takeDataAllIssues(arr)
+    let listDone: any[] = [];
+    let listImprogress: any[] = [];
+    let listTodo: any[] = [];
+
+    listall?.forEach((item: any) => {
+        if(item?.status === 'Done'){
+            listDone?.push(item)
+        }else if(item?.status === 'Improgress'){
+            listImprogress?.push(item)
+        }else{
+            listTodo?.push(item)
+        }
+    })
+    return {
+        listDone,
+        listImprogress,
+        listTodo
+    }
 }
