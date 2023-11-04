@@ -92,3 +92,12 @@ body {
 .ant-popconfirm-buttons .ant-btn-primary{
   background: teal !important;
 }
+
+.cardproject{
+  border: 2px solid teal;
+}
+
+.cardproject .ant-card-head{
+  background: teal;
+  color: white;
+}

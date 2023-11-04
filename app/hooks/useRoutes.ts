@@ -2,7 +2,7 @@ import { signOut } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { HiHome, HiArrowLeftOnRectangle } from 'react-icons/hi2';
-import { AiFillReconciliation, AiFillSliders } from 'react-icons/ai'
+import { AiFillReconciliation, AiFillSliders, AiTwotoneNotification } from 'react-icons/ai'
 
 const useRoutes = () => {
     const pathname = usePathname();
@@ -14,6 +14,12 @@ const useRoutes = () => {
             onClick: () => router.push('/home'),
             icon: HiHome,
             active: pathname === '/home'
+        },
+        {
+            label: 'Notifications',
+            onClick: () => router.push('/notifications'),
+            isNoti: AiTwotoneNotification,
+            active: pathname === '/notifications'
         },
         {
             label: 'Projects',

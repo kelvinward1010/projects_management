@@ -1,3 +1,4 @@
+import { Badge } from "antd";
 import { IconType } from "react-icons";
 import { BsDot } from "react-icons/bs";
 
@@ -8,6 +9,7 @@ interface SidebarItemProps {
     onClick?: () => void;
     active?: boolean;
     alert?: boolean;
+    iconNoti: IconType;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -15,6 +17,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     icon: Icon,
     onClick,
     active,
+    iconNoti: IconNoti,
 }) => {
 
     const handleClick = () => {
@@ -41,11 +44,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 onClick={handleClick}
                 key={label}
             >
-                <Icon size={24} color="black" />
-                <p className="hidden lg:block text-black text-xl">
+                {Icon ? (
+                    <Icon size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                ):(
+                    <Badge count={5}>
+                        <IconNoti size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                    </Badge>
+                )}
+                <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
                     {label}
                 </p>
-                {active ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70} /> : null}
             </div>
         </div>
     )

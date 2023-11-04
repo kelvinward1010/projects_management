@@ -24,7 +24,7 @@ export async function POST(
             return new NextResponse('Invalid data', { status: 400 });
         }
         
-        if (isGroup && members >=2) {
+        if (isGroup && members?.length >=2) {
             const newProject = await prisma.projects.create({
                 data: {
                     title,

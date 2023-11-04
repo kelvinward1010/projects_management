@@ -1,18 +1,25 @@
 "use client"
 import { workCompletionRateFormula } from '@/app/equation'
+import useUser from '@/app/hooks/useUser';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Card, Col, Flex, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { useEffect, useMemo } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
     project: any;
 }
 
+const { Text } = Typography;
+
 function ProjectItem({project}:Props) {
 
     const router = useRouter();
+    const userCreatedProject = useUser(project?.createdByWho)?.data;
+    const usersInProject = project?.users;
 
     const handleGoToProject = (ev: any) => {
         ev.preventDefault();
@@ -44,75 +51,79 @@ function ProjectItem({project}:Props) {
         }
     },[completePrecent, unfinishedPercent, router])
 
+    const style = () => {
+        return completePrecent === 100 ? "green" : "red";
+    }
+
+    const createdAt = useMemo(() => {
+        if (!project?.createdAt) {
+            return null;
+        }
+
+        return formatDistanceToNowStrict(new Date(project?.createdAt));
+    }, [project?.createdAt])
+
     return (
         <>
-            <div className='
-                mt-4
-                h-16
-                w-full
-                border-2
-                border-teal-600
-                cursor-pointer
-                hover:bg-teal-700
-                hover:text-white
-                flex
-                flex-col
-                justify-between
-            '>
-                <div className='
-                    mt-3
-                    flex
-                    items-center
-                    justify-between
-                '>
-                    <p
-                        className='
-                        line-clamp-1
-                        pl-5
-                    '
-                    >
-                        {project?.title}
-                    </p>
-                    <div className='px-5'>
-                        <button
+            <Card
+                title={project?.title}
+                extra={
+                    <Tooltip title="Go to project" placement="top">
+                        <AiOutlineDoubleRight 
                             className='
                                 text-2xl
-                                px-3
-                                hover:text-green-600
                                 font-medium
+                                cursor-pointer
+                                text-white
                             '
-                            onClick={(e) => handleGoToProject(e)}
-                        >
-                            <AiOutlineDoubleRight />
-                        </button>
-                    </div>
-                </div>
-                {(completePrecent || unfinishedPercent) ? <div className='
-                    w-full
-                    h-4
-                    flex
-                    text-sm
-                '>
-                    <div 
-                        style={{
-                            width: `${completePrecent}%`,
-                            height: '100%',
-                        }}
-                        className='flex text-white justify-center items-center bg-lime-500'
-                    >
-                        {completePrecent === 0 ? null : (completePrecent+"%")}
-                    </div>
-                    <div 
-                        style={{
-                            width: `${unfinishedPercent}%`,
-                            height: '100%',
-                        }}
-                        className='flex text-white justify-center items-center bg-[#FF0000]'
-                    >
-                        {unfinishedPercent === 0 ? null : (unfinishedPercent+"%")}
-                    </div>
-                </div>: null}
-            </div>
+                            onClick={(e: any) => handleGoToProject(e)}
+                        />
+                    </Tooltip>
+                }
+                style={{
+                    width: 500,
+                }}
+                className='cardproject'
+            >
+                <Row justify={'space-between'}>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Percent of job completion:</Text>
+                    </Col>
+                    <Col span={10}>
+                        <Text style={{color: `${style()}`}}>{completePrecent || 0} %</Text>
+                    </Col>
+                </Row>
+                <Row justify={'space-between'}>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Project created by:</Text>
+                    </Col>
+                    <Col span={10}>
+                        <Text>{userCreatedProject?.name}</Text>
+                    </Col>
+                </Row>
+                <Row justify={'space-between'}>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Created:</Text>
+                    </Col>
+                    <Col span={10}>
+                        <Text>{createdAt} ago</Text>
+                    </Col>
+                </Row>
+                <Flex vertical>
+                    <Text className={'font-medium'}>Members currently participating:</Text>
+                    <Avatar.Group maxCount={7}>
+                        {usersInProject?.map((user: any) => (
+                            <Tooltip title={user?.name} placement="top">
+                                <Avatar 
+                                    src={user?.image} 
+                                    icon={<UserOutlined />} 
+                                    className='bg-teal-600 sursor-pointer'
+                                />
+                            </Tooltip>
+                        ))}
+                    </Avatar.Group>
+                </Flex>
+            </Card>
         </>
     )
 }

@@ -4,6 +4,7 @@ import ProjectItem from './ProjectItem'
 import HeaderProjects from './HeaderProjects'
 import { Projects, User } from '@prisma/client'
 import CreateModal from './modals/CreateModal'
+import { Flex } from 'antd'
 
 interface Props {
     projects?: Projects[],
@@ -28,10 +29,12 @@ function ProjectList({projects, users}:Props) {
                 title='Projects'
                 projects={projects}
             />
-            <div className='px-5'>
-                {projects?.map((project) => (
-                    <ProjectItem key={project?.id} project={project} />
-                ))}
+            <div className='px-5 mt-5'>
+                <Flex wrap="wrap" className='gap-10'>
+                    {projects?.map((project) => (
+                        <ProjectItem key={project?.id} project={project} />
+                    ))}
+                </Flex>
             </div>
         </>
     )
