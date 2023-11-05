@@ -196,6 +196,19 @@ export async function POST(
                     users: true
                 }
             });
+
+            membersAdd?.forEach(async(memberAdd: any) => {
+                await prisma.notification.create({
+                    data: {
+                        title: `Project notification`,
+                        descNoti: `${currentUser?.name} added you to a new project ${existingProject?.title}!`,
+                        userId: memberAdd,
+                        whocreatedId: currentUser?.id,
+                        projectId: existingProject?.id
+                    },
+                });
+            })
+
             return NextResponse.json(updatedProject);
         }
 
@@ -218,6 +231,17 @@ export async function POST(
                     users: true
                 }
             });
+
+            await prisma.notification.create({
+                data: {
+                    title: `Project notification`,
+                    descNoti: `${currentUser?.name} kicked you out of the project ${existingProject?.title}!`,
+                    userId: userId,
+                    whocreatedId: currentUser?.id,
+                    projectId: existingProject?.id
+                },
+            });
+
             return NextResponse.json(updatedProject);
         }
 

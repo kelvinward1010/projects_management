@@ -62,7 +62,9 @@ function CardTasks({
                             children: <>
                                 <Space direction={'vertical'} className="w-full">
                                     {tasksForCard?.map((task) => (
-                                        CardInListTasks(task?.title)
+                                        <div key={task?.id}>
+                                            {CardInListTasks(task?.title)}
+                                        </div>
                                     ))}
                                 </Space>
                             </>,

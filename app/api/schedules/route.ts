@@ -34,6 +34,43 @@ export async function POST(
                 projectId:  projectId
             }
         });
+
+        const existingProject = await prisma.projects.findUnique({
+            where: {
+                id: projectId
+            },
+            include: {
+                users: true,
+                tasks: {
+                    include: {
+                        creator: true,
+                        seen: true,
+                        issues: true
+                    }
+                },
+                scheduleConversation: true,
+            }
+        });
+
+        if (!existingProject) {
+            return new NextResponse('Invalid ID', { status: 400 });
+        }
+
+
+
+        if(scheduleConversation){
+            existingProject?.userIds.forEach(async(userId) => {
+                await prisma.notification.create({
+                    data: {
+                        title: `Schedule conversations notification`,
+                        descNoti: `${currentUser?.name} has created a new schedule conversations in project: ${existingProject?.title}!`,
+                        userId: userId,
+                        whocreatedId: currentUser?.id,
+                        projectId: existingProject?.id
+                    },
+                });
+            })
+        }
         
 
         return NextResponse.json(scheduleConversation)

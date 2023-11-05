@@ -17,7 +17,7 @@ function TaskList({project}: Props) {
     const handleOpenModalCreate = () => setIsModalOpen(true);
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const taskArray = project?.tasks;
-    const reverseArray: [] = taskArray.slice().reverse();
+    const reverseArray: [] = taskArray?.slice().reverse();
     
     return (
         <>

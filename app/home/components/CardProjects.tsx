@@ -79,7 +79,9 @@ function CardProjects({
                             children: <>
                                 <Space direction={'vertical'} className="w-full">
                                     {projectsForCard?.map((project) => (
-                                        CardInListProjects(project)
+                                        <div key={project?.id}>
+                                            {CardInListProjects(project)}
+                                        </div>
                                     ))}
                                 </Space>
                             </>,

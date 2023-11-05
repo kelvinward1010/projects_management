@@ -38,6 +38,7 @@ model User {
   issues          Issues[]
   comments        Comment[]
   scheduleConversation ScheduleConversations[]
+  notifications Notification[]
 }
 
 model Account {
@@ -142,4 +143,18 @@ model ScheduleConversations {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  title              String
+  descNoti           String
+  userId             String @db.ObjectId
+  projectId          String? @db.ObjectId
+  taskId             String? @db.ObjectId
+  issueId            String? @db.ObjectId
+  whocreatedId       String? @db.ObjectId
+  createdAt          DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -80,7 +80,9 @@ function CardIssues({
                             children: <>
                                 <Space direction={'vertical'} className="w-full">
                                     {issuesForCard?.map((issue) => (
-                                        CardInListIssues(issue)
+                                        <div key={issue?.id}>
+                                            {CardInListIssues(issue)}
+                                        </div>
                                     ))}
                                 </Space>
                             </>,

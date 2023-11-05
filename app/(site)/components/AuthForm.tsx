@@ -90,7 +90,7 @@ const AuthForm = () => {
                     toast.error('Invalid credentials')
                 }
 
-                if (callback?.ok && !callback?.error) {
+                if (callback?.ok) {
                     toast.success("Logged In")
                     router.push('/home')
                 }

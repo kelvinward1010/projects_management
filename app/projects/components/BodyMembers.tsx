@@ -70,7 +70,7 @@ function BodyMembers({
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
-                    toast.success('Project has been created!')
+                    toast.success('User has been added!')
                 });
         }else{
             toast.success('You need to choose at least one person!')

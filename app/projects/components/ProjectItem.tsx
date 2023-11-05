@@ -6,7 +6,7 @@ import { Avatar, Card, Col, Flex, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
@@ -63,23 +63,25 @@ function ProjectItem({project}:Props) {
         return formatDistanceToNowStrict(new Date(project?.createdAt));
     }, [project?.createdAt])
 
+    const FormGotoInside = () => {
+        return(
+            <AiOutlineDoubleRight 
+                className='
+                    text-2xl
+                    font-medium
+                    cursor-pointer
+                    text-white
+                '
+                onClick={(e: any) => handleGoToProject(e)}
+            />
+        )
+    }
+
     return (
-        <>
+        <div>
             <Card
                 title={project?.title}
-                extra={
-                    <Tooltip title="Go to project" placement="top">
-                        <AiOutlineDoubleRight 
-                            className='
-                                text-2xl
-                                font-medium
-                                cursor-pointer
-                                text-white
-                            '
-                            onClick={(e: any) => handleGoToProject(e)}
-                        />
-                    </Tooltip>
-                }
+                extra={FormGotoInside()}
                 style={{
                     width: 500,
                 }}
@@ -113,7 +115,7 @@ function ProjectItem({project}:Props) {
                     <Text className={'font-medium'}>Members currently participating:</Text>
                     <Avatar.Group maxCount={7}>
                         {usersInProject?.map((user: any) => (
-                            <Tooltip title={user?.name} placement="top">
+                            <Tooltip key={user?.id} title={user?.name} placement="top">
                                 <Avatar 
                                     src={user?.image} 
                                     icon={<UserOutlined />} 
@@ -124,7 +126,7 @@ function ProjectItem({project}:Props) {
                     </Avatar.Group>
                 </Flex>
             </Card>
-        </>
+        </div>
     )
 }
 

@@ -1,16 +1,72 @@
 "use client"
 
-import { Card } from "antd"
+import { Notification } from "@prisma/client";
+import { Card, Flex, Typography } from "antd";
+import { formatDistanceToNowStrict } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import { AiOutlineDoubleRight } from "react-icons/ai";
 
-function CardNoti() {
+interface Props {
+    notification?: Notification;
+}
+
+const { Title, Text } = Typography;
+
+function CardNoti({
+    notification
+}:Props) {
+
+    const router = useRouter();
+
+    const handleGoToProject = (ev: any) => {
+        ev.preventDefault();
+        let url = notification?.projectId ? `/projects/${notification?.projectId}` : `/issues/${notification?.issueId}`;
+
+        return router.push(url)
+    };
+
+    const FormGotoInside = () => {
+        return(
+            <AiOutlineDoubleRight 
+                className='
+                    text-2xl
+                    font-medium
+                    cursor-pointer
+                    text-teal-600
+                '
+                onClick={(e: any) => handleGoToProject(e)}
+            />
+        )
+    }
+
+    const createdAt = useMemo(() => {
+        if (!notification?.createdAt) {
+            return null;
+        }
+
+        return formatDistanceToNowStrict(new Date(notification?.createdAt));
+    }, [notification?.createdAt])
+
+    const TitleCard = () =>{
+        
+
+        return (
+            <Flex justify={'flex-start'} className="gap-x-2 items-center">
+                <Text className="text-lg">{notification?.title}</Text>
+                <Text>- {createdAt} ago.</Text>
+            </Flex>
+        )
+    }
+
     return (
         <>
             <Card
-                title="Title notifications"
-                extra={<a href="#">More</a>}
+                title={TitleCard()}
+                extra={FormGotoInside()}
                 className="w-full border-2 border-teal-600"
             >
-                <p>Card content</p>
+                <Text>{notification?.descNoti}</Text>
             </Card>
         </>
     )

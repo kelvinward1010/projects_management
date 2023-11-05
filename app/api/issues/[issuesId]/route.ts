@@ -23,6 +23,12 @@ export async function POST(
             completionTime,
         } = body;
 
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser?.id) {
+            return NextResponse.json(null);
+        }
+
         const updatedIssue = await prisma.issues.update({
             where: {
                 id: params?.issuesId
@@ -37,6 +43,28 @@ export async function POST(
                 completionTime: completionTime,
             },
         });
+
+        const issue = await prisma.issues.findUnique({
+            where: {
+                id: params?.issuesId
+            },
+        });
+
+        if (!issue) {
+            return new NextResponse('Invalid ID', { status: 400 });
+        }
+
+        if(assignto !== issue?.assignto || assignto){
+            await prisma.notification.create({
+                data: {
+                    title: `Issue notification`,
+                    descNoti: `${currentUser?.name} assigned issue "${issue?.title}" to you!`,
+                    userId: assignto,
+                    whocreatedId: currentUser?.id,
+                    issueId: issue?.id
+                },
+            });
+        }
 
         return NextResponse.json(updatedIssue)
     } catch (error) {

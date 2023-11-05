@@ -1,7 +1,7 @@
 "use client"
 import { Col, Row, Typography } from 'antd'
 import React from 'react'
-import { configData, takeDataDoneOrImprogressOrTodoInIssues, takeDataDoneOrImprogressOrTodoInTasks, takeDataFollowDoneOrNot } from '@/app/equation';
+import { takeDataDoneOrImprogressOrTodoInIssues, takeDataDoneOrImprogressOrTodoInTasks, takeDataFollowDoneOrNot } from '@/app/equation';
 import CardProjects from './CardProjects';
 import CardTasks from './CardTasks';
 import CardIssues from './CardIssues';
@@ -19,8 +19,6 @@ function PageHome({
     const dataForProjects = takeDataFollowDoneOrNot(projects);
     const dataForTasks = takeDataDoneOrImprogressOrTodoInTasks(projects);
     const dataForIssues = takeDataDoneOrImprogressOrTodoInIssues(projects)
-
-    console.log(dataForIssues)
     
     return (
         <Row className='w-full mt-10 h-full overflow-y-auto' justify={'center'}>
@@ -56,6 +54,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForTasks?.listDone.length || 0}
                             tasksForCard={dataForTasks?.listDone}
+                            active={'3'}
                         />
                     </Col>
                     <Col span={7}>
@@ -64,6 +63,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForTasks?.listImprogress.length || 0}
                             tasksForCard={dataForTasks?.listImprogress}
+                            active={'4'}
                         />
                     </Col>
                     <Col span={7}>
@@ -72,6 +72,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForTasks?.listTodo.length || 0}
                             tasksForCard={dataForTasks?.listTodo}
+                            active={'5'}
                         />
                     </Col>
                 </Row>
@@ -85,6 +86,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForIssues?.listDone.length || 0}
                             issuesForCard={dataForIssues?.listDone}
+                            active={'6'}
                         />
                     </Col>
                     <Col span={7}>
@@ -93,6 +95,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForIssues?.listImprogress.length || 0}
                             issuesForCard={dataForIssues?.listImprogress}
+                            active={'7'}
                         />
                     </Col>
                     <Col span={7}>
@@ -101,6 +104,7 @@ function PageHome({
                             titleLevel2='Quantity:'
                             number={dataForIssues?.listTodo.length || 0}
                             issuesForCard={dataForIssues?.listTodo}
+                            active={'8'}
                         />
                     </Col>
                 </Row>
