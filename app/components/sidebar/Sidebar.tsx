@@ -2,7 +2,6 @@
 
 import useRoutes from "@/app/hooks/useRoutes";
 import SidebarItem from "./SidebarItem";
-import Avatar from "../Avatar";
 import { User } from "@prisma/client";
 
 interface Props {

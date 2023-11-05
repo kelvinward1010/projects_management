@@ -57,7 +57,7 @@ function IssuesItem({
         })
             .then(() => {
                 mutateProject();
-                mutateIssues()
+                mutateIssues();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))

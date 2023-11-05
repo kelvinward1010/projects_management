@@ -9,7 +9,7 @@ export default withAuth({
 export const config = {
     matcher: [
         "/home/:path*",
-        "/board/:path*",
+        "/flows/:path*",
         "/projects/:path*",
         "/issues/:path*",
     ]

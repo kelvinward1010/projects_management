@@ -15,6 +15,7 @@ import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
 import SelectConFig from '@/app/components/inputs/SelectConFig';
 import Button from '@/app/components/buttons/Button';
+import useNotifications from '@/app/hooks/useNotifications';
 
 interface Props {
     isOpen?: boolean;

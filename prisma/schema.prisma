@@ -155,6 +155,7 @@ model Notification {
   issueId            String? @db.ObjectId
   whocreatedId       String? @db.ObjectId
   createdAt          DateTime @default(now())
+  isSeen             Boolean?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

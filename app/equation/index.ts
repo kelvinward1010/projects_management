@@ -398,3 +398,16 @@ export const takeDataDoneOrImprogressOrTodoInIssues = (arr: any) => {
         listTodo
     }
 }
+
+export const takeDataNotiNotSeen = (data: any) =>{
+
+    let listSeen: any[] = [];
+
+    data?.forEach((item: any) =>{
+        if(!item?.isSeen){
+            listSeen?.push(item);
+        }
+    })
+
+    return listSeen;
+}

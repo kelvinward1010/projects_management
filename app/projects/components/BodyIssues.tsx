@@ -1,5 +1,6 @@
 import { optionsStatus } from '@/app/config/options';
 import { takeDataIssues, takeDataOptionsUsers } from '@/app/equation';
+import useNotifications from '@/app/hooks/useNotifications';
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined, WarningOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Modal, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
 import axios from 'axios';
@@ -26,6 +27,7 @@ function BodyIssues({
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [query, setQuery] = useState('');
+    const {mutate: mutateNoti} = useNotifications()?.data;
 
     const users = project?.users
 

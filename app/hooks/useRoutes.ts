@@ -28,10 +28,10 @@ const useRoutes = () => {
             active: pathname === '/projects'
         },
         {
-            label: "Board",
-            onClick: () => router.push('/board'),
+            label: "Flows",
+            onClick: () => router.push('/flows'),
             icon: AiFillSliders,
-            active: pathname === '/board'
+            active: pathname === '/flows'
         },
         {
             label: 'Logout',

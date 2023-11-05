@@ -10,10 +10,6 @@ export async function GET(
     try {
 
         const currentUser = await getCurrentUser();
-        if (!currentUser?.id) {
-            return [];
-        }
-
 
         if (!currentUser?.id || !currentUser?.email) {
             return new NextResponse('Unauthorized', { status: 401 });

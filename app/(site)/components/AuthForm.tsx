@@ -1,7 +1,7 @@
 "use client"
 
 import Input from "@/app/components/inputs/Input"
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthButton from "./AuthIcon";
 import { BsGithub, BsGoogle } from 'react-icons/bs';
@@ -15,11 +15,17 @@ type Variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
 
-    // const session = useSession();
+    const session = useSession();
     const router = useRouter();
 
     const [variant, setVariant] = useState<Variant>('REGISTER');
     const [isLoading, setIsloading] = useState(false);
+
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+          router.push('/home')
+        }
+    }, [session?.status, router]);
 
     const handleToggleVariant = useCallback(() => {
         variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN');
@@ -91,8 +97,8 @@ const AuthForm = () => {
                 }
 
                 if (callback?.ok) {
-                    toast.success("Logged In")
                     router.push('/home')
+                    toast.success("Logged In")
                 }
             })
             .finally(() => setIsloading(false))

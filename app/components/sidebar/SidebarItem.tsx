@@ -1,6 +1,11 @@
+"use client"
+import { takeDataNotiNotSeen } from "@/app/equation";
+import useNotifications from "@/app/hooks/useNotifications";
 import { Badge } from "antd";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { BsDot } from "react-icons/bs";
 
 
 interface SidebarItemProps {
@@ -20,14 +25,53 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     iconNoti: IconNoti,
 }) => {
 
+    const router = useRouter();
+    const [isSee, setIsSee] = useState(false);
     const handleClick = () => {
         if (onClick) {
             return onClick();
         }
     };
+    const data = useNotifications()?.data
+
+    const notifications = takeDataNotiNotSeen(data);
+
+    const handleNotiSeen = () => {
+        notifications?.forEach((notification) =>{
+            axios.post(`/api/notifications/${notification?.id}`, {
+                isSeen: true,
+            })
+                .then(() => {
+                    router.refresh();
+                    router.push('/notifications')
+                    setIsSee(true);
+                })
+        })
+    }
 
     return (
         <div className="flex flex-row items-center">
+            {Icon ? <div className="
+                    relative
+                    hidden 
+                    lg:flex 
+                    items-row 
+                    gap-4 
+                    p-4 
+                    rounded-full 
+                    hover:bg-slate-300 
+                    hover:bg-opacity-10 
+                    cursor-pointer
+                    items-center
+                "
+                onClick={handleClick}
+                key={label}
+            >
+                    <Icon size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
+                    {label}
+                </p>
+            </div>:
             <div className="
                     relative
                     hidden 
@@ -44,17 +88,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 onClick={handleClick}
                 key={label}
             >
-                {Icon ? (
-                    <Icon size={24} style={{color: `${active ? "teal" : "black"}`}} />
-                ):(
-                    <Badge count={5}>
-                        <IconNoti size={24} style={{color: `${active ? "teal" : "black"}`}} />
-                    </Badge>
-                )}
-                <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
+                <Badge count={isSee ? 0 : notifications?.length}>
+                    <IconNoti onClick={handleNotiSeen} size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                </Badge>
+                <p onClick={handleNotiSeen} style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
                     {label}
                 </p>
             </div>
+            }
         </div>
     )
 }
