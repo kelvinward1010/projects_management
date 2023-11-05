@@ -1,8 +1,11 @@
 import React from 'react'
+import PageHomeFlows from './components/PageHomeFlows'
 
 function FlowsPage() {
   return (
-    <div>FlowsPage</div>
+    <div>
+      <PageHomeFlows />
+    </div>
   )
 }
 
