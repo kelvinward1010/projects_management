@@ -28,12 +28,6 @@ const useRoutes = () => {
             active: pathname === '/projects'
         },
         {
-            label: "Flows",
-            onClick: () => router.push('/flows'),
-            icon: AiFillSliders,
-            active: pathname === '/flows'
-        },
-        {
             label: 'Logout',
             onClick: () => signOut(),
             href: '#',
