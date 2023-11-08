@@ -4,7 +4,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-    taskId?: string;
+    storyId?: string;
 }
 
 export async function POST(
@@ -21,6 +21,7 @@ export async function POST(
             assignto,
             desc,
             completionTime,
+            isAssign,
         } = body;
 
         const currentUser = await getCurrentUser();
@@ -29,9 +30,9 @@ export async function POST(
             return NextResponse.json(null);
         }
 
-        const updatedtask = await prisma.tasks.update({
+        const updatedstory = await prisma.storys.update({
             where: {
-                id: params?.taskId
+                id: params?.storyId
             },
             data: {
                 status: status,
@@ -44,29 +45,29 @@ export async function POST(
             },
         });
 
-        const task = await prisma.tasks.findUnique({
+        const story = await prisma.storys.findUnique({
             where: {
-                id: params?.taskId
+                id: params?.storyId
             },
         });
 
-        if (!task) {
+        if (!story) {
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        if(assignto !== task?.assignto || assignto){
+        if(assignto !== story?.assignto && isAssign === true || assignto && isAssign === true){
             await prisma.notification.create({
                 data: {
-                    title: `Task notification`,
-                    descNoti: `${currentUser?.name} assigned issue "${task?.title}" to you!`,
+                    title: `Story notification`,
+                    descNoti: `${currentUser?.name} assigned issue "${story?.title}" to you!`,
                     userId: assignto,
                     whocreatedId: currentUser?.id,
-                    taskId: task?.id
+                    storyId: story?.id
                 },
             });
         }
 
-        return NextResponse.json(updatedtask)
+        return NextResponse.json(updatedstory)
     } catch (error) {
         console.log(error, 'ERROR_MESSAGES')
         return new NextResponse('Error', { status: 500 });
@@ -84,23 +85,23 @@ export async function DELETE(
             return NextResponse.json(null);
         }
 
-        const existingTask = await prisma.tasks.findUnique({
+        const existingStory = await prisma.storys.findUnique({
             where: {
-                id: params?.taskId
+                id: params?.storyId
             },
         });
 
-        if (!existingTask) {
+        if (!existingStory) {
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        const deletedTask = await prisma.tasks.deleteMany({
+        const deletedStory = await prisma.storys.deleteMany({
             where: {
-                id: params?.taskId
+                id: params?.storyId
             },
         });
 
-        return NextResponse.json(deletedTask)
+        return NextResponse.json(deletedStory)
     } catch (error) {
         return NextResponse.json(null);
     }
@@ -111,16 +112,23 @@ export async function GET(
     { params }: { params: IParams }
 ) {
     try {
-        const task = await prisma.tasks.findUnique({
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser?.id) {
+            return NextResponse.json(null);
+        }
+
+        const story = await prisma.storys.findUnique({
             where: {
-                id: params?.taskId
+                id: params?.storyId
             },
             include: {
-                comments: true
+                issues: true,
+                tasks: true,
             }
         });
 
-        return NextResponse.json(task)
+        return NextResponse.json(story)
     } catch (error) {
         return NextResponse.json(null);
     }

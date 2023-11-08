@@ -12,7 +12,7 @@ interface SelectProps {
     defaultValue?: string | null;
 }
 
-const SelectTask: React.FC<SelectProps> = ({
+const SelectEpic: React.FC<SelectProps> = ({
     label,
     value,
     onChange,
@@ -47,4 +47,4 @@ const SelectTask: React.FC<SelectProps> = ({
     );
 }
 
-export default SelectTask;
+export default SelectEpic;

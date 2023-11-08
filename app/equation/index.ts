@@ -54,15 +54,15 @@ export const totalWorkTime = (arr: any[]) => {
         seconds: 0
     }
 
-    const listTimeAIssue: any[] = []
+    const listTimeStory: any[] = []
 
     arr?.forEach((item) => {
         const time = item?.timework
-        const timeInAIssue = daysdifference(time?.[0],time?.[1])
-        listTimeAIssue?.push(timeInAIssue)
+        const timeInStory = daysdifference(time?.[0],time?.[1])
+        listTimeStory?.push(timeInStory)
     })
 
-    listTimeAIssue?.forEach((item) => {
+    listTimeStory?.forEach((item) => {
         total.days += item?.days;
         let hours = total.hours += item?.hours;
         let minutes = total.minutes += item?.minutes;
@@ -241,19 +241,19 @@ export const configData = (arr: any[]) => {
 }
 
 
-export const takeDataIssues = (data: any) => {
+export const takeDataStorys = (data: any) => {
     
-    const tasks = data?.tasks;
+    const epics = data?.epics;
 
-    const listIssues: any[] = [];
+    const listStorys: any[] = [];
 
-    tasks?.forEach((item: any) => {
-        item?.issues?.forEach((issue: any) => {
-            listIssues.push(issue);
+    epics?.forEach((item: any) => {
+        item?.storys?.forEach((issue: any) => {
+            listStorys.push(issue);
         })
     })
 
-    const dataEnd = listIssues?.map((item: any) => {
+    const dataEnd = listStorys?.map((item: any) => {
 
         return ({
             key: item?.id,
@@ -262,7 +262,7 @@ export const takeDataIssues = (data: any) => {
             desc: item?.desc,
             status: item?.status,
             timework: item?.timework,
-            task: item?.taskId,
+            task: item?.epicId,
             userId: item?.userId,
             completionTime: item?.completionTime,
             assignto: item?.assignto
@@ -327,21 +327,21 @@ export const takeDataFollowDoneOrNot = (arr: any) => {
     }
 }
 
-export const takeDataAllTasks = (arr: any) => {
+export const takeDataAllEpics = (arr: any) => {
     
-    let listAllTask: any[] = [];
+    let listAllEpic: any[] = [];
 
     arr?.forEach((item: any) => {
-        item?.tasks?.forEach((task: any) => {
-            listAllTask?.push(task)
+        item?.epics?.forEach((epic: any) => {
+            listAllEpic?.push(epic)
         })
     })
 
-    return listAllTask;
+    return listAllEpic;
 }
 
-export const takeDataDoneOrImprogressOrTodoInTasks = (arr: any) => {
-    const listall = takeDataAllTasks(arr)
+export const takeDataDoneOrImprogressOrTodoInEpics = (arr: any) => {
+    const listall = takeDataAllEpics(arr)
     let listDone: any[] = [];
     let listImprogress: any[] = [];
     let listTodo: any[] = [];
@@ -362,23 +362,23 @@ export const takeDataDoneOrImprogressOrTodoInTasks = (arr: any) => {
     }
 }
 
-export const takeDataAllIssues = (arr: any) => {
+export const takeDataAllStorys = (arr: any) => {
 
-    const listall = takeDataAllTasks(arr)
+    const listall = takeDataAllEpics(arr)
     
-    let listAllIssue: any[] = [];
+    let listAllStory: any[] = [];
 
     listall?.forEach((item: any) => {
-        item?.issues?.forEach((issue: any) => {
-            listAllIssue?.push(issue)
+        item?.storys?.forEach((storys: any) => {
+            listAllStory?.push(storys)
         })
     })
 
-    return listAllIssue;
+    return listAllStory;
 }
 
-export const takeDataDoneOrImprogressOrTodoInIssues = (arr: any) => {
-    const listall = takeDataAllIssues(arr)
+export const takeDataDoneOrImprogressOrTodoInStorys = (arr: any) => {
+    const listall = takeDataAllStorys(arr)
     let listDone: any[] = [];
     let listImprogress: any[] = [];
     let listTodo: any[] = [];

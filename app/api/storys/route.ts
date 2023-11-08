@@ -16,7 +16,7 @@ export async function POST(
             timework,
             image,
             assignto,
-            storyId,
+            epicId,
         } = body;
 
 
@@ -24,7 +24,7 @@ export async function POST(
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        const issues = await prisma.issues.create({
+        const story = await prisma.storys.create({
             data: {
                 title: title,
                 status: status,
@@ -33,12 +33,12 @@ export async function POST(
                 timework: timework,
                 image: image,
                 userId: currentUser.id,
-                storyId: storyId,
+                epicId: epicId,
             }
         });
         
 
-        return NextResponse.json(issues)
+        return NextResponse.json(story)
     } catch (error) {
         console.log(error, 'ERROR_MESSAGES')
         return new NextResponse('Error', { status: 500 });

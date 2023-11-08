@@ -1,6 +1,6 @@
 import React from 'react'
 import getProjectById from '@/app/actions/getProjectById'
-import TaskList from './components/TaskList'
+import EpicList from './components/EpicList'
 
 interface Props {
     projectId: string
@@ -11,7 +11,7 @@ const ProjectPageId = async ({ params }: { params: Props }) => {
     
     return (
         <div>
-            <TaskList project={project}/>
+            <EpicList project={project}/>
         </div>
     )
 }

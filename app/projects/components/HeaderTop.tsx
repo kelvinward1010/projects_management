@@ -5,8 +5,8 @@ import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
 import ChartPieProject from './charts/ChartPieProject';
 import ScheduleProject from '../schedule/ScheduleProject';
-import BodyIssues from './BodyIssues';
 import BodyMembers from './BodyMembers';
+import BodyStorys from './BodyStorys';
 
 const { Title } = Typography;
 
@@ -115,7 +115,7 @@ function HeaderTop({
                             onClick={()=>setIsModalOpenAllIssues(true)}
                         >
                             <AiOutlineIssuesClose />
-                            Issues
+                            Story
                         </button>
                         <Modal 
                             title={`All Issues in: ${project?.title}`} 
@@ -125,7 +125,7 @@ function HeaderTop({
                             width={1400}
                             style={{top: '15px'}}
                         >
-                            <BodyIssues project={project} />
+                            <BodyStorys project={project} />
                         </Modal>
                     </div>
                     <div className='mx-2'>

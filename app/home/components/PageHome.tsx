@@ -1,10 +1,10 @@
 "use client"
 import { Col, Row, Typography } from 'antd'
 import React from 'react'
-import { takeDataDoneOrImprogressOrTodoInIssues, takeDataDoneOrImprogressOrTodoInTasks, takeDataFollowDoneOrNot } from '@/app/equation';
 import CardProjects from './CardProjects';
 import CardTasks from './CardTasks';
 import CardIssues from './CardIssues';
+import { takeDataDoneOrImprogressOrTodoInEpics, takeDataDoneOrImprogressOrTodoInStorys, takeDataFollowDoneOrNot } from '@/app/equation';
 
 interface Props {
     projects?: any;
@@ -17,8 +17,8 @@ function PageHome({
 }:Props) {
 
     const dataForProjects = takeDataFollowDoneOrNot(projects);
-    const dataForTasks = takeDataDoneOrImprogressOrTodoInTasks(projects);
-    const dataForIssues = takeDataDoneOrImprogressOrTodoInIssues(projects)
+    const dataForEpic = takeDataDoneOrImprogressOrTodoInEpics(projects);
+    const dataForStory = takeDataDoneOrImprogressOrTodoInStorys(projects)
     
     return (
         <Row className='w-full mt-10 h-full overflow-y-auto' justify={'center'}>
@@ -46,14 +46,14 @@ function PageHome({
                 </Row>
             </div>
             <div className='w-full px-10 mt-10'>
-                <Title level={2}>2. Tasks</Title>
+                <Title level={2}>2. Epics</Title>
                 <Row justify={'space-between'}>
                     <Col span={7}>
                         <CardTasks 
                             titleLevel1='Done'
                             titleLevel2='Quantity:'
-                            number={dataForTasks?.listDone.length || 0}
-                            tasksForCard={dataForTasks?.listDone}
+                            number={dataForEpic?.listDone.length || 0}
+                            tasksForCard={dataForEpic?.listDone}
                             active={'3'}
                         />
                     </Col>
@@ -61,8 +61,8 @@ function PageHome({
                         <CardTasks 
                             titleLevel1='Improgress'
                             titleLevel2='Quantity:'
-                            number={dataForTasks?.listImprogress.length || 0}
-                            tasksForCard={dataForTasks?.listImprogress}
+                            number={dataForEpic?.listImprogress.length || 0}
+                            tasksForCard={dataForEpic?.listImprogress}
                             active={'4'}
                         />
                     </Col>
@@ -70,22 +70,22 @@ function PageHome({
                         <CardTasks 
                             titleLevel1='Todo'
                             titleLevel2='Quantity:'
-                            number={dataForTasks?.listTodo.length || 0}
-                            tasksForCard={dataForTasks?.listTodo}
+                            number={dataForEpic?.listTodo.length || 0}
+                            tasksForCard={dataForEpic?.listTodo}
                             active={'5'}
                         />
                     </Col>
                 </Row>
             </div>
             <div className='w-full px-10 mt-10'>
-                <Title level={2}>3. Isuees</Title>
+                <Title level={2}>3. Storys</Title>
                 <Row justify={'space-between'}>
                 <Col span={7}>
                         <CardIssues 
                             titleLevel1='Done'
                             titleLevel2='Quantity:'
-                            number={dataForIssues?.listDone.length || 0}
-                            issuesForCard={dataForIssues?.listDone}
+                            number={dataForStory?.listDone.length || 0}
+                            issuesForCard={dataForStory?.listDone}
                             active={'6'}
                         />
                     </Col>
@@ -93,8 +93,8 @@ function PageHome({
                         <CardIssues 
                             titleLevel1='Improgress'
                             titleLevel2='Quantity:'
-                            number={dataForIssues?.listImprogress.length || 0}
-                            issuesForCard={dataForIssues?.listImprogress}
+                            number={dataForStory?.listImprogress.length || 0}
+                            issuesForCard={dataForStory?.listImprogress}
                             active={'7'}
                         />
                     </Col>
@@ -102,8 +102,8 @@ function PageHome({
                         <CardIssues 
                             titleLevel1='Todo'
                             titleLevel2='Quantity:'
-                            number={dataForIssues?.listTodo.length || 0}
-                            issuesForCard={dataForIssues?.listTodo}
+                            number={dataForStory?.listTodo.length || 0}
+                            issuesForCard={dataForStory?.listTodo}
                             active={'8'}
                         />
                     </Col>

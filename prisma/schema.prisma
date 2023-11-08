@@ -31,9 +31,11 @@ model User {
   projects        Projects[] @relation(fields: [projectIds], references: [id])
 
   seenTaskIds     String[] @db.ObjectId
-  seenTasks       Tasks[] @relation("Seen", fields: [seenTaskIds], references: [id])
+  seenEpics       Epics[] @relation("Seen", fields: [seenTaskIds], references: [id])
 
-  tasks           Tasks[]
+  epics           Epics[]
+  storys          Storys[]
+  tasks           Tasks[] 
   accounts        Account[]
   issues          Issues[]
   comments        Comment[]
@@ -69,8 +71,8 @@ model Projects {
   createdAt       DateTime @default(now())
   isGroup         Boolean?
 
-  taskIds         String[] @db.ObjectId
-  tasks           Tasks[]
+  epicIds         String[] @db.ObjectId
+  epics           Epics[]
   
   userIds         String[] @db.ObjectId
   users           User[]   @relation(fields: [userIds], references: [id])
@@ -79,7 +81,7 @@ model Projects {
   scheduleConversation           ScheduleConversations[]
 }
 
-model Tasks {
+model Epics {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   title           String?
   status          String?
@@ -96,7 +98,49 @@ model Tasks {
   creatorId       String   @db.ObjectId
   creator         User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 
-  issues          Issues[]
+  storys          Storys[]
+}
+
+model Storys {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  title              String?
+  status             String?
+  desc               String?
+  assignto           String?
+  image              String?
+  timework           String[]
+  completionTime     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  userId             String @db.ObjectId
+  epicId             String @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  epic Epics @relation(fields: [epicId], references: [id], onDelete: Cascade)
+
+  tasks Tasks[]
+  issues Issues[]
+  comments          Comment[]
+}
+
+model Tasks {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  title              String?
+  status             String?
+  desc               String?
+  assignto           String?
+  image              String?
+  timework           String[]
+  completionTime     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  userId             String @db.ObjectId
+  storyId             String @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Storys @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  comments          Comment[]
 }
 
 model Issues {
@@ -111,10 +155,10 @@ model Issues {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   userId             String @db.ObjectId
-  taskId             String @db.ObjectId
+  storyId             String @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task Tasks @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  story Storys @relation(fields: [storyId], references: [id], onDelete: Cascade)
 
   comments          Comment[]
 }
@@ -126,10 +170,14 @@ model Comment {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   userId             String @db.ObjectId
-  issueId            String @db.ObjectId
+  issueId            String? @db.ObjectId
+  taskId             String? @db.ObjectId
+  storyId            String? @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  issue Issues @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  issue Issues? @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  task Tasks? @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  story Storys? @relation(fields: [storyId], references: [id], onDelete: Cascade)
 }
 
 model ScheduleConversations {
@@ -151,6 +199,8 @@ model Notification {
   descNoti           String
   userId             String @db.ObjectId
   projectId          String? @db.ObjectId
+  epicId             String? @db.ObjectId
+  storyId            String? @db.ObjectId
   taskId             String? @db.ObjectId
   issueId            String? @db.ObjectId
   whocreatedId       String? @db.ObjectId

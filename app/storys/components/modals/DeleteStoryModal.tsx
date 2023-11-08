@@ -9,39 +9,38 @@ import Modal from '@/app/components/modals/Modal';
 import { toast } from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
 import useEpic from '@/app/hooks/useEpic';
-import useProject from '@/app/hooks/useProject';
 
 interface ConfirmModalProps {
     isOpen?: boolean;
     onClose: () => void;
-    epicId?: string;
+    storyId?: string;
+    story?: any;
 }
 
-const DeleteModal: React.FC<ConfirmModalProps> = ({
+const DeleteStoryModal: React.FC<ConfirmModalProps> = ({
     isOpen,
     onClose,
-    epicId
+    storyId,
+    story
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const {data: dataEpic} = useEpic(epicId as string);
-    const {mutate: mutateProject } = useProject(dataEpic?.projectId as string);
-
+    const {data: dataEpic} = useEpic(story?.epicId as string);
+    
     const handleDelete = useCallback(() => {
         setIsLoading(true);
 
-        axios.delete(`/api/epics/${epicId}`)
+        axios.delete(`/api/storys/${storyId}`)
             .then(() => {
                 onClose();
-                mutateProject();
-                router.refresh();
+                router.push(`/projects/${dataEpic?.projectId}`);
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false)
                 toast.success('Task has been deleted!')
             })
-    },[router, epicId, onClose]);
+    },[router, storyId, onClose]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -80,11 +79,11 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                     >
-                        Delete Epic
+                        Delete Story
                     </Dialog.Title>
                     <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            Are you sure you want to delete this Epic? This action cannot be undone.
+                            Are you sure you want to delete this story? This action cannot be undone.
                         </p>
                     </div>
                 </div>
@@ -109,4 +108,4 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
     )
 }
 
-export default DeleteModal;
+export default DeleteStoryModal;

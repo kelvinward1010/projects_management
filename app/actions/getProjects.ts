@@ -20,13 +20,14 @@ const getProjects = async () => {
             },
             include: {
                 users: true,
-                tasks: {
+                epics: {
                     include: {
                         creator: true,
                         seen: true,
-                        issues: {
+                        storys: {
                             include: {
-                                task: true
+                                tasks: true,
+                                issues: true,
                             }
                         }
                     }

@@ -19,6 +19,8 @@ export async function POST(
             content,
             image,
             issueId,
+            storyId,
+            taskId
         } = body;
 
 
@@ -32,6 +34,8 @@ export async function POST(
                 image: image,
                 userId: currentUser.id,
                 issueId: issueId,
+                storyId: storyId,
+                taskId: taskId,
             }
         });
         

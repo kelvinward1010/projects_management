@@ -1,5 +1,5 @@
 "use client"
-import { takeMapDataMembers, takeDataMemberOthers, takeDataIssues } from "@/app/equation";
+import { takeMapDataMembers, takeDataMemberOthers, takeDataStorys } from "@/app/equation";
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Col, Flex, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd"
 import axios from "axios";
@@ -30,7 +30,7 @@ function BodyMembers({
     const projectUsers: any = project?.users;
     const currentUser = useCurrentUser()?.data;
     const dataOptionsUsers = takeDataMemberOthers(projectUsers, users);
-    const dataIssue = takeDataIssues(project);
+    const dataStorys = takeDataStorys(project);
 
     const dataSearch = _.flow(
         _.filter(
@@ -94,9 +94,9 @@ function BodyMembers({
                 .finally(() => {
                     toast.success('User has been kickouted!')
                 });
-            dataIssue?.forEach((issue) => {
-                if(issue?.assignto === data?.id){
-                    axios.post(`/api/issues/${issue?.id}`, {
+                dataStorys?.forEach((story) => {
+                if(story?.assignto === data?.id){
+                    axios.post(`/api/storys/${story?.id}`, {
                         assignto: '',
                     })
                 }else{

@@ -25,11 +25,11 @@ export async function DELETE(
             },
             include: {
                 users: true,
-                tasks: {
+                epics: {
                     include: {
                         creator: true,
                         seen: true,
-                        issues: true
+                        storys: true
                     }
                 },
                 scheduleConversation: true,
@@ -45,8 +45,8 @@ export async function DELETE(
 
         let updatedParticipantProjectIds = [...(currentUser?.seenTaskIds || [])];
 
-        existingProject?.tasks?.forEach((task) => {
-            updatedParticipantProjectIds = updatedParticipantProjectIds.filter((id) => id !== task.id)
+        existingProject?.epics?.forEach((epic) => {
+            updatedParticipantProjectIds = updatedParticipantProjectIds.filter((id) => id !== epic.id)
         })
 
         existingProject.userIds.forEach(async(userId) => {
@@ -60,10 +60,10 @@ export async function DELETE(
                 }
             });
         })
-        existingProject?.tasks?.forEach(async (task) => {
-            await prisma.tasks.delete({
+        existingProject?.epics?.forEach(async (epic) => {
+            await prisma.epics.delete({
                 where: {
-                    id: task?.id
+                    id: epic?.id
                 },
                 include: {
                     project: true
@@ -92,27 +92,17 @@ export async function GET(
     { params }: { params: IParams }
 ) {
     try {
-        const currentUser = await getCurrentUser();
-
-        if (!currentUser?.id) {
-            return NextResponse.json(null);
-        }
-
         const project = await prisma.projects.findUnique({
             where: {
                 id: params?.projectId
             },
             include: {
                 users: true,
-                tasks: {
+                epics: {
                     include: {
                         creator: true,
                         seen: true,
-                        issues: {
-                            include: {
-                                comments: true
-                            }
-                        }
+                        storys: true,
                     }
                 },
                 scheduleConversation: true
@@ -164,11 +154,11 @@ export async function POST(
             },
             include: {
                 users: true,
-                tasks: {
+                epics: {
                     include: {
                         creator: true,
                         seen: true,
-                        issues: true
+                        storys: true
                     }
                 },
                 scheduleConversation: true,

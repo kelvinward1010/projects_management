@@ -12,33 +12,37 @@ export async function POST(
         const {
             title,
             status,
-            desc,
-            timework,
             image,
-            assignto,
-            storyId,
+            projectId
         } = body;
-
 
         if (!currentUser?.id || !currentUser?.email) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        const issues = await prisma.issues.create({
+        const newEpic = await prisma.epics.create({
+            include: {
+                creator: true,
+            },
             data: {
                 title: title,
                 status: status,
-                desc: desc,
-                assignto: assignto,
-                timework: timework,
                 image: image,
-                userId: currentUser.id,
-                storyId: storyId,
+                project: {
+                    connect: { id: projectId }
+                },
+                creator: {
+                    connect: { id: currentUser.id }
+                },
+                seen: {
+                    connect: {
+                        id: currentUser.id
+                    }
+                },
             }
         });
-        
 
-        return NextResponse.json(issues)
+        return NextResponse.json(newEpic)
     } catch (error) {
         console.log(error, 'ERROR_MESSAGES')
         return new NextResponse('Error', { status: 500 });

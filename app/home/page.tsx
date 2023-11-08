@@ -6,7 +6,7 @@ async function Home() {
   
   return (
     <div>
-        <PageHome projects={projects}/>
+        <PageHome projects={projects} />
     </div>
   )
 }
