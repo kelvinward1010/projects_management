@@ -25,7 +25,7 @@ function CardStory({
     const router = useRouter();
 
     const handleGoToInternal = (ev: any) => {
-        return router.push(`/internalproblems/story=${ev?.id}`)
+        return router.push(`/internalproblems/${ev?.id}`)
     };
 
     const CardInListStory = (story: any) => {

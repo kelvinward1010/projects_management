@@ -141,7 +141,7 @@ function BodyStory({
     const getTime = daysdifference(story?.timework[0],story?.timework[1])
 
     const handleGoToInternalProblems = () => {
-        return router.push(`/internalproblems/story=${story?.id}`)
+        return router.push(`/internalproblems/${story?.id}`)
     };
 
     return (
@@ -258,14 +258,20 @@ function BodyStory({
                     </div>
                     <Flex vertical className="mt-5 border-2 border-teal-600 rounded">
                         <div className="w-full h-[40px] rounded bg-teal-600 flex justify-center items-center text-white">
-                            <Text className="text-white text-lg cursor-pointer">
+                            <Text 
+                                className="text-white text-lg cursor-pointer"
+                                onClick={handleGoToInternalProblems}
+                            >
                                 Internal Problems
                             </Text>
                         </div>
                         <div className="w-full h-[400px] mt-2 p-2 overflow-y-auto">
-                            <ItemInListStory 
-                                goInternal={handleGoToInternalProblems}
-                            />
+                            {story?.tasks?.map((task: any) => (
+                                <ItemInListStory
+                                    task={task}
+                                    key={task?.id}
+                                />
+                            ))}
                         </div>
                     </Flex>
                 </Col>

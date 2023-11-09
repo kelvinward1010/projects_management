@@ -88,7 +88,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 onClick={handleClick}
                 key={label}
             >
-                <Badge count={isSee ? 0 : notifications?.length}>
+                <Badge count={isSee === true ? 0 : notifications?.length}>
                     <IconNoti onClick={handleNotiSeen} size={24} style={{color: `${active ? "teal" : "black"}`}} />
                 </Badge>
                 <p onClick={handleNotiSeen} style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
