@@ -91,7 +91,6 @@ export async function GET(
                 storys: {
                     include: {
                         tasks: true,
-                        issues: true,
                     }
                 }
             }

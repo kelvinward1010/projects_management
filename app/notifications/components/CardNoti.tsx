@@ -21,7 +21,7 @@ function CardNoti({
 
     const handleGoToProject = (ev: any) => {
         ev.preventDefault();
-        let url = notification?.projectId ? `/projects/${notification?.projectId}` : `/issues/${notification?.issueId}`;
+        let url = notification?.projectId ? `/projects/${notification?.projectId}` : `/storys/${notification?.storyId}`;
 
         return router.push(url)
     };

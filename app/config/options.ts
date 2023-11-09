@@ -12,3 +12,14 @@ export const optionsStatus = [
         title: 'Done',
     },
 ]
+
+export const optionsTypes = [
+    {
+        value: 'Bug',
+        title: 'Bug',
+    },
+    {
+        value: 'Tasks',
+        title: 'Tasks',
+    },
+]

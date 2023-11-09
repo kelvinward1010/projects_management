@@ -23,7 +23,7 @@ function HeaderTop({
 }: Props) {
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
     const [isModalOpenSchedule, setIsModalOpenSchedule] = useState(false);
-    const [isModalOpenAllIssues, setIsModalOpenAllIssues] = useState(false);
+    const [isModalOpenAllStorys, setIsModalOpenAllStorys] = useState(false);
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
     
     return (
@@ -112,15 +112,15 @@ function HeaderTop({
                                 rounded-md
                                 shadow-lg
                             "
-                            onClick={()=>setIsModalOpenAllIssues(true)}
+                            onClick={()=>setIsModalOpenAllStorys(true)}
                         >
                             <AiOutlineIssuesClose />
                             Story
                         </button>
                         <Modal 
-                            title={`All Issues in: ${project?.title}`} 
-                            open={isModalOpenAllIssues} 
-                            onCancel={() => setIsModalOpenAllIssues(false)}
+                            title={`All Story in: ${project?.title}`} 
+                            open={isModalOpenAllStorys} 
+                            onCancel={() => setIsModalOpenAllStorys(false)}
                             className="modal-edit"
                             width={1400}
                             style={{top: '15px'}}

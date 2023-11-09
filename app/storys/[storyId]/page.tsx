@@ -1,5 +1,5 @@
-import HeaderIssues from "../components/HeaderStory"
-import BodyIssue from "../components/BodyStory"
+import HeaderStory from "../components/HeaderStory"
+import BodyStory from "../components/BodyStory"
 import getCurrentUser from "@/app/actions/getCurrentUser"
 import getStoryById from "@/app/actions/getStoryById"
 
@@ -15,8 +15,8 @@ const StoryPage = async ({ params }: { params: Props }) =>{
 
   return (
     <div>
-      <HeaderIssues story={story}/>
-      <BodyIssue story={story} currentUser={currentUser}/>
+      <HeaderStory story={story}/>
+      <BodyStory story={story} currentUser={currentUser}/>
     </div>
   )
 }

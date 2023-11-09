@@ -4,7 +4,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-    issueId?: string;
+    id?: string;
     
 }
 
@@ -18,7 +18,6 @@ export async function POST(
         const {
             content,
             image,
-            issueId,
             storyId,
             taskId
         } = body;
@@ -28,19 +27,18 @@ export async function POST(
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        const commentInIssue = await prisma.comment.create({
+        const commentIn = await prisma.comment.create({
             data: {
                 content: content,
                 image: image,
                 userId: currentUser.id,
-                issueId: issueId,
                 storyId: storyId,
                 taskId: taskId,
             }
         });
         
 
-        return NextResponse.json(commentInIssue)
+        return NextResponse.json(commentIn)
     } catch (error) {
         console.log(error, 'ERROR_MESSAGES')
         return new NextResponse('Error', { status: 500 });

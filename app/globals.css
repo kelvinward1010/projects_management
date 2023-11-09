@@ -101,3 +101,11 @@ body {
   background: teal;
   color: white;
 }
+
+.text-internal{
+  color: white !important;
+}
+
+.text-internal label{
+  color: white !important;
+}

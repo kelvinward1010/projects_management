@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
-import useIssues from '@/app/hooks/useIssues';
 import { Modal, Select } from 'antd';
 import { optionsStatus } from '@/app/config/options';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -31,7 +30,7 @@ function StoryItem({
     const [isModalOpenInfoStory, setIsModalOpenInfoStory] = useState(false);
 
     const handleOpenDelete = () => setIsOpenDelete(true);
-    const {data: dataEpic, mutate: mutateIssues } = useEpic(story?.epicId as string);
+    const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
     const {mutate: mutateProject } = useProject(dataEpic?.projectId as string);
 
     const {
@@ -59,7 +58,7 @@ function StoryItem({
         })
             .then(() => {
                 mutateProject();
-                mutateIssues();
+                mutateEpic();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -74,7 +73,7 @@ function StoryItem({
 
         axios.delete(`/api/storys/${story?.id}`)
             .then(() => {
-                mutateIssues()
+                mutateEpic()
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -84,7 +83,7 @@ function StoryItem({
             })
     },[router, story?.id]);
 
-    const handleGoToIssues = (ev: any) => {
+    const handleGoToStorys = (ev: any) => {
         ev.preventDefault();
         return router.push(`/storys/${story?.id}`)
     };
@@ -150,7 +149,7 @@ function StoryItem({
                             font-medium
                             pr-2
                         '
-                        onClick={(e) => handleGoToIssues(e)}
+                        onClick={(e) => handleGoToStorys(e)}
                     >
                         <AiOutlineDoubleRight />
                     </button>

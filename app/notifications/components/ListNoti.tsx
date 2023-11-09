@@ -5,8 +5,8 @@ import SettingForNotifications from "./SettingForNotifications"
 import useNotifications from "@/app/hooks/useNotifications";
 
 function ListNoti() {
-    const notifications = useNotifications()?.data;
-
+    const notifications = useNotifications()?.data ?? [];
+    
     return (
         <div className="p-5 my-5 w-full">
             <Row justify={'space-between'}>

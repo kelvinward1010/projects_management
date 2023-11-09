@@ -12,5 +12,6 @@ export const config = {
         "/notifications/:path*",
         "/projects/:path*",
         "/storys/:path*",
+        "/internalproblems/:path*",
     ]
 };

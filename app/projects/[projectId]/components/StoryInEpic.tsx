@@ -7,8 +7,8 @@ import { optionsStatus } from '@/app/config/options';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
-import InputIssues from '../input/InputStory';
-import TextareaIssues from '../input/TextareaStory';
+import InputStory from '../input/InputStory';
+import TextareaStory from '../input/TextareaStory';
 import Image from 'next/image';
 import { CldUploadButton } from 'next-cloudinary';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -131,7 +131,7 @@ function StoryInEpic({
                             <div className='mt-5'>
                                 <Row justify={'space-between'} style={{width:'100%'}}>
                                     <Col span={13}>
-                                        <InputIssues
+                                        <InputStory
                                             disabled={isLoading}
                                             label="Title"
                                             id="title"
@@ -202,7 +202,7 @@ function StoryInEpic({
                                 </Row>
                                 <Row className='mt-4'>
                                     <Col span={24}>
-                                        <TextareaIssues
+                                        <TextareaStory
                                             disabled={isLoading}
                                             label="Description"
                                             id="desc"

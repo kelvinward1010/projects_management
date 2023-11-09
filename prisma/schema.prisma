@@ -37,7 +37,6 @@ model User {
   storys          Storys[]
   tasks           Tasks[] 
   accounts        Account[]
-  issues          Issues[]
   comments        Comment[]
   scheduleConversation ScheduleConversations[]
   notifications Notification[]
@@ -119,7 +118,6 @@ model Storys {
   epic Epics @relation(fields: [epicId], references: [id], onDelete: Cascade)
 
   tasks Tasks[]
-  issues Issues[]
   comments          Comment[]
 }
 
@@ -132,30 +130,11 @@ model Tasks {
   image              String?
   timework           String[]
   completionTime     String?
+  type               String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   userId             String @db.ObjectId
-  storyId             String @db.ObjectId
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  story Storys @relation(fields: [storyId], references: [id], onDelete: Cascade)
-
-  comments          Comment[]
-}
-
-model Issues {
-  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
-  title              String?
-  status             String?
-  desc               String?
-  assignto           String?
-  image              String?
-  timework           String[]
-  completionTime     String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  userId             String @db.ObjectId
-  storyId             String @db.ObjectId
+  storyId            String @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   story Storys @relation(fields: [storyId], references: [id], onDelete: Cascade)
@@ -170,12 +149,10 @@ model Comment {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   userId             String @db.ObjectId
-  issueId            String? @db.ObjectId
   taskId             String? @db.ObjectId
   storyId            String? @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  issue Issues? @relation(fields: [issueId], references: [id], onDelete: Cascade)
   task Tasks? @relation(fields: [taskId], references: [id], onDelete: Cascade)
   story Storys? @relation(fields: [storyId], references: [id], onDelete: Cascade)
 }
@@ -202,7 +179,6 @@ model Notification {
   epicId             String? @db.ObjectId
   storyId            String? @db.ObjectId
   taskId             String? @db.ObjectId
-  issueId            String? @db.ObjectId
   whocreatedId       String? @db.ObjectId
   createdAt          DateTime @default(now())
   isSeen             Boolean?

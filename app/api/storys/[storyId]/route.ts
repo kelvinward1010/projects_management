@@ -59,7 +59,7 @@ export async function POST(
             await prisma.notification.create({
                 data: {
                     title: `Story notification`,
-                    descNoti: `${currentUser?.name} assigned issue "${story?.title}" to you!`,
+                    descNoti: `${currentUser?.name} assigned story "${story?.title}" to you!`,
                     userId: assignto,
                     whocreatedId: currentUser?.id,
                     storyId: story?.id
@@ -123,7 +123,6 @@ export async function GET(
                 id: params?.storyId
             },
             include: {
-                issues: true,
                 tasks: true,
             }
         });

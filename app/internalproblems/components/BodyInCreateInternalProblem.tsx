@@ -1,54 +1,75 @@
 "use client"
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { FieldValues, useForm } from 'react-hook-form';
-import { Col, Flex, Row, Select, Typography } from 'antd';
-import { optionsStatus } from '@/app/config/options';
-import Button from '@/app/components/buttons/Button';
-import Image from 'next/image';
-import { CldUploadButton } from 'next-cloudinary';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
-import InputStory from '@/app/projects/[projectId]/input/InputStory';
-import TextareaStory from '@/app/projects/[projectId]/input/TextareaStory';
 
-interface Props {
-    title?: string | null;
-    isOpen: boolean;
-    onSubmit: (data: any) => void;
+import { Col, DatePicker, Flex, Row, Select, Typography } from "antd";
+import InputInternalBroblem from "./input/InputInternalBroblem";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { CldUploadButton } from "next-cloudinary";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import useEpic from "@/app/hooks/useEpic";
+import useProject from "@/app/hooks/useProject";
+import { optionsStatus, optionsTypes } from "@/app/config/options";
+import axios from "axios";
+import toast from "react-hot-toast";
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import TextareaInternalBroblem from "./input/TextareaInternalBroblem";
+import Button from "@/app/components/buttons/Button";
+
+
+const { Title, Text } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
+
+interface Props{
     story?: any;
-
+    onClose: () => void;
 }
 
-const { Title } = Typography;
-
-function BodyModalEditStory({
-    title,
-    isOpen,
-    onSubmit,
+function BodyInCreateInternalProblem({
     story,
-}:Props) {
+    onClose
+}:Props){
 
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+
+    const {data: dataEpic } = useEpic(story?.epicId as string);
+
+    const {data: dataProject} = useProject(dataEpic?.projectId)
+
+    const users = dataProject?.users;
 
     const {
         register,
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: {
             errors,
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            title: story?.title,
-            desc: story?.desc,
-            status: story?.status,
-            image: story?.image,
+            title: '',
+            desc: '',
+            status: '',
+            image: '',
+            type: '',
+            assignto: '',
+            timework: []
         }
     });
 
     const status = watch('status');
+    const assignto = watch('assignto');
     const image = watch('image');
+    const timework = watch('timework');
+    const desc = watch('desc');
+    const textTitle = watch('title');
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
@@ -56,9 +77,28 @@ function BodyModalEditStory({
         });
     }
 
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        (status && desc && textTitle && timework && assignto) ?
+            axios.post('/api/tasks', {
+                ...data,
+                storyId: story?.id
+            })
+            .then(() => {
+                router.refresh();
+                reset();
+                onClose();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                setIsLoading(false);
+                toast.success('Internal problem in story has been created!')
+            })
+        : toast.error('You need to complete the information!')
+    }
+
     return (
-        <div>
-            <div className='
+        <div className="w-full">
+           <div className='
                 my-2
                 py-2
                 h-fit
@@ -71,11 +111,11 @@ function BodyModalEditStory({
             '>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <div className='px-2'>
-                        <Title level={4}>Edit story</Title>
+                        <Title level={4}>Create a story in Story</Title>
                         <div className='mt-5'>
                             <Row justify={'space-between'} style={{width:'100%'}}>
                                 <Col span={13}>
-                                    <InputStory
+                                    <InputInternalBroblem
                                         disabled={isLoading}
                                         label="Title"
                                         id="title"
@@ -86,13 +126,45 @@ function BodyModalEditStory({
                                 </Col>
                                 <Col span={7}>
                                     <Flex vertical>
-                                        <Title level={5}>Status story</Title>
+                                        <Title level={5}>Internal story</Title>
                                         <Select
                                             disabled={isLoading}
                                             onChange={(value) => setValue('status', value)}
                                             style={{ width: "100%" }}
                                             options={optionsStatus}
                                             value={status}
+                                        />
+                                    </Flex>
+                                    <Flex vertical>
+                                        <Title level={5}>Assign To</Title>
+                                        <Select
+                                            disabled={isLoading}
+                                            onChange={(value) => setValue('assignto', value)}
+                                            style={{ width: "100%" }}
+                                            options={users?.map((user: any) => ({
+                                                value: user?.id,
+                                                label: user?.name
+                                            }))}
+                                            value={assignto}
+                                        />
+                                    </Flex>
+                                    <Flex vertical>
+                                        <Title level={5}>Tpye</Title>
+                                        <Select
+                                            disabled={isLoading}
+                                            onChange={(value) => setValue('type', value)}
+                                            style={{ width: "100%" }}
+                                            options={optionsTypes}
+                                            value={assignto}
+                                        />
+                                    </Flex>
+                                    <Flex vertical>
+                                        <Title level={5}>Estimated time for work to be completed:</Title>
+                                        <RangePicker 
+                                            showTime 
+                                            onChange={(value) => setValue('timework', value)}
+                                            format={dateFormat}
+                                            value={timework}
                                         />
                                     </Flex>
                                 </Col>
@@ -124,7 +196,7 @@ function BodyModalEditStory({
                             </Row>
                             <Row className='mt-4'>
                                 <Col span={24}>
-                                    <TextareaStory
+                                    <TextareaInternalBroblem
                                         disabled={isLoading}
                                         label="Description"
                                         id="desc"
@@ -138,7 +210,7 @@ function BodyModalEditStory({
                                 <Col span={24}>
                                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
                                         <Button disabled={isLoading} type="submit">
-                                            Update Story
+                                            Create
                                         </Button>
                                     </Flex>
                                 </Col>
@@ -151,4 +223,4 @@ function BodyModalEditStory({
     )
 }
 
-export default BodyModalEditStory
+export default BodyInCreateInternalProblem

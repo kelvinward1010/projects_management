@@ -3,14 +3,13 @@ import { Comment, User } from '@prisma/client';
 import { Col, Flex, Modal, Row, Typography } from 'antd'
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useMemo, useState } from 'react';
-import { AiFillEdit, AiOutlineDelete, AiOutlineEllipsis } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai';
 import DeleteModal from './modals/DeleteModal';
 import useUser from '@/app/hooks/useUser';
 import BodyModalEditComment from './BodyModalEditComment';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import useComments from '@/app/hooks/useComments';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 
@@ -58,7 +57,7 @@ function CommentItem({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false);
-                toast.success('Issues has been updated!')
+                toast.success('Story has been updated!')
             });
     }
 
@@ -112,7 +111,7 @@ function CommentItem({
                                 <AiFillEdit />
                             </button>
                             <Modal 
-                                title="Issues Task" 
+                                title="Edit Story Epic" 
                                 open={isModalOpenEditComment} 
                                 onCancel={() => setIsModalOpenEditComment(false)}
                                 className="modal-edit"

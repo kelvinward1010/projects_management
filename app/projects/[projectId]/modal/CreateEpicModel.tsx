@@ -14,7 +14,7 @@ import { toast } from 'react-hot-toast';
 import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/buttons/Button';
-import SelectTask from '../input/Select';
+import SelectEpic from '../input/Select';
 import { optionsStatus } from '@/app/config/options';
 
 interface Props {
@@ -93,7 +93,7 @@ const CreateEpicModel: React.FC<Props> = ({
                                 required
                                 register={register}
                             />
-                            <SelectTask
+                            <SelectEpic
                                 onChange={(value) => setValue('status', value)}
                                 options={optionsStatus}
                                 value={status}

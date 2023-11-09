@@ -16,6 +16,7 @@ export async function POST(
             timework,
             image,
             assignto,
+            type,
             storyId,
         } = body;
 
@@ -32,6 +33,7 @@ export async function POST(
                 assignto: assignto,
                 timework: timework,
                 image: image,
+                type: type,
                 userId: currentUser.id,
                 storyId: storyId,
             }

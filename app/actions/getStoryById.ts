@@ -10,7 +10,6 @@ const getStoryById = async (
             },
             include: {
                 tasks: true,
-                issues: true,
                 comments: true,
             }
         });

@@ -1,33 +1,38 @@
-import { optionsStatus } from '@/app/config/options';
-import { takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
-import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
-import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
-import axios from 'axios';
+"use client"
+import { takeDataInternalProblem, takeDataOptionsUsers } from "@/app/equation";
+import useEpic from "@/app/hooks/useEpic";
+import useProject from "@/app/hooks/useProject";
+import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import * as _ from "lodash/fp";
-import { useRouter } from 'next/navigation';
-import React, {useState } from 'react';
-import toast from 'react-hot-toast';
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { optionsStatus, optionsTypes } from "@/app/config/options";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { AiFillBug, AiFillLeftSquare } from "react-icons/ai";
 
 const { Text, Title } = Typography;
 
-interface Props {
-    project?: any;
+interface Props{
+    story?: any;
 }
 
-function BodyStorys({
-    project
-}: Props) {
+function BodyInternalProblem({
+    story
+}:Props) {
 
     const router = useRouter();
     const [form] = Form.useForm();
-    const [isLoading, setIsLoading] = useState(false);
-    const data = takeDataStorys(project);
-    const OptionsUsers = takeDataOptionsUsers(project);
+    const data = takeDataInternalProblem(story?.tasks);
+    const {data: dataEpic } = useEpic(story?.epicId as string);
+    const {data: dataProject} = useProject(dataEpic?.projectId);
+    const OptionsUsers = takeDataOptionsUsers(dataProject);
+    const [query, setQuery] = useState('');
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
-    const [query, setQuery] = useState('');
-
-    const users = project?.users
+    const [chooseType, setChooseType] = useState('all');
+    const users = dataProject?.users;
 
     const handleChangeSearch = (e: any) => {
         setQuery(e);
@@ -43,36 +48,20 @@ function BodyStorys({
             item.status === chooseStatus || chooseStatus === 'all'
         ),
         _.filter(
+            (item: any) =>
+                item.type === chooseType || chooseType === 'all'
+            ),
+        _.filter(
           (item: any) =>
-            item?.name?.includes(query) || item?.epic?.includes(query) ||
+            item?.name?.includes(query) || item?.desc?.includes(query) ||
             (query ?? "") === "",
         ),
     )(data);
 
-    const handleChangeOptionStatus = (data: any, story: any) => {
-        setIsLoading(true);
-        if(data){
-            axios.post(`/api/storys/${story?.id}`, {
-                status: data,
-            })
-                .then(() => {
-                    router.refresh();
-                })
-                .catch(() => toast.error('Something went wrong!'))
-                .finally(() => {
-                    setIsLoading(false);
-                    toast.success('Status story has been updated!')
-                });
-        }else{
-            toast.error('Something went wrong!')
-        }
-    }
-
-    const handleChangeOptionAssign = (data: any, story: any) => {
-        setIsLoading(true);
+    const handleChangeOptionAssign = (data: any, internals: any) => {
 
         if(data){
-            axios.post(`/api/storys/${story?.id}`, {
+            axios.post(`/api/tasks/${internals?.id}`, {
                 assignto: data,
                 isAssign: true,
             })
@@ -81,7 +70,6 @@ function BodyStorys({
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
-                    setIsLoading(false);
                     toast.success('Assigned user has been updated!')
                 });
         }else{
@@ -89,26 +77,68 @@ function BodyStorys({
         }
     }
 
-    const handleDelete = (story: any) => {
-        setIsLoading(true);
+    const handleChangeOptionStatus = (data: any, internals: any) => {
+        if(data){
+            axios.post(`/api/tasks/${internals?.id}`, {
+                status: data,
+            })
+                .then(() => {
+                    router.refresh();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    toast.success('Status internals has been updated!')
+                });
+        }else{
+            toast.error('Something went wrong!')
+        }
+    }
 
-        axios.delete(`/api/storys/${story?.id}`)
+    const handleChangeOptionType = (data: any, internals: any) => {
+        if(data){
+            axios.post(`/api/tasks/${internals?.id}`, {
+                type: data,
+            })
+                .then(() => {
+                    router.refresh();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    toast.success('Type internals has been updated!')
+                });
+        }else{
+            toast.error('Something went wrong!')
+        }
+    }
+
+    const handleDelete = (internals: any) => {
+
+        axios.delete(`/api/tasks/${internals?.id}`)
             .then(() => {
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
-                toast.success('Story has been deleted!')
+                toast.success('Internals has been deleted!')
             });
     }
 
-    const handleGoToStory = (ev: any, story: any) => {
-        ev.preventDefault();
-        return router.push(`/storys/${story?.id}`)
-    };
-    
     const columns: TableColumnType<any>[] = [
+        {
+            title: 'Icon Type',
+            width: '7%',
+            render: (_: any, record: any) => {
+                const iconType = record?.type === 'Bug' ? 
+                    <Text className="text-xl text-red-600">
+                        <AiFillBug /> 
+                    </Text>
+                    : 
+                    <Text className="text-xl text-green-600">
+                        <AiFillLeftSquare />
+                    </Text>
+                return iconType
+            }
+        },
         {
             title: 'Name',
             dataIndex: 'name',
@@ -122,35 +152,6 @@ function BodyStorys({
             key: 'desc',
             width: '30%',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
-        },
-        {
-            title: 'Epic ID',
-            dataIndex: 'epicId',
-            key: 'epicId',
-            width: '18%',
-            render: (_: any, record: any) => {
-                return (
-                    <Text className='line-clamp-1'>{record?.epicId}</Text>
-                )
-            },
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            width: '15%',
-            render: (_: any, record: any) => {
-                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
-                return (
-                    <Select
-                        onChange={(e) => {handleChangeOptionStatus(e, record)}}
-                        options={optionsStatus}
-                        value={record?.status}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
-                )
-            },
         },
         {
             title: 'Assigned To',
@@ -174,6 +175,42 @@ function BodyStorys({
             },
         },
         {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            width: '15%',
+            render: (_: any, record: any) => {
+                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
+                return (
+                    <Select
+                        onChange={(e) => {handleChangeOptionStatus(e, record)}}
+                        options={optionsStatus}
+                        value={record?.status}
+                        className='select-in-table'
+                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
+                    />
+                )
+            },
+        },
+        {
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
+            width: '15%',
+            render: (_: any, record: any) => {
+                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
+                return (
+                    <Select
+                        onChange={(e) => {handleChangeOptionType(e, record)}}
+                        options={optionsTypes}
+                        value={record?.type}
+                        className='select-in-table'
+                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
+                    />
+                )
+            },
+        },
+        {
             title: 'Actions',
             width: '10%',
             align:'center',
@@ -182,8 +219,8 @@ function BodyStorys({
                     <div className='w-full flex items-center justify-center gap-x-5'>
                         <div>
                             <Popconfirm
-                                title="Delete the story"
-                                description="Are you sure to delete this story?"
+                                title="Delete the internal"
+                                description="Are you sure to delete this internal?"
                                 onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
@@ -195,33 +232,29 @@ function BodyStorys({
                                 />
                             </Popconfirm>
                         </div>
-                        <DoubleRightOutlined 
-                            className='cursor-pointer text-xl' 
-                            style={{color:'green'}}
-                            onClick={(e) => handleGoToStory(e, record)}
-                        />
                     </div>
                 )
             },
         },
-    ];
-
-
+    ]
+    
     return (
-        <div className='w-full h-full'>
+        <div className="w-full h-full px-10 mt-5">
             <Form
                 form={form}
                 layout={'vertical'}
                 initialValues={{
                     status: "all",
                     user: "all",
+                    type: "all"
                 }}
+                className="bg-teal-600 text-white px-2 rounded"
             >
                 <Row justify={'space-between'} className='my-5'>
                     <Col span={8}>
-                        <Title level={5}>Search</Title>
+                        <Title level={5} className="text-internal">Search</Title>
                         <Input 
-                            placeholder="Name, epic..." 
+                            placeholder="Name, desc..." 
                             onChange={(e) => handleChangeSearch(e.target.value)}
                             suffix={
                             <SearchOutlined
@@ -230,8 +263,8 @@ function BodyStorys({
                             }
                         />
                     </Col>
-                    <Col span={5}>
-                        <Form.Item label="Status" name={"status"}>
+                    <Col span={4}>
+                        <Form.Item label="Status" name={"status"} className="text-internal"> 
                             <Select
                                 onChange={(e) => setChooseStatus(e)}
                                 style={{ width: "100%" }}
@@ -246,19 +279,34 @@ function BodyStorys({
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={5}>
-                        <Form.Item label="Assigned" name={"user"}>
-                            <Select
+                    <Col span={4}>
+                        <Form.Item label="Assigned" name={"user"} className="text-internal">
+                            {OptionsUsers && <Select
                                 onChange={(e) => setChooseUser(e)}
                                 style={{ width: "100%" }}
                                 options={[
                                     {
                                         label: "Tất cả",
                                         value: "all",
-                                    }
-                                    ,...OptionsUsers
+                                    },...OptionsUsers
                                 ]}
                                 value={chooseUser}
+                            />}
+                        </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                        <Form.Item label="Types" name={"type"} className="text-internal"> 
+                            <Select
+                                onChange={(e) => setChooseType(e)}
+                                style={{ width: "100%" }}
+                                options={[
+                                    {
+                                        label: "Tất cả",
+                                        value: "all",
+                                    }
+                                    ,...optionsTypes
+                                ]}
+                                value={chooseType}
                             />
                         </Form.Item>
                     </Col>
@@ -276,4 +324,4 @@ function BodyStorys({
     )
 }
 
-export default BodyStorys
+export default BodyInternalProblem

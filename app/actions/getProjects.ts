@@ -27,7 +27,6 @@ const getProjects = async () => {
                         storys: {
                             include: {
                                 tasks: true,
-                                issues: true,
                             }
                         }
                     }

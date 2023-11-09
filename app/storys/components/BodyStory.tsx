@@ -1,6 +1,6 @@
 "use client"
 import { optionsStatus } from "@/app/config/options";
-import { Col, DatePicker, Modal, Row, Select, Typography } from "antd";
+import { Col, DatePicker, Flex, Modal, Row, Select, Typography } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { daysdifference } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import BodyModalEditStory from "./BodyModalEditStory";
+import ItemInListStory from "./ItemInListStory";
 
 
 const { Title, Text } = Typography;
@@ -139,10 +140,14 @@ function BodyStory({
 
     const getTime = daysdifference(story?.timework[0],story?.timework[1])
 
+    const handleGoToInternalProblems = () => {
+        return router.push(`/internalproblems/story=${story?.id}`)
+    };
+
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
-                <Col span={15} className="border-2 border-teal-600">
+                <Col span={14} className="border-2 border-teal-600">
                     <div>
                         <Row className="my-3" justify={'space-between'}>
                             <Col className="ml-4" span={14}>
@@ -167,7 +172,7 @@ function BodyStory({
                                     <AiFillEdit /> Edit
                                 </button>
                                 <Modal 
-                                    title="Issues Task" 
+                                    title="Story Epic" 
                                     open={isModalOpenEditStory} 
                                     onCancel={() => setIsModalOpenEditStory(false)}
                                     className="modal-edit"
@@ -206,7 +211,7 @@ function BodyStory({
                         </Row>
                     </div>
                 </Col>
-                <Col span={8} className="border-2 border-teal-600 p-5">
+                <Col span={9} className="border-2 border-teal-600 p-5">
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Story created by:</span>
                         <Text>{user?.name}</Text>
@@ -251,6 +256,18 @@ function BodyStory({
                         <span className="text-md font-medium mr-2">Work execution time:</span>
                         <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
                     </div>
+                    <Flex vertical className="mt-5 border-2 border-teal-600 rounded">
+                        <div className="w-full h-[40px] rounded bg-teal-600 flex justify-center items-center text-white">
+                            <Text className="text-white text-lg cursor-pointer">
+                                Internal Problems
+                            </Text>
+                        </div>
+                        <div className="w-full h-[400px] mt-2 p-2 overflow-y-auto">
+                            <ItemInListStory 
+                                goInternal={handleGoToInternalProblems}
+                            />
+                        </div>
+                    </Flex>
                 </Col>
             </Row>
         </>

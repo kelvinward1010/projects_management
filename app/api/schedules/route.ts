@@ -41,11 +41,11 @@ export async function POST(
             },
             include: {
                 users: true,
-                tasks: {
+                epics: {
                     include: {
                         creator: true,
                         seen: true,
-                        issues: true
+                        storys: true
                     }
                 },
                 scheduleConversation: true,

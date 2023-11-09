@@ -248,8 +248,8 @@ export const takeDataStorys = (data: any) => {
     const listStorys: any[] = [];
 
     epics?.forEach((item: any) => {
-        item?.storys?.forEach((issue: any) => {
-            listStorys.push(issue);
+        item?.storys?.forEach((story: any) => {
+            listStorys.push(story);
         })
     })
 
@@ -262,10 +262,30 @@ export const takeDataStorys = (data: any) => {
             desc: item?.desc,
             status: item?.status,
             timework: item?.timework,
-            task: item?.epicId,
+            epicId: item?.epicId,
             userId: item?.userId,
             completionTime: item?.completionTime,
             assignto: item?.assignto
+        })
+    })
+
+    return dataEnd;
+}
+
+export const takeDataInternalProblem = (data: any) => {
+
+    const dataEnd = data?.map((item: any) => {
+
+        return ({
+            key: item?.id,
+            id: item?.id,
+            name: item?.title,
+            desc: item?.desc,
+            status: item?.status,
+            timework: item?.timework,
+            userId: item?.userId,
+            assignto: item?.assignto,
+            type: item?.type
         })
     })
 
@@ -409,5 +429,5 @@ export const takeDataNotiNotSeen = (data: any) =>{
         }
     })
 
-    return listSeen;
+    return listSeen ?? [];
 }

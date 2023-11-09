@@ -21,6 +21,8 @@ export async function POST(
             assignto,
             desc,
             completionTime,
+            isAssign,
+            type,
         } = body;
 
         const currentUser = await getCurrentUser();
@@ -41,6 +43,7 @@ export async function POST(
                 assignto: assignto,
                 image: image,
                 completionTime: completionTime,
+                type: type,
             },
         });
 
@@ -54,11 +57,11 @@ export async function POST(
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        if(assignto !== task?.assignto || assignto){
+        if(assignto !== task?.assignto && isAssign === true || assignto && isAssign === true){
             await prisma.notification.create({
                 data: {
                     title: `Task notification`,
-                    descNoti: `${currentUser?.name} assigned issue "${task?.title}" to you!`,
+                    descNoti: `${currentUser?.name} assigned story "${task?.title}" to you!`,
                     userId: assignto,
                     whocreatedId: currentUser?.id,
                     taskId: task?.id

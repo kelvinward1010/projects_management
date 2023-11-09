@@ -1,8 +1,6 @@
 "use client"
 
-import { DoubleRightOutlined } from "@ant-design/icons";
 import { Card, Col, Collapse, Row, Space, Typography } from "antd";
-import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 
@@ -10,36 +8,22 @@ interface Props{
     titleLevel1?: string;
     titleLevel2?: string;
     number?: number;
-    issuesForCard?: any[];
+    epicsForCard?: any[];
     active?: string;
 }
 
-function CardIssues({
+function CardEpics({
     titleLevel1,
     titleLevel2,
     number,
-    issuesForCard,
+    epicsForCard,
     active
 }:Props) {
-
-    const router = useRouter();
-
-    const handleGoToIssues = (ev: any) => {
-        return router.push(`/issues/${ev?.id}`)
-    };
-
-    const CardInListIssues = (issue: any) => {
+    const CardInListEpics = (title: any) => {
         return (
             <Row justify={'space-between'} className="w-full border-2 border-t-teal-600 py-2 px-2 rounded">
-                <Col span={15}>
-                    <Text className="line-clamp-1">{issue?.title}</Text>
-                </Col>
-                <Col span={2}>
-                    <DoubleRightOutlined 
-                        className='cursor-pointer text-xl' 
-                        style={{color:'green'}}
-                        onClick={() => handleGoToIssues(issue)}
-                    />
+                <Col span={24}>
+                    <Text className="line-clamp-1">{title}</Text>
                 </Col>
             </Row>
         )
@@ -50,7 +34,6 @@ function CardIssues({
 
         return <Text className="text-xl" style={{color: `${style}`}}>{title}</Text>
     }
-    
 
     return (
         <>
@@ -72,16 +55,15 @@ function CardIssues({
                 </Row>
                 <Collapse
                     collapsible="header"
-                    accordion
                     items={[
                         {
                             key: active,
-                            label: 'List issues',
+                            label: 'List tasks',
                             children: <>
                                 <Space direction={'vertical'} className="w-full">
-                                    {issuesForCard?.map((issue) => (
-                                        <div key={issue?.id}>
-                                            {CardInListIssues(issue)}
+                                    {epicsForCard?.map((epic) => (
+                                        <div key={epic?.id}>
+                                            {CardInListEpics(epic?.title)}
                                         </div>
                                     ))}
                                 </Space>
@@ -95,4 +77,4 @@ function CardIssues({
     )
 }
 
-export default CardIssues
+export default CardEpics

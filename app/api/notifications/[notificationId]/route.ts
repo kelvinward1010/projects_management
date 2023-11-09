@@ -23,7 +23,7 @@ export async function POST(
             return NextResponse.json(null);
         }
 
-        const updatedIssue = await prisma.notification.update({
+        const updatednotication = await prisma.notification.update({
             where: {
                 id: params?.notificationId
             },
@@ -32,7 +32,7 @@ export async function POST(
             },
         });
 
-        return NextResponse.json(updatedIssue)
+        return NextResponse.json(updatednotication)
     } catch (error) {
         console.log(error, 'ERROR_MESSAGES')
         return new NextResponse('Error', { status: 500 });

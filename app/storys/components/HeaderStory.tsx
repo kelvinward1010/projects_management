@@ -2,7 +2,7 @@
 import { Typography } from "antd";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import DeleteIssueModal from "./modals/DeleteStoryModal";
+import DeleteStoryModal from "./modals/DeleteStoryModal";
 
 
 const { Title } = Typography;
@@ -17,7 +17,7 @@ function HeaderStory({
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     return (
         <>
-            <DeleteIssueModal
+            <DeleteStoryModal
                 storyId={story?.id}
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}

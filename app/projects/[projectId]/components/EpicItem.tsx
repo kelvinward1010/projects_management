@@ -32,8 +32,8 @@ function EpicItem({ epic }: Props) {
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const {mutate: mutateProject } = useProject(epic?.projectId as string);
-    const dataIssues = useEpic(epic?.id as string);
-    const getdeep = dataIssues?.data?.storys;
+    const dataEpic = useEpic(epic?.id as string);
+    const getdeep = dataEpic?.data?.storys;
 
     const {
         register,

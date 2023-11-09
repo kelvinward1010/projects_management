@@ -1,6 +1,8 @@
 "use client"
 
+import { DoubleRightOutlined } from "@ant-design/icons";
 import { Card, Col, Collapse, Row, Space, Typography } from "antd";
+import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 
@@ -8,22 +10,36 @@ interface Props{
     titleLevel1?: string;
     titleLevel2?: string;
     number?: number;
-    tasksForCard?: any[];
+    storyForCard?: any[];
     active?: string;
 }
 
-function CardTasks({
+function CardStory({
     titleLevel1,
     titleLevel2,
     number,
-    tasksForCard,
+    storyForCard,
     active
 }:Props) {
-    const CardInListTasks = (title: any) => {
+
+    const router = useRouter();
+
+    const handleGoToInternal = (ev: any) => {
+        return router.push(`/internalproblems/story=${ev?.id}`)
+    };
+
+    const CardInListStory = (story: any) => {
         return (
             <Row justify={'space-between'} className="w-full border-2 border-t-teal-600 py-2 px-2 rounded">
-                <Col span={24}>
-                    <Text className="line-clamp-1">{title}</Text>
+                <Col span={15}>
+                    <Text className="line-clamp-1">{story?.title}</Text>
+                </Col>
+                <Col span={2}>
+                    <DoubleRightOutlined 
+                        className='cursor-pointer text-xl' 
+                        style={{color:'green'}}
+                        onClick={() => handleGoToInternal(story)}
+                    />
                 </Col>
             </Row>
         )
@@ -34,6 +50,7 @@ function CardTasks({
 
         return <Text className="text-xl" style={{color: `${style}`}}>{title}</Text>
     }
+    
 
     return (
         <>
@@ -55,15 +72,16 @@ function CardTasks({
                 </Row>
                 <Collapse
                     collapsible="header"
+                    accordion
                     items={[
                         {
                             key: active,
-                            label: 'List tasks',
+                            label: 'List story',
                             children: <>
                                 <Space direction={'vertical'} className="w-full">
-                                    {tasksForCard?.map((task) => (
-                                        <div key={task?.id}>
-                                            {CardInListTasks(task?.title)}
+                                    {storyForCard?.map((story) => (
+                                        <div key={story?.id}>
+                                            {CardInListStory(story)}
                                         </div>
                                     ))}
                                 </Space>
@@ -77,4 +95,4 @@ function CardTasks({
     )
 }
 
-export default CardTasks
+export default CardStory

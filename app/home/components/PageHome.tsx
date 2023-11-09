@@ -2,9 +2,9 @@
 import { Col, Row, Typography } from 'antd'
 import React from 'react'
 import CardProjects from './CardProjects';
-import CardTasks from './CardTasks';
-import CardIssues from './CardIssues';
 import { takeDataDoneOrImprogressOrTodoInEpics, takeDataDoneOrImprogressOrTodoInStorys, takeDataFollowDoneOrNot } from '@/app/equation';
+import CardStory from './CardStory';
+import CardEpics from './CardEpics';
 
 interface Props {
     projects?: any;
@@ -49,29 +49,29 @@ function PageHome({
                 <Title level={2}>2. Epics</Title>
                 <Row justify={'space-between'}>
                     <Col span={7}>
-                        <CardTasks 
+                        <CardEpics 
                             titleLevel1='Done'
                             titleLevel2='Quantity:'
                             number={dataForEpic?.listDone.length || 0}
-                            tasksForCard={dataForEpic?.listDone}
+                            epicsForCard={dataForEpic?.listDone}
                             active={'3'}
                         />
                     </Col>
                     <Col span={7}>
-                        <CardTasks 
+                        <CardEpics 
                             titleLevel1='Improgress'
                             titleLevel2='Quantity:'
                             number={dataForEpic?.listImprogress.length || 0}
-                            tasksForCard={dataForEpic?.listImprogress}
+                            epicsForCard={dataForEpic?.listImprogress}
                             active={'4'}
                         />
                     </Col>
                     <Col span={7}>
-                        <CardTasks 
+                        <CardEpics 
                             titleLevel1='Todo'
                             titleLevel2='Quantity:'
                             number={dataForEpic?.listTodo.length || 0}
-                            tasksForCard={dataForEpic?.listTodo}
+                            epicsForCard={dataForEpic?.listTodo}
                             active={'5'}
                         />
                     </Col>
@@ -81,29 +81,29 @@ function PageHome({
                 <Title level={2}>3. Storys</Title>
                 <Row justify={'space-between'}>
                 <Col span={7}>
-                        <CardIssues 
+                        <CardStory 
                             titleLevel1='Done'
                             titleLevel2='Quantity:'
                             number={dataForStory?.listDone.length || 0}
-                            issuesForCard={dataForStory?.listDone}
+                            storyForCard={dataForStory?.listDone}
                             active={'6'}
                         />
                     </Col>
                     <Col span={7}>
-                        <CardIssues 
+                        <CardStory 
                             titleLevel1='Improgress'
                             titleLevel2='Quantity:'
                             number={dataForStory?.listImprogress.length || 0}
-                            issuesForCard={dataForStory?.listImprogress}
+                            storyForCard={dataForStory?.listImprogress}
                             active={'7'}
                         />
                     </Col>
                     <Col span={7}>
-                        <CardIssues 
+                        <CardStory 
                             titleLevel1='Todo'
                             titleLevel2='Quantity:'
                             number={dataForStory?.listTodo.length || 0}
-                            issuesForCard={dataForStory?.listTodo}
+                            storyForCard={dataForStory?.listTodo}
                             active={'8'}
                         />
                     </Col>

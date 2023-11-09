@@ -11,7 +11,7 @@ interface Props {
     title?: string | null;
     create?: () => void;
     epic?: any;
-    listIssues?: any;
+    listStorys?: any;
 }
 
 function HeaderInEpic({
@@ -61,7 +61,7 @@ function HeaderInEpic({
                         className="modal-edit"
                         width={1200}
                     >
-                        <ChartEpic task={epic}/>
+                        <ChartEpic epic={epic}/>
                     </Modal>
                 </div>
                 <button

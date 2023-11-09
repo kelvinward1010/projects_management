@@ -1,19 +1,19 @@
 import { takeLengthStatus } from '@/app/equation';
-import useIssues from '@/app/hooks/useIssues';
+import useEpic from '@/app/hooks/useEpic';
 import PieChart from '@ant-design/plots/es/components/pie';
 
 interface Props {
-    task?: any;
+    epic?: any;
 }
 
 function ChartEpic({
-    task,
+    epic,
 }:Props) {
 
-    const dataIssues = useIssues(task?.id as string);
-    const getListIssues = dataIssues?.data?.issues;
+    const dataEpics = useEpic(epic?.id as string);
+    const getListStorys = dataEpics?.data?.storys;
 
-    const lengthInStatusTasks = takeLengthStatus(getListIssues)
+    const lengthInStatusTasks = takeLengthStatus(getListStorys)
     
     const data = [
         {
