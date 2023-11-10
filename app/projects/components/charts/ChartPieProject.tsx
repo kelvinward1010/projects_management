@@ -9,20 +9,20 @@ function ChartPieProject({
     project
 }:Props) {
 
-    const lengthInStatusTasks = takeLengthStatus(project?.tasks)
+    const lengthInStatusEpics = takeLengthStatus(project?.epics)
 
     const data = [
         {
             type: 'Todo',
-            value: lengthInStatusTasks.lengthTodo,
+            value: lengthInStatusEpics.lengthTodo,
         },
         {
             type: 'Improgress',
-            value: lengthInStatusTasks.lengthImprogress,
+            value: lengthInStatusEpics.lengthImprogress,
         },
         {
             type: 'Done',
-            value: lengthInStatusTasks.lengthDone,
+            value: lengthInStatusEpics.lengthDone,
         },
     ];
     const config = {

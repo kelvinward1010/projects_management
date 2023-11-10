@@ -12,7 +12,7 @@ function ScheduleProject({
   project
 }:Props) {
   return (
-    <div className='h-[900px] w-full'>
+    <div className='h-[800px] w-full'>
       <ScheduleTop project={project}/>
       <ScheduleConversationList project={project}/>
       <FormConversationInProject project={project} />

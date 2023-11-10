@@ -17,6 +17,7 @@ export async function POST(
             image,
             assignto,
             epicId,
+            projectId,
         } = body;
 
 
@@ -34,6 +35,7 @@ export async function POST(
                 image: image,
                 userId: currentUser.id,
                 epicId: epicId,
+                projectId: projectId,
             }
         });
         

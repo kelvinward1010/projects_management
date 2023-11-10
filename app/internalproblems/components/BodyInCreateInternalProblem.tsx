@@ -37,9 +37,7 @@ function BodyInCreateInternalProblem({
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
-    const {data: dataEpic } = useEpic(story?.epicId as string);
-
-    const {data: dataProject} = useProject(dataEpic?.projectId)
+    const {data: dataProject} = useProject(story?.projectId)
 
     const users = dataProject?.users;
 
@@ -70,6 +68,7 @@ function BodyInCreateInternalProblem({
     const timework = watch('timework');
     const desc = watch('desc');
     const textTitle = watch('title');
+    const type = watch('type');
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
@@ -81,7 +80,8 @@ function BodyInCreateInternalProblem({
         (status && desc && textTitle && timework && assignto) ?
             axios.post('/api/tasks', {
                 ...data,
-                storyId: story?.id
+                storyId: story?.id,
+                projectId: story?.projectId,
             })
             .then(() => {
                 router.refresh();
@@ -111,7 +111,7 @@ function BodyInCreateInternalProblem({
             '>
                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                     <div className='px-2'>
-                        <Title level={4}>Create a story in Story</Title>
+                        <Title level={4}>Create a task in story</Title>
                         <div className='mt-5'>
                             <Row justify={'space-between'} style={{width:'100%'}}>
                                 <Col span={13}>
@@ -149,13 +149,13 @@ function BodyInCreateInternalProblem({
                                         />
                                     </Flex>
                                     <Flex vertical>
-                                        <Title level={5}>Tpye</Title>
+                                        <Title level={5}>Type</Title>
                                         <Select
                                             disabled={isLoading}
                                             onChange={(value) => setValue('type', value)}
                                             style={{ width: "100%" }}
                                             options={optionsTypes}
-                                            value={assignto}
+                                            value={type}
                                         />
                                     </Flex>
                                     <Flex vertical>

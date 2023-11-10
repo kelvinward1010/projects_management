@@ -6,11 +6,12 @@ import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typo
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as _ from "lodash/fp";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import { optionsStatus, optionsTypes } from "@/app/config/options";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AiFillBug, AiFillLeftSquare } from "react-icons/ai";
+import useNotifications from "@/app/hooks/useNotifications";
 
 const { Text, Title } = Typography;
 
@@ -33,6 +34,7 @@ function BodyInternalProblem({
     const [chooseUser, setChooseUser] = useState('all');
     const [chooseType, setChooseType] = useState('all');
     const users = dataProject?.users;
+    const {mutate: mutateNoti} = useNotifications()
 
     const handleChangeSearch = (e: any) => {
         setQuery(e);
@@ -67,6 +69,7 @@ function BodyInternalProblem({
             })
                 .then(() => {
                     router.refresh();
+                    mutateNoti();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -122,6 +125,11 @@ function BodyInternalProblem({
                 toast.success('Internals has been deleted!')
             });
     }
+
+    const handleGoToInTask = (task: any) => {
+        return router.push(`/tasks/${task?.id}`)
+    };
+
 
     const columns: TableColumnType<any>[] = [
         {
@@ -232,6 +240,10 @@ function BodyInternalProblem({
                                 />
                             </Popconfirm>
                         </div>
+                        <DoubleRightOutlined
+                            className="cursor-pointer text-teal-600"
+                            onClick={() => handleGoToInTask(record)}
+                        />
                     </div>
                 )
             },

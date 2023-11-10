@@ -13,5 +13,6 @@ export const config = {
         "/projects/:path*",
         "/storys/:path*",
         "/internalproblems/:path*",
+        "/tasks/:path*",
     ]
 };

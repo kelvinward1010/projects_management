@@ -11,7 +11,7 @@ function ScheduleConversationList({
     const listScheduleCovariations = project?.scheduleConversation
 
     return (
-        <div className='px-5 overflow-y-auto h-[800px]'>
+        <div className='px-5 overflow-y-auto h-[700px]'>
             {listScheduleCovariations?.map((schedule: any) => (
                 <ScheduleConversationItem key={schedule?.id} schedule={schedule} project={project}/>
             ))}

@@ -87,7 +87,8 @@ function StoryInEpic({
         (status && desc && textTitle && timework && assignto) ?
             axios.post('/api/storys', {
                 ...data,
-                epicId: epic?.id
+                epicId: epic?.id,
+                projectId: dataEpic?.projectId,
             })
             .then(() => {
                 router.refresh();

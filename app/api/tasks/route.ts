@@ -18,6 +18,7 @@ export async function POST(
             assignto,
             type,
             storyId,
+            projectId,
         } = body;
 
 
@@ -36,6 +37,7 @@ export async function POST(
                 type: type,
                 userId: currentUser.id,
                 storyId: storyId,
+                projectId: projectId,
             }
         });
         
