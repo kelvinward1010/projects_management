@@ -97,7 +97,7 @@ export const takeLengthStatus = (arr: any[]) => {
         if(item?.status === 'Todo'){
             lengthTodo += 1;
         } 
-        if(item?.status === 'Improgress'){
+        if(item?.status !== 'Todo' && item?.status !== 'Done'){
             lengthImprogress += 1;
         } 
         if(item?.status === 'Done'){
