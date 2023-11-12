@@ -2,7 +2,7 @@
 import { takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import useProject from "@/app/hooks/useProject";
-import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
+import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as _ from "lodash/fp";
@@ -12,8 +12,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AiFillBug, AiFillLeftSquare } from "react-icons/ai";
 import useNotifications from "@/app/hooks/useNotifications";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from "dayjs";
 
 const { Text, Title } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 interface Props{
     story?: any;

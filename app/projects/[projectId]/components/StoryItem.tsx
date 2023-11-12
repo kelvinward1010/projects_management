@@ -90,7 +90,7 @@ function StoryItem({
     };
 
     const styleBg = (story: any) => {
-        return story?.status == 'Done' ? 'green' : story?.status == 'Improgress' ? 'blue' : 'gray';
+        return story?.status == 'Done' ? 'green' : (story?.status !== 'Done' &&  story?.status !== 'Todo') ? 'blue' : 'gray';
     }
 
     const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listStory;
