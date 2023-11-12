@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { AiOutlineDelete, AiOutlinePlusSquare } from 'react-icons/ai';
 import DeleteModal from '../modal/DeleteModal';
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { workCompletionRateFormula } from '@/app/equation';
+import { takeDataAddStatus, workCompletionRateFormula } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import InfoEpic from './InfoEpic';
 import StoryInEpic from './StoryInEpic';
@@ -31,7 +31,7 @@ function EpicItem({ epic }: Props) {
     const [isModalOpenStoryInEpic, setIsModalOpenStoryInEpic] = useState(false);
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
-    const {mutate: mutateProject } = useProject(epic?.projectId as string);
+    const {data: dataProject ,mutate: mutateProject } = useProject(epic?.projectId as string);
     const dataEpic = useEpic(epic?.id as string);
     const getdeep = dataEpic?.data?.storys;
 
@@ -79,6 +79,12 @@ function EpicItem({ epic }: Props) {
     const completePrecent: any = Number(workCompletionRateFormula(getdeep).toFixed(3));
     const unfinishedPercent = 100 - completePrecent;
 
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listEpic;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
     
     return (
         <>
@@ -120,7 +126,10 @@ function EpicItem({ epic }: Props) {
                                 disabled={isLoading}
                                 onChange={handleChangeOptionStatus}
                                 style={{ width: "60%" }}
-                                options={optionsStatus}
+                                options={[
+                                    ...optionsStatus,
+                                    ...mapNewStatus
+                                ]}
                                 value={epic?.status}
                             />
                         </div>

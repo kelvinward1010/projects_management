@@ -26,7 +26,7 @@ function ProjectItem({project}:Props) {
         return router.push(`/projects/${project?.id}`)
     };
 
-    const completePrecent = Number(workCompletionRateFormula(project?.tasks).toFixed(3));
+    const completePrecent = Number(workCompletionRateFormula(project?.epics).toFixed(3));
     const unfinishedPercent = 100 - completePrecent;
 
     const currentDate = new Date();

@@ -3,6 +3,8 @@ import { Modal, Typography } from 'antd';
 import { useState } from 'react';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 import BodyInCreateInternalProblem from './BodyInCreateInternalProblem';
+import { PieChartOutlined } from '@ant-design/icons';
+import ChartPieIternal from './charts/ChartPieIternal';
 
 const { Title, Text} = Typography;
 
@@ -15,6 +17,7 @@ function HeaderInternalProblem({
 }:Props) {
 
     const [isModalOpenCreate,setIsModalOpenCreate] = useState(false);
+    const [isModalOpenChartPie,setIsModalOpenChartPie] = useState(false);
 
     return (
         <div
@@ -29,10 +32,10 @@ function HeaderInternalProblem({
         >
             <Title level={4} className='line-clamp-1'>Title story: {story?.title}</Title>
             <div className='flex items-center justify-center'>
-                {/* <div className='mx-5'>
+                <div className='mx-5'>
                     <button
                         className="
-                            w-52
+                            w-40
                             h-9
                             bg-sky-700
                             text-white
@@ -46,18 +49,18 @@ function HeaderInternalProblem({
                         onClick={()=>setIsModalOpenChartPie(true)}
                     >
                         <PieChartOutlined />
-                        Pie chart
+                        Chart
                     </button>
                     <Modal 
-                        title={`Pie chart for task: ${epic?.title}`} 
+                        title={`Pie chart for story`} 
                         open={isModalOpenChartPie} 
                         onCancel={() => setIsModalOpenChartPie(false)}
                         className="modal-edit"
                         width={1200}
                     >
-                        <ChartEpic task={epic}/>
+                        <ChartPieIternal story={story}/>
                     </Modal>
-                </div> */}
+                </div>
                 <div>
                     <button
                         className="

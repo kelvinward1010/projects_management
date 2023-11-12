@@ -8,7 +8,6 @@ import {
     SubmitHandler,
     useForm
 } from 'react-hook-form';
-import { Projects } from '@prisma/client';
 
 import { toast } from 'react-hot-toast';
 import Modal from '@/app/components/modals/Modal';
@@ -16,11 +15,12 @@ import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/buttons/Button';
 import SelectEpic from '../input/Select';
 import { optionsStatus } from '@/app/config/options';
+import { takeDataAddStatus } from '@/app/equation';
 
 interface Props {
     isOpen?: boolean;
     onClose: () => void;
-    project: Projects;
+    project: any;
 }
 
 const CreateEpicModel: React.FC<Props> = ({
@@ -66,6 +66,13 @@ const CreateEpicModel: React.FC<Props> = ({
             });
     }
 
+    const takenewStatus = takeDataAddStatus(project?.addStatus)?.listEpic;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,7 +102,10 @@ const CreateEpicModel: React.FC<Props> = ({
                             />
                             <SelectEpic
                                 onChange={(value) => setValue('status', value)}
-                                options={optionsStatus}
+                                options={[
+                                    ...optionsStatus,
+                                    ...mapNewStatus
+                                ]}
                                 value={status}
                                 label='Status'
                                 disabled={isLoading}

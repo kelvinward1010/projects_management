@@ -31,7 +31,8 @@ const getProjects = async () => {
                         }
                     }
                 },
-                scheduleConversation: true
+                scheduleConversation: true,
+                addStatus: true,
             }
         });
 

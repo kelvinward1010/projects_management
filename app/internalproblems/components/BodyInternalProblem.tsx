@@ -1,5 +1,5 @@
 "use client"
-import { takeDataInternalProblem, takeDataOptionsUsers } from "@/app/equation";
+import { takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import useProject from "@/app/hooks/useProject";
 import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
@@ -130,11 +130,18 @@ function BodyInternalProblem({
         return router.push(`/tasks/${task?.id}`)
     };
 
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listInternal;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
+
 
     const columns: TableColumnType<any>[] = [
         {
-            title: 'Icon Type',
-            width: '7%',
+            title: 'Icon',
+            width: '4%',
             render: (_: any, record: any) => {
                 const iconType = record?.type === 'Bug' ? 
                     <Text className="text-xl text-red-600">
@@ -192,7 +199,10 @@ function BodyInternalProblem({
                 return (
                     <Select
                         onChange={(e) => {handleChangeOptionStatus(e, record)}}
-                        options={optionsStatus}
+                        options={[
+                            ...optionsStatus,
+                            ...mapNewStatus
+                        ]}
                         value={record?.status}
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
@@ -285,7 +295,8 @@ function BodyInternalProblem({
                                         label: "Tất cả",
                                         value: "all",
                                     }
-                                    ,...optionsStatus
+                                    ,...optionsStatus,
+                                    ...mapNewStatus
                                 ]}
                                 value={chooseStatus}
                             />

@@ -33,6 +33,7 @@ export async function DELETE(
                     }
                 },
                 scheduleConversation: true,
+                addStatus: true,
             }
         });
 
@@ -105,7 +106,8 @@ export async function GET(
                         storys: true,
                     }
                 },
-                scheduleConversation: true
+                scheduleConversation: true,
+                addStatus: true,
             }
         });
         return NextResponse.json(project)
@@ -162,6 +164,7 @@ export async function POST(
                     }
                 },
                 scheduleConversation: true,
+                addStatus: true,
             }
         });
 

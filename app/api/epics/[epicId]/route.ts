@@ -19,7 +19,7 @@ export async function POST(
             completionTime,
         } = body;
 
-        const updatedEpic= await prisma.tasks.update({
+        const updatedEpic= await prisma.epics.update({
             where: {
                 id: params?.epicId
             },

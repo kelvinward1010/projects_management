@@ -16,7 +16,7 @@ import useProject from '@/app/hooks/useProject';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import HeaderInTask from './HeaderInEpic';
-import { totalWorkTime } from '@/app/equation';
+import { takeDataAddStatus, totalWorkTime } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import StoryList from './StoryList';
 
@@ -105,7 +105,14 @@ function StoryInEpic({
         : toast.error('You need to complete the information!')
     }
 
-    const timeWork = totalWorkTime(listStory)
+    const timeWork = totalWorkTime(listStory);
+
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listStory;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
 
     return (
         <div>
@@ -148,7 +155,10 @@ function StoryInEpic({
                                                 disabled={isLoading}
                                                 onChange={(value) => setValue('status', value)}
                                                 style={{ width: "100%" }}
-                                                options={optionsStatus}
+                                                options={[
+                                                    ...optionsStatus,
+                                                    ...mapNewStatus
+                                                ]}
                                                 value={status}
                                             />
                                         </Flex>

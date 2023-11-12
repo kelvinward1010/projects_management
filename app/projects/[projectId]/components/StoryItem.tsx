@@ -13,6 +13,7 @@ import { Epics } from '@prisma/client';
 import useEpic from '@/app/hooks/useEpic';
 import InforStory from './InforStory';
 import useProject from '@/app/hooks/useProject';
+import { takeDataAddStatus } from '@/app/equation';
 
 interface Props {
     story: any,
@@ -31,7 +32,7 @@ function StoryItem({
 
     const handleOpenDelete = () => setIsOpenDelete(true);
     const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
-    const {mutate: mutateProject } = useProject(dataEpic?.projectId as string);
+    const {data: dataProject, mutate: mutateProject } = useProject(dataEpic?.projectId as string);
 
     const {
         register,
@@ -92,6 +93,12 @@ function StoryItem({
         return story?.status == 'Done' ? 'green' : story?.status == 'Improgress' ? 'blue' : 'gray';
     }
 
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listStory;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
 
     return (
         <>
@@ -126,7 +133,10 @@ function StoryItem({
                             disabled={isLoading}
                             onChange={handleChangeOptionStatus}
                             style={{ width: "60%" }}
-                            options={optionsStatus}
+                            options={[
+                                ...optionsStatus,
+                                ...mapNewStatus
+                            ]}
                             value={story?.status}
                         />
                     </div>

@@ -126,7 +126,7 @@ function BodyInCreateInternalProblem({
                                 </Col>
                                 <Col span={7}>
                                     <Flex vertical>
-                                        <Title level={5}>Internal story</Title>
+                                        <Title level={5}>Internal status</Title>
                                         <Select
                                             disabled={isLoading}
                                             onChange={(value) => setValue('status', value)}

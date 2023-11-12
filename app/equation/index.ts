@@ -431,3 +431,28 @@ export const takeDataNotiNotSeen = (data: any) =>{
 
     return listSeen ?? [];
 }
+
+export const takeDataAddStatus = (data: any) =>{
+
+    let listEpic: any[] = [];
+    let listInternal: any[] = [];
+    let listStory: any[] = [];
+
+    data?.forEach((item: any) =>{
+        if(item?.isForEpics == true){
+            listEpic?.push(item);
+        }
+        if(item?.isForInternals == true){
+            listInternal?.push(item);
+        }
+        if(item?.isForStorys == true){
+            listStory?.push(item);
+        }
+    })
+
+    return {
+        listEpic,
+        listInternal,
+        listStory
+    };
+}

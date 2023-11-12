@@ -40,6 +40,7 @@ model User {
   comments        Comment[]
   scheduleConversation ScheduleConversations[]
   notifications Notification[]
+  addStatus AddStatus[]
 }
 
 model Account {
@@ -78,6 +79,7 @@ model Projects {
 
   scheduleConversationId         String[] @db.ObjectId
   scheduleConversation           ScheduleConversations[]
+  addStatus AddStatus[]
 }
 
 model Epics {
@@ -142,6 +144,22 @@ model Tasks {
   story Storys @relation(fields: [storyId], references: [id], onDelete: Cascade)
 
   comments          Comment[]
+}
+
+model AddStatus {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  label              String?
+  value              String?
+  isForEpics         Boolean?
+  isForStorys        Boolean?
+  isForInternals     Boolean?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  userId             String? @db.ObjectId
+  projectId          String? @db.ObjectId
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Comment {

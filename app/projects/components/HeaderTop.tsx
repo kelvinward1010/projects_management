@@ -1,5 +1,5 @@
 "use client"
-import { PieChartOutlined, SettingOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { PartitionOutlined, PieChartOutlined, SettingOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { Dropdown, Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
@@ -8,6 +8,7 @@ import ScheduleProject from '../schedule/ScheduleProject';
 import BodyMembers from './BodyMembers';
 import BodyStorys from './BodyStorys';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
+import BodySettings from './BodySettings';
 
 const { Title } = Typography;
 
@@ -28,7 +29,9 @@ function HeaderTop({
     const [isModalOpenSchedule, setIsModalOpenSchedule] = useState(false);
     const [isModalOpenAllStorys, setIsModalOpenAllStorys] = useState(false);
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
-
+    const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
+    
+    
     const items = [
         {
           label: <>
@@ -83,6 +86,31 @@ function HeaderTop({
                     className="
                         w-48
                         h-9
+                        bg-sky-700
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-md
+                        shadow-lg
+                    "
+                    onClick={() => setIsModalOpenSettings(true)}
+                >
+                    <PartitionOutlined />
+                    Settings
+                </button>
+                ) : null}
+            </>,
+            key: '2',
+        },
+        {
+            label: <>
+                {currentUser?.id === project?.createdByWho ? (  
+                <button
+                    className="
+                        w-48
+                        h-9
                         bg-red-500
                         text-white
                         flex
@@ -99,12 +127,39 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '2',
+            key: '3',
         },
     ];
 
     return (
         <>
+            <Modal
+                title="Members"
+                open={isModalOpenMembers} 
+                onCancel={() => setIsModalOpenMembers(false)}
+                className="modal-edit"
+                width={1400}
+            >
+                <BodyMembers project={project}/>
+            </Modal>
+            <Modal 
+                title={`Chart for project: ${project?.title}`} 
+                open={isModalOpenChartPie} 
+                onCancel={() => setIsModalOpenChartPie(false)}
+                className="modal-edit"
+                width={1400}
+            >
+                <ChartPieProject project={project}/>
+            </Modal>
+            <Modal 
+                title={`Settings for project: ${project?.title}`} 
+                open={isModalOpenSettings} 
+                onCancel={() => setIsModalOpenSettings(false)}
+                className="modal-edit"
+                width={1400}
+            >
+                <BodySettings project={project}/>
+            </Modal>
             <div
                 className='
                 h-16
@@ -117,15 +172,6 @@ function HeaderTop({
             >
                 <Title level={2}>{title}</Title>
                 <div className='flex items-center justify-center'>
-                    <Modal
-                        title="Members"
-                        open={isModalOpenMembers} 
-                        onCancel={() => setIsModalOpenMembers(false)}
-                        className="modal-edit"
-                        width={1400}
-                    >
-                        <BodyMembers project={project}/>
-                    </Modal>
                     <div className='mx-2'>
                         <button
                             className="
@@ -185,15 +231,6 @@ function HeaderTop({
                             <BodyStorys project={project} />
                         </Modal>
                     </div>
-                    <Modal 
-                        title={`Chart for project: ${project?.title}`} 
-                        open={isModalOpenChartPie} 
-                        onCancel={() => setIsModalOpenChartPie(false)}
-                        className="modal-edit"
-                        width={1400}
-                    >
-                        <ChartPieProject project={project}/>
-                    </Modal>
                     <div className='mx-2'>
                         <Dropdown
                             menu={{

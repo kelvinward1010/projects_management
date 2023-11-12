@@ -15,7 +15,8 @@ const getProjectById = async (
                         storys: true
                     }
                 },
-                scheduleConversation: true
+                scheduleConversation: true,
+                addStatus: true,
             },
         });
 
