@@ -10,7 +10,7 @@ import {
 
 
 interface InputProps{
-    label: string;
+    label?: string;
     id: string;
     type?: string;
     required?: boolean;

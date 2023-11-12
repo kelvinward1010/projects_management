@@ -5,6 +5,12 @@ import { useState } from "react";
 import FormSettingStatus from "./input/FormSettingStatus";
 import { takeDataAddStatus } from "@/app/equation";
 import TableSetting from "./table/TableSetting";
+import { FieldValues, useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import InputSettings from "./input/InputSettings";
+import { CheckOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -15,12 +21,43 @@ interface Props {
 function BodySettings({
     project
 }:Props) {
+
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEpics, setIsOpenEpics] = useState(false);
     const [isOpenInternals, setIsOpenInternals] = useState(false);
     const [isOpenStorys, setIsOpenStorys] = useState(false);
     
-    const dataForEach = takeDataAddStatus(project?.addStatus)
+    const dataForEach = takeDataAddStatus(project?.addStatus);
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: {
+            errors,
+        }
+    } = useForm<FieldValues>({
+        defaultValues: {
+            title: project?.title,
+        }
+    });
+
+    const title = watch("title")
+
+    const handleChangeTitleProject = () => {
+        axios.post(`/api/projects/${project?.id}`, {
+            title: title,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Type task has been updated!')
+            });
+    }
 
     return (
         <>
@@ -40,7 +77,40 @@ function BodySettings({
                 />
             </Modal>
             <div className="w-full h-full mt-5">
-                <Title level={5}>1. Settings for status</Title>
+                <Title level={5}>1. Settings title project</Title>
+                <Row justify={'start'} className="items-center">
+                    <Col span={13}>
+                        <InputSettings
+                            id="title"
+                            errors={errors}
+                            required
+                            register={register}
+                        />
+                    </Col>
+                    <Col span={5}>
+                        <button
+                            className="
+                                w-16
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                                ml-5
+                                mt-2
+                            "
+                            onClick={handleChangeTitleProject}
+                        >
+                            <CheckOutlined />
+                        </button>
+                    </Col>
+                </Row>
+            </div>
+            <div className="w-full h-full mt-5">
+                <Title level={5}>1. Settings status in project</Title>
                 <div className="ml-10 w-full">
                     <div className="mt-5">
                         <Row justify={'start'}>
@@ -73,7 +143,7 @@ function BodySettings({
                                 </button>
                             </Col>
                         </Row>
-                        <TableSetting data={dataForEach?.listEpic} />
+                        {dataForEach?.listEpic.length >=1 ? <TableSetting data={dataForEach?.listEpic} /> : null}
                     </div>
                     <div className="mt-5">
                         <Row justify={'start'}>
@@ -139,7 +209,7 @@ function BodySettings({
                                 </button>
                             </Col>
                         </Row>
-                        <TableSetting data={dataForEach?.listInternal} />
+                        {dataForEach?.listInternal.length >=1 ? <TableSetting data={dataForEach?.listInternal} /> : null}
                     </div>
                 </div>
             </div>

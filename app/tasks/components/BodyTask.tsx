@@ -256,7 +256,7 @@ function BodyTask({
                     </div>
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Estimated time for work to be completed:</span>
-                        <RangePicker 
+                        {task?.timework && <RangePicker 
                             showTime 
                             onChange={onChange} 
                             defaultValue={
@@ -265,7 +265,7 @@ function BodyTask({
                             }
                             format={dateFormat}
                             className="date-picker"
-                        />
+                        />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Work execution time:</span>

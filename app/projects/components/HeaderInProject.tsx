@@ -25,7 +25,7 @@ function HeaderInProject({
             items-center
         '
     >
-      <Title level={3}>{title}</Title>  
+      <Title level={4}>{title}</Title>  
       <button
           className="
               w-32

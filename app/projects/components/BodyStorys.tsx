@@ -1,5 +1,5 @@
 import { optionsStatus } from '@/app/config/options';
-import { takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
+import { takeDataAddStatus, takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
 import axios from 'axios';
@@ -107,6 +107,13 @@ function BodyStorys({
         ev.preventDefault();
         return router.push(`/storys/${story?.id}`)
     };
+
+    const takenewStatus = takeDataAddStatus(project?.addStatus)?.listStory;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
     
     const columns: TableColumnType<any>[] = [
         {
@@ -144,7 +151,10 @@ function BodyStorys({
                 return (
                     <Select
                         onChange={(e) => {handleChangeOptionStatus(e, record)}}
-                        options={optionsStatus}
+                        options={[
+                            ...optionsStatus,
+                            ...mapNewStatus
+                        ]}
                         value={record?.status}
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
@@ -240,7 +250,8 @@ function BodyStorys({
                                         label: "Tất cả",
                                         value: "all",
                                     }
-                                    ,...optionsStatus
+                                    ,...optionsStatus,
+                                    ...mapNewStatus
                                 ]}
                                 value={chooseStatus}
                             />

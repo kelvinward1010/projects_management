@@ -19,6 +19,7 @@ import useEpic from "@/app/hooks/useEpic";
 import BodyModalEditStory from "./BodyModalEditStory";
 import ItemInListStory from "./ItemInListStory";
 import { DoubleRightOutlined } from "@ant-design/icons";
+import useNotifications from "@/app/hooks/useNotifications";
 
 
 const { Title, Text } = Typography;
@@ -42,6 +43,7 @@ function BodyStory({
     const [isModalOpenEditStory, setIsModalOpenEditStory] = useState(false);
     const {data: dataProject} = useProject(dataEpic?.projectId);
     const {data: user} = useUser(story?.userId);
+    const {mutate: mutateNoti} = useNotifications()
 
     const users = dataProject?.users
     
@@ -93,6 +95,7 @@ function BodyStory({
         })
             .then(() => {
                 mutateEpic()
+                mutateNoti();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -242,7 +245,7 @@ function BodyStory({
                     </div>
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Estimated time for work to be completed:</span>
-                        <RangePicker 
+                        {story?.timework && <RangePicker 
                             showTime 
                             onChange={onChange} 
                             defaultValue={
@@ -251,7 +254,7 @@ function BodyStory({
                             }
                             format={dateFormat}
                             className="date-picker"
-                        />
+                        />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Work execution time:</span>

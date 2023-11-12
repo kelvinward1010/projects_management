@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import TextareaInternalBroblem from "./input/TextareaInternalBroblem";
 import Button from "@/app/components/buttons/Button";
+import { takeDataAddStatus } from "@/app/equation";
 
 
 const { Title, Text } = Typography;
@@ -96,6 +97,13 @@ function BodyInCreateInternalProblem({
         : toast.error('You need to complete the information!')
     }
 
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listInternal;
+
+    const mapNewStatus = takenewStatus.map((item: any) => ({
+        label: item.label,
+        value: item.value,
+    })) ?? [];
+
     return (
         <div className="w-full">
            <div className='
@@ -131,7 +139,10 @@ function BodyInCreateInternalProblem({
                                             disabled={isLoading}
                                             onChange={(value) => setValue('status', value)}
                                             style={{ width: "100%" }}
-                                            options={optionsStatus}
+                                            options={[
+                                                ...optionsStatus,
+                                                ...mapNewStatus
+                                            ]}
                                             value={status}
                                         />
                                     </Flex>
