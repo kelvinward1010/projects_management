@@ -5,6 +5,7 @@ import { Card, Flex, Typography } from "antd";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineDoubleRight } from "react-icons/ai";
 
 interface Props {
@@ -23,7 +24,11 @@ function CardNoti({
         ev.preventDefault();
         let url = notification?.projectId ? `/projects/${notification?.projectId}` : `/storys/${notification?.storyId}`;
 
-        return router.push(url)
+        if(notification?.projectId === null){
+            return toast.error('This was deleted!')
+        }else{
+            return router.push(url)
+        }
     };
 
     const FormGotoInside = () => {

@@ -87,6 +87,55 @@ export const totalWorkTime = (arr: any[]) => {
     return total;
 }
 
+export const totalWorkTimeForFinish = (arr: any[]) => {
+
+    const total = {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    }
+
+    const listFinished: any[] = [];
+
+    arr?.forEach((item) => {
+        if(item?.completionTime !== ''){
+            listFinished?.push(item)
+        }
+    })
+
+    const listTimeFN: any[] = []
+
+    listFinished?.forEach((item) => {
+        const time = item?.timework
+        const timeInStory = daysdifference(time?.[0], item?.completionTime)
+        listTimeFN?.push(timeInStory)
+    })
+    listTimeFN?.forEach((item) => {
+        total.days += item?.days;
+        let hours = total.hours += item?.hours;
+        let minutes = total.minutes += item?.minutes;
+        let seconds = total.seconds += item?.seconds;
+
+        const configHours = Math.floor(hours / 24)
+        const configMinutes = Math.floor(minutes / 60)
+        const configSeconds = Math.floor(seconds / 60)
+        if(configHours !== 0){
+            total.days += configHours
+            total.hours -= configHours*24
+        }
+        if(configMinutes !== 0){
+            total.hours += configMinutes;
+            total.minutes -= configMinutes*60
+        }
+        if(configSeconds !== 0){
+            total.minutes += configSeconds;
+            total.seconds -= configSeconds*60
+        }
+    })
+    return total;
+}
+
 
 export const takeLengthStatus = (arr: any[]) => {
     let lengthDone = 0;
@@ -285,7 +334,8 @@ export const takeDataInternalProblem = (data: any) => {
             timework: item?.timework,
             userId: item?.userId,
             assignto: item?.assignto,
-            type: item?.type
+            type: item?.type,
+            completionTime: item?.completionTime
         })
     })
 

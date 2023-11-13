@@ -1,5 +1,5 @@
 "use client"
-import { takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers } from "@/app/equation";
+import { daysdifference, takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers, totalWorkTime, totalWorkTimeForFinish } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import useProject from "@/app/hooks/useProject";
 import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
@@ -86,9 +86,24 @@ function BodyInternalProblem({
     }
 
     const handleChangeOptionStatus = (data: any, internals: any) => {
-        if(data){
+        const currentDate = new Date();
+        
+        if(data !== 'Done'){
             axios.post(`/api/tasks/${internals?.id}`, {
                 status: data,
+                completionTime: '',
+            })
+                .then(() => {
+                    router.refresh();
+                })
+                .catch(() => toast.error('Something went wrong!'))
+                .finally(() => {
+                    toast.success('Status internals has been updated!')
+                });
+        }else if(data === 'Done'){
+            axios.post(`/api/tasks/${internals?.id}`, {
+                status: data,
+                completionTime: currentDate,
             })
                 .then(() => {
                     router.refresh();
@@ -131,6 +146,19 @@ function BodyInternalProblem({
             });
     }
 
+    const onChange = (date: any, internals: any) => {
+        axios.post(`/api/tasks/${internals?.id}`, {
+            timework: date,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Time has been updated!')
+            });
+    };
+
     const handleGoToInTask = (task: any) => {
         return router.push(`/tasks/${task?.id}`)
     };
@@ -142,6 +170,10 @@ function BodyInternalProblem({
         value: item.value,
     })) ?? [];
 
+    const timeWork = totalWorkTime(data);
+
+    const timeforFinished = () => totalWorkTimeForFinish(data);
+    setTimeout(timeforFinished, 300000);
 
     const columns: TableColumnType<any>[] = [
         {
@@ -170,7 +202,7 @@ function BodyInternalProblem({
             title: 'Description',
             dataIndex: 'desc',
             key: 'desc',
-            width: '30%',
+            width: '20%',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
@@ -195,12 +227,42 @@ function BodyInternalProblem({
             },
         },
         {
+            title: 'Estimed time to completion',
+            dataIndex: 'timework',
+            key: 'timework',
+            width: '20%',
+            render: (_: any, record: any) => {
+
+                const getTime = daysdifference(record?.timework[0],record?.timework[1])
+                
+                return (
+                    <>
+                        {record?.timework && <RangePicker 
+                            showTime 
+                            onChange={(e) => onChange(e, record)} 
+                            defaultValue={
+                                [dayjs(record?.timework[0], dateFormat), dayjs(record?.timework[1], dateFormat)]
+                                || null
+                            }
+                            format={dateFormat}
+                            className="date-picker"
+                        />}
+                        <div className="flex items-center flex-start gap-x-2">
+                            <Text>Time:</Text>
+                            <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
+                        </div>
+                    </>
+                )
+            },
+        },
+        {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             width: '15%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
+
                 return (
                     <Select
                         onChange={(e) => {handleChangeOptionStatus(e, record)}}
@@ -267,6 +329,23 @@ function BodyInternalProblem({
     
     return (
         <div className="w-full h-full px-10 mt-5">
+            <div>
+                <Title level={5}>1. Total expected completion time.</Title>
+                <div className='ml-5 py-2 px-5 bg-white rounded w-fit'>
+                    <Text>
+                        {`${timeWork.days} days ${timeWork.hours} hours ${timeWork.minutes} minutes ${timeWork.seconds} seconds `}
+                    </Text>
+                </div>
+            </div>
+            <div className="my-2">
+                <Title level={5}>2. Actual time for completed tasks.</Title>
+                <div className='ml-5 py-2 px-5 bg-white rounded w-fit'>
+                    <Text>
+                        {`${-timeforFinished().days} days ${timeforFinished().hours} hours ${timeforFinished().minutes} minutes ${timeforFinished().seconds} seconds `}
+                    </Text>
+                </div>
+            </div>
+            <Title level={5}>3. Internal problems.</Title>
             <Form
                 form={form}
                 layout={'vertical'}
