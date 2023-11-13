@@ -9,6 +9,7 @@ import BodyMembers from './BodyMembers';
 import BodyStorys from './BodyStorys';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
 import BodySettings from './BodySettings';
+import GetOut from './modals/GetOut';
 
 const { Title } = Typography;
 
@@ -30,7 +31,7 @@ function HeaderTop({
     const [isModalOpenAllStorys, setIsModalOpenAllStorys] = useState(false);
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
     const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
-    
+    const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
     
     const items = [
         {
@@ -81,6 +82,31 @@ function HeaderTop({
         },
         {
             label: <>
+                {currentUser?.id !== project?.createdByWho ? (  
+                <button
+                    className="
+                        w-48
+                        h-9
+                        bg-red-500
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-md
+                        shadow-lg
+                    "
+                    onClick={() => setIsModalOpenGetOut(true)}
+                >
+                    <AiOutlineDelete />
+                    Get out of project
+                </button>
+                ) : null}
+            </>,
+            key: '2',
+        },
+        {
+            label: <>
                 {currentUser?.id === project?.createdByWho ? (  
                 <button
                     className="
@@ -102,7 +128,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '2',
+            key: '3',
         },
         {
             label: <>
@@ -127,12 +153,20 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '3',
+            key: '4',
         },
     ];
 
     return (
         <>
+            <Modal
+                title="Get out of this project!"
+                open={isModalOpenGetOut} 
+                onCancel={() => setIsModalOpenGetOut(false)}
+                className="modal-edit"
+            >
+                <GetOut project={project} onClose={() => setIsModalOpenGetOut(false)}/>
+            </Modal>
             <Modal
                 title="Members"
                 open={isModalOpenMembers} 

@@ -95,14 +95,14 @@ function BodyMembers({
                     toast.success('User has been kickouted!')
                 });
                 dataStorys?.forEach((story) => {
-                if(story?.assignto === data?.id){
-                    axios.post(`/api/storys/${story?.id}`, {
-                        assignto: '',
-                    })
-                }else{
-                    return;
-                }
-            })
+                    if(story?.assignto === data?.id){
+                        axios.post(`/api/storys/${story?.id}`, {
+                            assignto: '',
+                        })
+                    }else{
+                        return;
+                    }
+                })
         }else{
             toast.error('Something went wrong!')
         }

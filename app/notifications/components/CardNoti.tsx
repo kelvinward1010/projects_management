@@ -1,5 +1,7 @@
 "use client"
 
+import useCurrentUser from "@/app/hooks/useCurrentUser";
+import useProject from "@/app/hooks/useProject";
 import { Notification } from "@prisma/client";
 import { Card, Flex, Typography } from "antd";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -19,13 +21,18 @@ function CardNoti({
 }:Props) {
 
     const router = useRouter();
+    const currentUser = useCurrentUser()?.data;
+    const {data: dataProject} = useProject(notification?.projectId as string);
 
     const handleGoToProject = (ev: any) => {
         ev.preventDefault();
         let url = notification?.projectId ? `/projects/${notification?.projectId}` : `/storys/${notification?.storyId}`;
-
+        const checkUserInside = dataProject?.users?.filter((user: any) => currentUser?.id?.includes(user?.id))
+        
         if(notification?.projectId === null){
             return toast.error('This was deleted!')
+        }else if(checkUserInside?.length === 0){
+            return toast.error('You was kicked out this project!');
         }else{
             return router.push(url)
         }
