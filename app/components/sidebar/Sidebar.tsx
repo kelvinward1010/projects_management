@@ -25,6 +25,7 @@ const Sidebar: React.FC<Props> = ({ user }) => {
                                 onClick={item.onClick}
                                 active={item.active}
                                 iconNoti={item?.isNoti}
+                                iconAdmin={item?.isAdmin}
                             />
                         ))}
                     </div>

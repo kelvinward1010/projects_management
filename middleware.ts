@@ -14,5 +14,6 @@ export const config = {
         "/storys/:path*",
         "/internalproblems/:path*",
         "/tasks/:path*",
+        "/manageddata/:path*",
     ]
 };

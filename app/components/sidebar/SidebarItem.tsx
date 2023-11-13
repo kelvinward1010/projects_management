@@ -1,5 +1,6 @@
 "use client"
 import { takeDataNotiNotSeen } from "@/app/equation";
+import useCurrentUser from "@/app/hooks/useCurrentUser";
 import useNotifications from "@/app/hooks/useNotifications";
 import { Badge } from "antd";
 import axios from "axios";
@@ -15,6 +16,7 @@ interface SidebarItemProps {
     active?: boolean;
     alert?: boolean;
     iconNoti: IconType;
+    iconAdmin: IconType;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -23,10 +25,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     onClick,
     active,
     iconNoti: IconNoti,
+    iconAdmin: IconAdmin
 }) => {
 
     const router = useRouter();
     const [isSee, setIsSee] = useState(false);
+    const currentUser = useCurrentUser()?.data;
     const handleClick = () => {
         if (onClick) {
             return onClick();
@@ -51,7 +55,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
     return (
         <div className="flex flex-row items-center">
-            {Icon ? <div className="
+            {Icon && <div className="
                     relative
                     hidden 
                     lg:flex 
@@ -71,8 +75,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
                     {label}
                 </p>
-            </div>:
-            <div className="
+            </div>}
+            {IconNoti && <div className="
                     relative
                     hidden 
                     lg:flex 
@@ -94,8 +98,28 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 <p onClick={handleNotiSeen} style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
                     {label}
                 </p>
-            </div>
-            }
+            </div>}
+            {IconAdmin && currentUser?.isAdmin !== null && <div className="
+                    relative
+                    hidden 
+                    lg:flex 
+                    items-row 
+                    gap-4 
+                    p-4 
+                    rounded-full 
+                    hover:bg-slate-300 
+                    hover:bg-opacity-10 
+                    cursor-pointer
+                    items-center
+                "
+                onClick={handleClick}
+                key={label}
+            >
+                    <IconAdmin size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
+                    {label}
+                </p>
+            </div>}
         </div>
     )
 }
