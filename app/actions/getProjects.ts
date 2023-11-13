@@ -35,7 +35,6 @@ const getProjects = async () => {
                 addStatus: true,
             }
         });
-
         return projects;
     } catch (error: any) {
         console.log(error)
