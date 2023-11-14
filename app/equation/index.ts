@@ -99,8 +99,10 @@ export const totalWorkTimeForFinish = (arr: any[]) => {
     const listFinished: any[] = [];
 
     arr?.forEach((item) => {
-        if(item?.completionTime !== ''){
+        if(item?.completionTime){
             listFinished?.push(item)
+        }else{
+            return;
         }
     })
 

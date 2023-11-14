@@ -41,7 +41,7 @@ const AuthForm = () => {
         defaultValues: {
             name: "",
             name_Id: "",
-            emeil: "",
+            email: "",
             password: "",
         }
     })
@@ -69,6 +69,7 @@ const AuthForm = () => {
         }
 
         if(variant === 'LOGIN'){
+            
             signIn("credentials", {
                 ...data,
                 redirect: false
