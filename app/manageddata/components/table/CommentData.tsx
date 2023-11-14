@@ -5,6 +5,10 @@ import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataComments } from "../configdata";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import useManageddata from "@/app/hooks/useMannageddata";
 
 interface Props{
     comments?: any;
@@ -16,8 +20,10 @@ function CommentData({
     comments
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataComments(comments);
     const [query, setQuery] = useState('');
+    const {mutate: mutateComment} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -26,6 +32,19 @@ function CommentData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (comment: any) => {
+
+        axios.delete(`/api/comments/${comment?.id}`)
+            .then(() => {
+                mutateComment();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Comment has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -49,9 +68,9 @@ function CommentData({
                     <div className='w-full flex items-center justify-center gap-x-5'>
                         <div>
                             <Popconfirm
-                                title="Delete the epic"
-                                description="Are you sure to delete this epic?"
-                                onConfirm={() => {}}
+                                title="Delete the comment"
+                                description="Are you sure to delete this comment?"
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

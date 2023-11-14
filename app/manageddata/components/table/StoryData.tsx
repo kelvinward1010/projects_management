@@ -6,6 +6,10 @@ import { useState } from "react";
 import { configDataStorys } from "../configdata";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import { optionsStatus } from "@/app/config/options";
+import useManageddata from "@/app/hooks/useMannageddata";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Props{
     storys?: any;
@@ -17,8 +21,10 @@ function StoryData({
     storys
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataStorys(storys);
     const [query, setQuery] = useState('');
+    const {mutate: mutateStory} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -27,6 +33,19 @@ function StoryData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (story: any) => {
+
+        axios.delete(`/api/storys/${story?.id}`)
+            .then(() => {
+                mutateStory();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Story has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -73,7 +92,7 @@ function StoryData({
                             <Popconfirm
                                 title="Delete the story"
                                 description="Are you sure to delete this story?"
-                                onConfirm={() => {}}
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

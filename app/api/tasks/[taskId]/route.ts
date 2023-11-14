@@ -81,11 +81,6 @@ export async function DELETE(
     { params }: { params: IParams }
 ) {
     try {
-        const currentUser = await getCurrentUser();
-
-        if (!currentUser?.id) {
-            return NextResponse.json(null);
-        }
 
         const existingTask = await prisma.tasks.findUnique({
             where: {

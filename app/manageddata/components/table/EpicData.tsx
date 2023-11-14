@@ -6,6 +6,10 @@ import { useState } from "react";
 import { configDataEpics } from "../configdata";
 import { optionsStatus } from "@/app/config/options";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import axios from "axios";
+import toast from "react-hot-toast";
+import useManageddata from "@/app/hooks/useMannageddata";
+import { useRouter } from "next/navigation";
 
 interface Props{
     epics?: any;
@@ -17,8 +21,10 @@ function EpicData({
     epics
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataEpics(epics);
     const [query, setQuery] = useState('');
+    const {mutate: mutateEpic} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -27,6 +33,19 @@ function EpicData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (epic: any) => {
+
+        axios.delete(`/api/epics/${epic?.id}`)
+            .then(() => {
+                mutateEpic();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Epic has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -73,7 +92,7 @@ function EpicData({
                             <Popconfirm
                                 title="Delete the epic"
                                 description="Are you sure to delete this epic?"
-                                onConfirm={() => {}}
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

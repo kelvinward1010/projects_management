@@ -5,6 +5,10 @@ import { configDataProjects } from "../configdata";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import * as _ from "lodash/fp";
 import { useState } from "react";
+import axios from "axios";
+import useManageddata from "@/app/hooks/useMannageddata";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface Props{
     projects?: any;
@@ -16,8 +20,10 @@ function ProjectData({
     projects
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataProjects(projects);
     const [query, setQuery] = useState('');
+    const {mutate: mutateProject} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -26,6 +32,19 @@ function ProjectData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (project: any) => {
+
+        axios.delete(`/api/projects/${project?.id}`)
+            .then(() => {
+                mutateProject();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Project has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -48,7 +67,7 @@ function ProjectData({
                 return (
                     <div>
                         {record?.users?.map((user: any) =>(
-                            <Text className='line-clamp-1'>{user?.name}</Text>
+                            <Text key={user?.id} className='line-clamp-1'>{user?.name}</Text>
                         ))}
                     </div>
                 )
@@ -65,7 +84,7 @@ function ProjectData({
                             <Popconfirm
                                 title="Delete the project"
                                 description="Are you sure to delete this project?"
-                                onConfirm={() => {}}
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

@@ -38,3 +38,30 @@ export async function POST(
         return new NextResponse('Error', { status: 500 });
     }
 }
+
+export async function DELETE(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const existingNoti= await prisma.notification.findUnique({
+            where: {
+                id: params?.notificationId
+            },
+        });
+
+        if (!existingNoti) {
+            return new NextResponse('Invalid ID', { status: 400 });
+        }
+
+        const deletedNoti = await prisma.notification.deleteMany({
+            where: {
+                id: params?.notificationId
+            },
+        });
+
+        return NextResponse.json(deletedNoti)
+    } catch (error) {
+        return NextResponse.json(null);
+    }
+}

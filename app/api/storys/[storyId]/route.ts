@@ -79,12 +79,6 @@ export async function DELETE(
     { params }: { params: IParams }
 ) {
     try {
-        const currentUser = await getCurrentUser();
-
-        if (!currentUser?.id) {
-            return NextResponse.json(null);
-        }
-
         const existingStory = await prisma.storys.findUnique({
             where: {
                 id: params?.storyId

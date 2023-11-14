@@ -6,6 +6,10 @@ import { useState } from "react";
 import { configDataTasks } from "../configdata";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import { optionsStatus } from "@/app/config/options";
+import useManageddata from "@/app/hooks/useMannageddata";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Props{
     tasks?: any;
@@ -17,8 +21,10 @@ function TaskData({
     tasks
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataTasks(tasks);
     const [query, setQuery] = useState('');
+    const {mutate: mutateTask} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -27,6 +33,19 @@ function TaskData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (task: any) => {
+
+        axios.delete(`/api/tasks/${task?.id}`)
+            .then(() => {
+                mutateTask();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Task has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -73,7 +92,7 @@ function TaskData({
                             <Popconfirm
                                 title="Delete the task"
                                 description="Are you sure to delete this task?"
-                                onConfirm={() => {}}
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

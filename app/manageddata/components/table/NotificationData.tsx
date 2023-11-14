@@ -5,6 +5,10 @@ import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataNotifications } from "../configdata";
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import useManageddata from "@/app/hooks/useMannageddata";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Props{
     notifications?: any;
@@ -16,8 +20,10 @@ function NotificationData({
     notifications
 }:Props) {
 
+    const router = useRouter();
     const dataconfig = configDataNotifications(notifications);
     const [query, setQuery] = useState('');
+    const {mutate: mutateNoti} = useManageddata();
 
     const dataSelect = _.flow(
         _.filter(
@@ -26,6 +32,19 @@ function NotificationData({
             (query ?? "") === "",
         ),
     )(dataconfig);
+
+    const handleDelete = (noti: any) => {
+
+        axios.delete(`/api/notifications/${noti?.id}`)
+            .then(() => {
+                mutateNoti();
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Notification has been deleted!')
+            })
+    };
 
     const columns: TableColumnType<any>[] = [
         {
@@ -55,9 +74,9 @@ function NotificationData({
                     <div className='w-full flex items-center justify-center gap-x-5'>
                         <div>
                             <Popconfirm
-                                title="Delete the story"
-                                description="Are you sure to delete this story?"
-                                onConfirm={() => {}}
+                                title="Delete the notification"
+                                description="Are you sure to delete this notification?"
+                                onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'

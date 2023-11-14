@@ -75,9 +75,6 @@ export async function DELETE(
         const deletedProject = await prisma.projects.deleteMany({
             where: {
                 id: params?.projectId,
-                userIds: {
-                    hasSome: [currentUser.id]
-                },
             },
         });
 
