@@ -1,77 +1,89 @@
 "use client"
 
-import { Input, Modal, Popconfirm, Table, TableColumnType, Typography } from "antd";
-import { configDataProjects } from "../configdata";
-import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
-import * as _ from "lodash/fp";
-import { useState } from "react";
-import axios from "axios";
-import useManageddata from "@/app/hooks/useMannageddata";
-import toast from "react-hot-toast";
+import { Avatar, Input, Popconfirm, Table, TableColumnType, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import BodyEditProject from "../modal/BodyEditProject";
-import CreateProject from "../modal/CreateProject";
+import { configDataUsers } from "../configdata";
+import { useState } from "react";
+import useUsers from "@/app/hooks/useUsers";
+import * as _ from "lodash/fp";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import BodyEditUser from "../modal/BodyEditUser";
+import axios from "axios";
+import toast from "react-hot-toast";
+import CreateUser from "../modal/CreateUser";
 
 interface Props{
-    projects?: any;
+    users?: any;
 }
 
 const {Title, Text} = Typography;
 
-function ProjectData({
-    projects
+function UserData({
+    users
 }:Props) {
 
     const router = useRouter();
-    const dataconfig = configDataProjects(projects);
+    const dataconfig = configDataUsers(users);
     const [query, setQuery] = useState('');
-    const {mutate: mutateProject} = useManageddata();
-    const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
+    const {mutate: mutateUser} = useUsers();
 
     const dataSelect = _.flow(
         _.filter(
           (item: any) =>
-            item?.name_pj?.includes(query) ||
+            item?.name?.includes(query) ||
+            item?.name_id?.includes(query) ||
+            item?.id?.includes(query) ||
+            item?.email?.includes(query) ||
             (query ?? "") === "",
         ),
     )(dataconfig);
 
-    const handleDelete = (project: any) => {
+    const handleDelete = (user: any) => {
 
-        axios.delete(`/api/projects/${project?.id}`)
+        axios.delete(`/api/users/${user?.id}`)
             .then(() => {
-                mutateProject();
+                mutateUser();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                toast.success('Project has been deleted!')
+                toast.success('User has been deleted!')
             })
     };
 
     const columns: TableColumnType<any>[] = [
         {
+            title: 'User Id',
+            dataIndex: 'id',
+            key: 'id',
+            render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
+        },
+        {
             title: 'Name',
-            dataIndex: 'name_pj',
-            key: 'name_pj',
+            dataIndex: 'name',
+            key: 'name',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By UserId',
-            dataIndex: 'createdByWho',
-            key: 'createdByWho',
+            title: 'Name ID',
+            dataIndex: 'name_id',
+            key: 'name_id',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Members',
-            dataIndex: 'users',
-            key: 'users',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
+        },
+        {
+            title: 'Avatar',
+            dataIndex: 'image',
+            key: 'image',
             render: (_: any, record: any) => {
                 return (
                     <div>
-                        {record?.users?.map((user: any) =>(
-                            <Text key={user?.id} className='line-clamp-1'>{user?.name}</Text>
-                        ))}
+                        <Avatar src={record?.image || record?.profileImage || '/images/placeholder.jpg'} />
                     </div>
                 )
             },
@@ -85,23 +97,21 @@ function ProjectData({
                     <div className='w-full flex items-center justify-center gap-x-5'>
                         <div>
                             <Popconfirm
-                                title="Delete the project"
-                                description="Are you sure to delete this project?"
+                                title="Delete the user"
+                                description="Are you sure to delete this user?"
                                 onConfirm={() => handleDelete(record)}
                                 okText="Yes"
                                 cancelText="No"
                                 className='popconfirm'
                             >
-                                <DeleteOutlined 
+                                <DeleteOutlined
                                     className='cursor-pointer text-xl' 
                                     style={{color:'red'}}
                                 />
                             </Popconfirm>
                         </div>
                         <div>
-                            <BodyEditProject 
-                                project={record}
-                            />
+                            <BodyEditUser user={record} />
                         </div>
                     </div>
                 )
@@ -110,12 +120,12 @@ function ProjectData({
     ]
 
     return (
-        <div className="w-full h-fit">
+        <div className="w-full h-fit mt-5">
             <div className="w-full flex justify-between items-center">
                 <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                     <Text className="text-white">Search</Text>
                     <Input
-                        placeholder="Name..." 
+                        placeholder="Name, Id, name Id, email..." 
                         onChange={(e) => setQuery(e.target.value)}
                         suffix={
                         <SearchOutlined
@@ -124,7 +134,7 @@ function ProjectData({
                         }
                     />
                 </div>
-                <CreateProject />
+                <CreateUser />
             </div>
             <Table
                 bordered
@@ -139,4 +149,4 @@ function ProjectData({
     )
 }
 
-export default ProjectData
+export default UserData

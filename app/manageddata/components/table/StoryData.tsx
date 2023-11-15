@@ -119,7 +119,7 @@ function StoryData({
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input
-                    placeholder="Name..." 
+                    placeholder="Name, description..." 
                     onChange={(e) => setQuery(e.target.value)}
                     suffix={
                     <SearchOutlined

@@ -1,11 +1,10 @@
 "use client"
 
-import { Input, Popconfirm, Select, Table, TableColumnType, Typography } from "antd";
+import { Input, Popconfirm, Table, TableColumnType, Typography } from "antd";
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataEpics } from "../configdata";
-import { optionsStatus } from "@/app/config/options";
-import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useManageddata from "@/app/hooks/useMannageddata";

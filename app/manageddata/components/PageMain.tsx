@@ -9,12 +9,14 @@ import TaskData from './table/TaskData';
 import NotificationData from './table/NotificationData';
 import CommentData from './table/CommentData';
 import { Collapse, Typography } from 'antd';
+import useUsers from '@/app/hooks/useUsers';
+import UserData from './table/UserData';
 
 const {Title, Text} = Typography;
 
 function PageMain() {
     const data = useManageddata()?.data;
-    
+    const dataUsers = useUsers()?.data;
     return (
         <div className='w-full h-full p-2'>
             <Header />
@@ -26,7 +28,23 @@ function PageMain() {
                         {
                             key: '1',
                             label: <>
-                                <Title level={5}>1. Projects</Title>
+                                <Title level={5}>1. Users</Title>
+                            </>,
+                            children: <>
+                                <UserData users={dataUsers}/>
+                            </>,
+                        },
+                    ]}
+                    className="mt-5 w-full fix_collap"
+                />
+                <Collapse
+                    collapsible="header"
+                    accordion
+                    items={[
+                        {
+                            key: '2',
+                            label: <>
+                                <Title level={5}>2. Projects</Title>
                             </>,
                             children: <>
                                 <ProjectData projects={data?.projects}/>
@@ -40,9 +58,9 @@ function PageMain() {
                     accordion
                     items={[
                         {
-                            key: '2',
+                            key: '3',
                             label: <>
-                                <Title level={5}>2. Epics</Title>
+                                <Title level={5}>3. Epics</Title>
                             </>,
                             children: <>
                                 <EpicData epics={data?.epics}/>
@@ -56,9 +74,9 @@ function PageMain() {
                     accordion
                     items={[
                         {
-                            key: '3',
+                            key: '4',
                             label: <>
-                                <Title level={5}>3. Storys</Title>
+                                <Title level={5}>4. Storys</Title>
                             </>,
                             children: <>
                                 <StoryData storys={data?.storys}/>
@@ -72,9 +90,9 @@ function PageMain() {
                     accordion
                     items={[
                         {
-                            key: '4',
+                            key: '5',
                             label: <>
-                                <Title level={5}>4. Tasks</Title>
+                                <Title level={5}>5. Tasks</Title>
                             </>,
                             children: <>
                                 <TaskData tasks={data?.tasks}/>
@@ -88,9 +106,9 @@ function PageMain() {
                     accordion
                     items={[
                         {
-                            key: '5',
+                            key: '6',
                             label: <>
-                                <Title level={5}>5. Notifications</Title>
+                                <Title level={5}>6. Notifications</Title>
                             </>,
                             children: <>
                                 <NotificationData notifications={data?.notifications}/>
@@ -104,9 +122,9 @@ function PageMain() {
                     accordion
                     items={[
                         {
-                            key: '6',
+                            key: '7',
                             label: <>
-                                <Title level={5}>6. Comments</Title>
+                                <Title level={5}>7. Comments</Title>
                             </>,
                             children: <>
                                 <CommentData comments={data?.comments}/>

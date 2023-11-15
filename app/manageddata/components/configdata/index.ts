@@ -98,3 +98,18 @@ export const configDataComments = (arr: any) => {
     }) ?? [];
     return dataEnd;
 }
+
+export const configDataUsers = (arr: any) => {
+    const dataEnd = arr?.map((item: any) => {
+        return ({
+            key: item?.id,
+            id: item?.id,
+            name: item?.name,
+            name_id: item?.name_Id,
+            image: item?.image,
+            email: item?.email,
+            profileImage: item?.profileImage
+        })
+    }) ?? [];
+    return dataEnd;
+}

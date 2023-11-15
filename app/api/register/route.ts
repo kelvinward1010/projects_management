@@ -11,6 +11,7 @@ export async function POST(
         email,
         name,
         name_Id,
+        image,
         password
     } = body;
 
@@ -21,7 +22,8 @@ export async function POST(
             email,
             name,
             name_Id,
-            hashedPassword
+            hashedPassword,
+            image
         }
     });
 

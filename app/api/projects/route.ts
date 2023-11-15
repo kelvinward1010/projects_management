@@ -13,7 +13,9 @@ export async function POST(
             userId,
             members,
             title,
-            isGroup
+            isGroup,
+            isAdminCreate,
+            assignedTo,
         } = body;
 
         if (!currentUser?.id || !currentUser?.email) {
@@ -22,6 +24,41 @@ export async function POST(
 
         if (!title) {
             return new NextResponse('Invalid data', { status: 400 });
+        }
+
+        if(isAdminCreate && members?.length >=2){
+            console.log("oj")
+            const newProject = await prisma.projects.create({
+                data: {
+                    title,
+                    isAdminCreate,
+                    createdByWho: assignedTo,
+                    users: {
+                        connect: [
+                            ...members.map((member: { value: string }) => ({
+                                id: member.value
+                            })),
+                        ]
+                    }
+                },
+                include: {
+                    users: true,
+                }
+            });
+
+            members?.forEach(async(member: any) => {
+                await prisma.notification.create({
+                    data: {
+                        title: `Project notification`,
+                        descNoti: `${currentUser?.name} has created a new project and added you to inside!`,
+                        userId: member?.value,
+                        whocreatedId: currentUser?.id,
+                        projectId: newProject?.id
+                    },
+                });
+            });
+
+            return NextResponse.json(newProject);
         }
         
         if (isGroup && members?.length >=2) {

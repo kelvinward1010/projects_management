@@ -71,6 +71,7 @@ model Projects {
   status          String?
   createdAt       DateTime @default(now())
   isGroup         Boolean?
+  isAdminCreate   Boolean?
 
   epicIds         String[] @db.ObjectId
   epics           Epics[]

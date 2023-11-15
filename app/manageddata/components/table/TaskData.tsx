@@ -4,8 +4,7 @@ import { Input, Popconfirm, Select, Table, TableColumnType, Typography } from "a
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataTasks } from "../configdata";
-import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
-import { optionsStatus } from "@/app/config/options";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import useManageddata from "@/app/hooks/useMannageddata";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -109,7 +108,7 @@ function TaskData({
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input
-                    placeholder="Name..." 
+                    placeholder="Name, description..." 
                     onChange={(e) => setQuery(e.target.value)}
                     suffix={
                     <SearchOutlined

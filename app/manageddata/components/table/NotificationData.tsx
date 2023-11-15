@@ -20,7 +20,7 @@ const {Title, Text} = Typography;
 function NotificationData({
     notifications
 }:Props) {
-
+    
     const router = useRouter();
     const dataconfig = configDataNotifications(notifications);
     const [query, setQuery] = useState('');
