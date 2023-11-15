@@ -42,6 +42,7 @@ model User {
   scheduleConversation ScheduleConversations[]
   notifications Notification[]
   addStatus AddStatus[]
+  reply Reply[]
 }
 
 model Account {
@@ -177,6 +178,21 @@ model Comment {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   task Tasks? @relation(fields: [taskId], references: [id], onDelete: Cascade)
   story Storys? @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  reply Reply[]
+}
+
+model Reply {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  content            String?
+  image              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  userId             String @db.ObjectId
+  commentId          String? @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 model ScheduleConversations {

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import useTask from '@/app/hooks/useTask';
+import FormReply from './FormReply';
 
 const { Title, Text } = Typography;
 
@@ -32,6 +33,7 @@ function CommentItem({
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
     const {mutate: mutateCmt} = useTask(comment?.taskId as string)
+    const [isModalOpenReplyComment, setIsModalOpenReplyComment] = useState(false);
 
     const getUser = useUser(comment?.userId as string);
     const user = getUser?.data;
@@ -159,6 +161,31 @@ function CommentItem({
                             alt="Image Comment"
                         />}
                     </div>
+                </Row>
+                <Row className='px-28'>
+                    <button 
+                        className='
+                            w-20
+                            h-[25px]
+                            bg-sky-700
+                            text-white
+                            flex
+                            items-center
+                            justify-center
+                            rounded-md
+                            shadow-lg
+                        ' 
+                        onClick={() => setIsModalOpenReplyComment(!isModalOpenReplyComment)}
+                    >
+                        {isModalOpenReplyComment === true ? 'Unreply' : 'Reply'}
+                    </button>
+                    {isModalOpenReplyComment && 
+                        <FormReply
+                            comment={comment}
+                            currentUser={currentUser}
+                            onClose={() => setIsModalOpenReplyComment(false)}
+                        />
+                    }
                 </Row>
             </div>
         </>
