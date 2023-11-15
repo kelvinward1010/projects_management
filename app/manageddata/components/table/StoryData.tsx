@@ -4,12 +4,13 @@ import { Input, Popconfirm, Select, Table, TableColumnType, Typography } from "a
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataStorys } from "../configdata";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { optionsStatus } from "@/app/config/options";
 import useManageddata from "@/app/hooks/useMannageddata";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BodyEditStory from "../modal/BodyEditStory";
 
 interface Props{
     storys?: any;
@@ -55,29 +56,28 @@ function StoryData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
+            title: 'Description',
+            dataIndex: 'desc_st',
+            key: 'desc_st',
+            render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
+        },
+        {
+            title: 'Created By UserId',
             dataIndex: 'userId_st',
             key: 'userId_st',
-            render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
+            render: (_: any, record: any) => {
+                return (
+                    <Text className='line-clamp-1'>{record?.userId_st}</Text>
+                )
+            },
         },
         {
             title: 'Status',
             dataIndex: 'status_st',
             key: 'status_st',
-            width: '15%',
             render: (_: any, record: any) => {
-                const style = record?.status_st === 'Done' ? 'green' : record?.status_st === 'Improgress' ? 'blue' : 'black';
-
                 return (
-                    <Select
-                        onChange={(e) => {}}
-                        options={[
-                            ...optionsStatus,
-                        ]}
-                        value={record?.status_st}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
+                    <Text className='line-clamp-1'>{record?.status_st}</Text>
                 )
             },
         },
@@ -103,6 +103,11 @@ function StoryData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditStory
+                                story={record}
+                            />
+                        </div>
                     </div>
                 )
             },
@@ -110,8 +115,7 @@ function StoryData({
     ]
 
     return (
-        <div className="w-full h-fit mt-5">
-            <Title level={5}>3. Storys</Title>
+        <div className="w-full h-fit">
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

@@ -15,7 +15,6 @@ import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
 import SelectConFig from '@/app/components/inputs/SelectConFig';
 import Button from '@/app/components/buttons/Button';
-import useNotifications from '@/app/hooks/useNotifications';
 
 interface Props {
     isOpen?: boolean;
@@ -36,6 +35,7 @@ const CreateModal: React.FC<Props> = ({
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: {
             errors,
         }
@@ -60,6 +60,7 @@ const CreateModal: React.FC<Props> = ({
                 .then(() => {
                     router.refresh();
                     onClose();
+                    reset();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -75,6 +76,7 @@ const CreateModal: React.FC<Props> = ({
                 .then(() => {
                     router.refresh();
                     onClose();
+                    reset();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {

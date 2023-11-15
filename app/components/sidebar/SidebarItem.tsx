@@ -17,6 +17,7 @@ interface SidebarItemProps {
     alert?: boolean;
     iconNoti: IconType;
     iconAdmin: IconType;
+    iconLogout: IconType;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -25,7 +26,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     onClick,
     active,
     iconNoti: IconNoti,
-    iconAdmin: IconAdmin
+    iconAdmin: IconAdmin,
+    iconLogout: IconLogout,
 }) => {
 
     const router = useRouter();
@@ -55,7 +57,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
     return (
         <div className="flex flex-row items-center">
-            {Icon && <div className="
+            {Icon && currentUser?.isAdmin === null && <div className="
                     relative
                     hidden 
                     lg:flex 
@@ -72,6 +74,27 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 key={label}
             >
                     <Icon size={24} style={{color: `${active ? "teal" : "black"}`}} />
+                <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
+                    {label}
+                </p>
+            </div>}
+            {IconLogout  && <div className="
+                    relative
+                    hidden 
+                    lg:flex 
+                    items-row 
+                    gap-4 
+                    p-4 
+                    rounded-full 
+                    hover:bg-slate-300 
+                    hover:bg-opacity-10 
+                    cursor-pointer
+                    items-center
+                "
+                onClick={handleClick}
+                key={label}
+            >
+                    <IconLogout size={24} style={{color: `${active ? "teal" : "black"}`}} />
                 <p style={{color: `${active ? "teal" : "black"}`}} className="hidden lg:block text-lg">
                     {label}
                 </p>

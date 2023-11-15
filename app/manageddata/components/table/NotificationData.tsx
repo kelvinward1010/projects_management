@@ -4,11 +4,12 @@ import { Input, Popconfirm, Table, TableColumnType, Typography } from "antd";
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataNotifications } from "../configdata";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import useManageddata from "@/app/hooks/useMannageddata";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BodyEditNotification from "../modal/BodyEditNotification";
 
 interface Props{
     notifications?: any;
@@ -60,7 +61,7 @@ function NotificationData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
+            title: 'Created By UserId',
             dataIndex: 'userId_Noti',
             key: 'userId_Noti',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
@@ -87,6 +88,9 @@ function NotificationData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditNotification notification={record}/>
+                        </div>
                     </div>
                 )
             },
@@ -94,8 +98,7 @@ function NotificationData({
     ]
 
     return (
-        <div className="w-full h-fit mt-5">
-            <Title level={5}>5. Notifications</Title>
+        <div className="w-full h-fit">
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

@@ -109,3 +109,12 @@ body {
 .text-internal label{
   color: white !important;
 }
+
+.fix_collap .ant-collapse{
+  border: none !important;
+}
+
+.fix_collap .ant-collapse-item{
+  border: 2px solid teal !important;
+  border-radius: 2px;
+}

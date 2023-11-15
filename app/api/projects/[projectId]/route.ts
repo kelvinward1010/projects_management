@@ -29,7 +29,16 @@ export async function DELETE(
                     include: {
                         creator: true,
                         seen: true,
-                        storys: true
+                        storys: {
+                            include: {
+                                tasks: {
+                                    include: {
+                                        comments: true,
+                                    }
+                                },
+                                comments: true
+                            }
+                        }
                     }
                 },
                 scheduleConversation: true,
@@ -67,7 +76,18 @@ export async function DELETE(
                     id: epic?.id
                 },
                 include: {
-                    project: true
+                    project: true,
+                    creator: true,
+                    storys: {
+                        include: {
+                            tasks: {
+                                include: {
+                                    comments: true,
+                                }
+                            },
+                            comments: true
+                        }
+                    }
                 }
             })
         })

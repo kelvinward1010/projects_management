@@ -1,14 +1,15 @@
 "use client"
 
-import { Input, Popconfirm, Table, TableColumnType, Typography } from "antd";
+import { Input, Modal, Popconfirm, Table, TableColumnType, Typography } from "antd";
 import { configDataProjects } from "../configdata";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import axios from "axios";
 import useManageddata from "@/app/hooks/useMannageddata";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import BodyEditProject from "../modal/BodyEditProject";
 
 interface Props{
     projects?: any;
@@ -24,6 +25,7 @@ function ProjectData({
     const dataconfig = configDataProjects(projects);
     const [query, setQuery] = useState('');
     const {mutate: mutateProject} = useManageddata();
+    const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
 
     const dataSelect = _.flow(
         _.filter(
@@ -54,7 +56,7 @@ function ProjectData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
+            title: 'Created By UserId',
             dataIndex: 'createdByWho',
             key: 'createdByWho',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
@@ -95,6 +97,11 @@ function ProjectData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditProject 
+                                project={record}
+                            />
+                        </div>
                     </div>
                 )
             },
@@ -102,8 +109,7 @@ function ProjectData({
     ]
 
     return (
-        <div className="w-full h-fit mt-5">
-            <Title level={5}>1. Projects</Title>
+        <div className="w-full h-fit">
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

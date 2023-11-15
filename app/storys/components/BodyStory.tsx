@@ -66,8 +66,6 @@ function BodyStory({
         }
     });
 
-    const assignto = watch('assignto');
-
     const handleChangeOptionStatus = (data: any) => {
         setIsLoading(true);
         setValue('status', data)

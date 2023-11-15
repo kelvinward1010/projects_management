@@ -44,20 +44,34 @@ export async function DELETE(
     { params }: { params: IParams }
 ) {
     try {
-        const existingProject = await prisma.epics.findUnique({
+        const existingEpic = await prisma.epics.findUnique({
             where: {
                 id: params?.epicId
             },
         });
 
-        if (!existingProject) {
+        if (!existingEpic) {
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        const deletedEpic = await prisma.epics.deleteMany({
+        const deletedEpic = await prisma.epics.delete({
             where: {
                 id: params?.epicId
             },
+            include: {
+                project: true,
+                creator: true,
+                storys: {
+                    include: {
+                        tasks: {
+                            include: {
+                                comments: true,
+                            }
+                        },
+                        comments: true
+                    }
+                }
+            }
         });
 
         return NextResponse.json(deletedEpic)

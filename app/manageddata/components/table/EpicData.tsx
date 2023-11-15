@@ -5,11 +5,12 @@ import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataEpics } from "../configdata";
 import { optionsStatus } from "@/app/config/options";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useManageddata from "@/app/hooks/useMannageddata";
 import { useRouter } from "next/navigation";
+import BodyEditEpic from "../modal/BodyEditEpic";
 
 interface Props{
     epics?: any;
@@ -55,7 +56,7 @@ function EpicData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
+            title: 'Created By UserId',
             dataIndex: 'creatorId',
             key: 'creatorId',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
@@ -64,20 +65,9 @@ function EpicData({
             title: 'Status',
             dataIndex: 'status_ep',
             key: 'status_ep',
-            width: '15%',
             render: (_: any, record: any) => {
-                const style = record?.status_ep === 'Done' ? 'green' : record?.status_ep === 'Improgress' ? 'blue' : 'black';
-
                 return (
-                    <Select
-                        onChange={(e) => {}}
-                        options={[
-                            ...optionsStatus,
-                        ]}
-                        value={record?.status_ep}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
+                    <Text className='line-clamp-1'>{record?.status_ep}</Text>
                 )
             },
         },
@@ -103,6 +93,11 @@ function EpicData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditEpic
+                                epic={record}
+                            />
+                        </div>
                     </div>
                 )
             },
@@ -110,8 +105,7 @@ function EpicData({
     ]
 
     return (
-        <div className="w-full h-fit mt-5">
-            <Title level={5}>2. Epics</Title>
+        <div className="w-full h-fit">
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

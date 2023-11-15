@@ -10,6 +10,7 @@ import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Button from "@/app/components/buttons/Button";
+import useCurrentUser from "@/app/hooks/useCurrentUser";
 
 type Variant = 'LOGIN' | 'REGISTER'
 
@@ -21,11 +22,15 @@ const AuthForm = () => {
     const [variant, setVariant] = useState<Variant>('REGISTER');
     const [isLoading, setIsloading] = useState(false);
 
+    const checkAdmin = useCurrentUser()?.data;
+
     useEffect(() => {
-        if (session?.status === 'authenticated') {
-          router.push('/home')
+        if (session?.status === 'authenticated' && checkAdmin?.isAdmin === null) {
+            router.push('/home')
+        }else if (session?.status === 'authenticated' && checkAdmin?.isAdmin === true) {
+            router.push('/manageddata')
         }
-    }, [session?.status, router]);
+    }, [session?.status, router, checkAdmin]);
 
     const handleToggleVariant = useCallback(() => {
         variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN');
@@ -61,7 +66,7 @@ const AuthForm = () => {
                     }
             
                     if (callback?.ok) {
-                        router.push('/')
+                        toast.success("Logged In")
                     }
                 })
                 .catch(() => toast.error("Something went wrong!"))
@@ -81,7 +86,6 @@ const AuthForm = () => {
 
                     if (callback?.ok && !callback?.error) {
                         toast.success("Logged In")
-                        router.push('/home')
                     }
                 })
                 .finally(() => setIsloading(false))
@@ -98,7 +102,6 @@ const AuthForm = () => {
                 }
 
                 if (callback?.ok) {
-                    router.push('/home')
                     toast.success("Logged In")
                 }
             })

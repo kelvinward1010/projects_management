@@ -26,6 +26,7 @@ const Sidebar: React.FC<Props> = ({ user }) => {
                                 active={item.active}
                                 iconNoti={item?.isNoti}
                                 iconAdmin={item?.isAdmin}
+                                iconLogout={item?.iconLogout}
                             />
                         ))}
                     </div>

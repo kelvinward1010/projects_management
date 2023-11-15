@@ -39,9 +39,13 @@ export const configDataStorys = (arr: any) => {
             id: item?.id,
             name_st: item?.title,
             status_st: item?.status,
+            desc_st: item?.desc,
             userId_st: item?.userId,
             completionTime: item?.completionTime,
             image_st: item?.image,
+            assignto_st: item?.assignto,
+            timework_st: item?.timework,
+            projectId: item?.projectId
         })
     }) ?? [];
     return dataEnd;
@@ -54,10 +58,14 @@ export const configDataTasks = (arr: any) => {
             key: item?.id,
             id: item?.id,
             name_task: item?.title,
+            desc_task: item?.desc,
             status_task: item?.status,
             userId_task: item?.userId,
             completionTime: item?.completionTime,
             image_task: item?.image,
+            assignto_task: item?.assignto,
+            timework_task: item?.timework,
+            projectId: item?.projectId
         })
     }) ?? [];
     return dataEnd;

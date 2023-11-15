@@ -92,10 +92,13 @@ export async function DELETE(
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        const deletedTask = await prisma.tasks.deleteMany({
+        const deletedTask = await prisma.tasks.delete({
             where: {
                 id: params?.taskId
             },
+            include: {
+                comments: true,
+            }
         });
 
         return NextResponse.json(deletedTask)

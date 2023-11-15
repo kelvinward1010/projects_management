@@ -36,6 +36,7 @@ const CreateEpicModel: React.FC<Props> = ({
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: {
             errors,
         }
@@ -58,6 +59,7 @@ const CreateEpicModel: React.FC<Props> = ({
             .then(() => {
                 router.refresh();
                 onClose();
+                reset();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import useTask from '@/app/hooks/useTask';
 
 const { Title, Text } = Typography;
 
@@ -30,6 +31,7 @@ function CommentItem({
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
+    const {mutate: mutateCmt} = useTask(comment?.taskId as string)
 
     const getUser = useUser(comment?.userId as string);
     const user = getUser?.data;
@@ -51,6 +53,7 @@ function CommentItem({
             ...data,
         })
             .then(() => {
+                mutateCmt();
                 router.refresh();
                 setIsModalOpenEditComment(false);
             })

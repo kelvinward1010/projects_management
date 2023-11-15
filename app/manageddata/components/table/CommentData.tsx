@@ -4,11 +4,12 @@ import { Input, Popconfirm, Table, TableColumnType, Typography } from "antd";
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataComments } from "../configdata";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useManageddata from "@/app/hooks/useMannageddata";
+import BodyEditComment from "../modal/BodyEditComment";
 
 interface Props{
     comments?: any;
@@ -54,7 +55,7 @@ function CommentData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
+            title: 'Created By UserId',
             dataIndex: 'userId_cmt',
             key: 'userId_cmt',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
@@ -81,6 +82,9 @@ function CommentData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditComment comment={record}/>
+                        </div>
                     </div>
                 )
             },
@@ -88,8 +92,7 @@ function CommentData({
     ]
 
     return (
-        <div className="w-full h-fit mt-5">
-            <Title level={5}>6. Comments</Title>
+        <div className="w-full h-fit">
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

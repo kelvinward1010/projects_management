@@ -4,12 +4,13 @@ import { Input, Popconfirm, Select, Table, TableColumnType, Typography } from "a
 import * as _ from "lodash/fp";
 import { useState } from "react";
 import { configDataTasks } from "../configdata";
-import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { optionsStatus } from "@/app/config/options";
 import useManageddata from "@/app/hooks/useMannageddata";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BodyEditTask from "../modal/BodyEditTask";
 
 interface Props{
     tasks?: any;
@@ -55,29 +56,18 @@ function TaskData({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Created By',
-            dataIndex: 'userId_task',
-            key: 'userId_task',
+            title: 'Description',
+            dataIndex: 'desc_task',
+            key: 'desc_task',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
-            title: 'Status',
-            dataIndex: 'status_task',
-            key: 'status_task',
-            width: '15%',
+            title: 'Created By UserId',
+            dataIndex: 'userId_task',
+            key: 'userId_task',
             render: (_: any, record: any) => {
-                const style = record?.status_task === 'Done' ? 'green' : record?.status_task === 'Improgress' ? 'blue' : 'black';
-
                 return (
-                    <Select
-                        onChange={(e) => {}}
-                        options={[
-                            ...optionsStatus,
-                        ]}
-                        value={record?.status_task}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
+                    <Text className='line-clamp-1'>{record?.userId_task}</Text>
                 )
             },
         },
@@ -103,6 +93,11 @@ function TaskData({
                                 />
                             </Popconfirm>
                         </div>
+                        <div>
+                            <BodyEditTask 
+                                task={record}
+                            />
+                        </div>
                     </div>
                 )
             },
@@ -111,7 +106,6 @@ function TaskData({
 
     return (
         <div className="w-full h-fit mt-5">
-            <Title level={5}>4. Tasks</Title>
             <div className="ml-5 w-[400px] my-2 bg-teal-600 text-white p-2 rounded">
                 <Text className="text-white">Search</Text>
                 <Input

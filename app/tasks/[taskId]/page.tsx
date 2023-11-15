@@ -1,8 +1,7 @@
-"use client"
-import useTask from "@/app/hooks/useTask"
 import HeaderTask from "../components/HeaderTask"
 import BodyTask from "../components/BodyTask"
-import useCurrentUser from "@/app/hooks/useCurrentUser"
+import getCurrentUser from "@/app/actions/getCurrentUser"
+import getTaskById from "@/app/actions/getTaskById"
 
 
 
@@ -10,16 +9,16 @@ interface Props {
     taskId: string
 }
 
-const StoryPage = ({ params }: { params: Props }) => {
+const TaskPage = async ({ params }: { params: Props }) => {
     const taskId = params.taskId
-    const task = useTask(taskId)
-    const currentUser = useCurrentUser()?.data
+    const task = await getTaskById(taskId);
+    const currentUser = await getCurrentUser();
     return (
         <div>
-            <HeaderTask task={task?.data}  />
-            <BodyTask task={task?.data} currentUser={currentUser} />
+            <HeaderTask task={task}  />
+            <BodyTask task={task} currentUser={currentUser} />
         </div>
     )
 }
 
-export default StoryPage
+export default TaskPage

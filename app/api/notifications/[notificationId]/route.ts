@@ -15,6 +15,8 @@ export async function POST(
         const body = await request.json();
         const {
             isSeen,
+            title,
+            desc
         } = body;
 
         const currentUser = await getCurrentUser();
@@ -29,6 +31,8 @@ export async function POST(
             },
             data: {
                 isSeen: isSeen,
+                title: title,
+                descNoti: desc,
             },
         });
 
