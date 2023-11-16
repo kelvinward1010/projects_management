@@ -12,7 +12,11 @@ const getProjectById = async (
                 users: true,
                 epics: {
                     include: {
-                        storys: true
+                        storys: {
+                            include: {
+                                tasks: true
+                            }
+                        }
                     }
                 },
                 scheduleConversation: true,

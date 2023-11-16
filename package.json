@@ -33,6 +33,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
     "react-select": "^5.7.7",
+    "react-spinners": "^0.13.8",
     "recoil": "^0.7.7",
     "swr": "^2.2.4",
     "zustand": "^4.4.4"
@@ -41,7 +42,7 @@
     "@types/bcrypt": "^5.0.1",
     "@types/lodash": "^4.14.200",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.2.37",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^8",

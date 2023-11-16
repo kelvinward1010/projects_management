@@ -1,11 +1,14 @@
 import { takeLengthStatus } from '@/app/equation';
 import PieChart from '@ant-design/plots/es/components/pie';
+import { Typography } from 'antd';
+
+const {Title} = Typography;
 
 interface Props {
     project?: any;
 }
 
-function ChartPieProject({
+function ChartPieEpicsInProject({
     project
 }:Props) {
 
@@ -62,8 +65,11 @@ function ChartPieProject({
         ],
     };
     return (
-        <PieChart {...config} />
+        <div>
+            <Title level={5}>1. Epics</Title>
+            <PieChart {...config} />
+        </div>
     )
 }
 
-export default ChartPieProject
+export default ChartPieEpicsInProject

@@ -163,3 +163,49 @@ export async function POST(
         return new NextResponse('Internal Error', { status: 500 });
     }
 }
+
+
+export async function GET(
+    request: Request
+) {
+    try {
+
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser?.id || !currentUser?.email) {
+            return new NextResponse('Unauthorized', { status: 401 });
+        }
+
+        const projects  = await prisma.projects.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            where: {
+                userIds: {
+                    has: currentUser.id
+                }
+            },
+            include: {
+                users: true,
+                epics: {
+                    include: {
+                        creator: true,
+                        seen: true,
+                        storys: {
+                            include: {
+                                tasks: true,
+                            }
+                        }
+                    }
+                },
+                scheduleConversation: true,
+                addStatus: true,
+            }
+        });
+
+        return NextResponse.json(projects);
+    } catch (error) {
+        console.log(error, 'ERROR_MESSAGES')
+        return new NextResponse('Error', { status: 500 });
+    }
+}

@@ -3,13 +3,14 @@ import { PartitionOutlined, PieChartOutlined, SettingOutlined, UserSwitchOutline
 import { Dropdown, Modal, Typography } from 'antd';
 import React, { useState } from 'react'
 import { AiFillSchedule, AiOutlineDelete, AiOutlineIssuesClose } from 'react-icons/ai';
-import ChartPieProject from './charts/ChartPieProject';
+import ChartPieEpicsInProject from './charts/ChartPieEpicsInProject';
 import ScheduleProject from '../schedule/ScheduleProject';
 import BodyMembers from './BodyMembers';
 import BodyStorys from './BodyStorys';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
 import BodySettings from './BodySettings';
 import GetOut from './modals/GetOut';
+import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
 
 const { Title } = Typography;
 
@@ -75,7 +76,7 @@ function HeaderTop({
                 onClick={()=>setIsModalOpenChartPie(true)}
             >
                 <PieChartOutlined />
-                Chart
+                Chart Pie
             </button>
           </>,
           key: '1',
@@ -103,7 +104,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '2',
+            key: '3',
         },
         {
             label: <>
@@ -128,7 +129,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '3',
+            key: '4',
         },
         {
             label: <>
@@ -153,7 +154,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '4',
+            key: '5',
         },
     ];
 
@@ -183,7 +184,8 @@ function HeaderTop({
                 className="modal-edit"
                 width={1400}
             >
-                <ChartPieProject project={project}/>
+                <ChartPieEpicsInProject project={project}/>
+                <ChartPieStorysInProject project={project} />
             </Modal>
             <Modal 
                 title={`Settings for project: ${project?.title}`} 
