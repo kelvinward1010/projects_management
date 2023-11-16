@@ -1,19 +1,11 @@
-"use client"
+import React from 'react'
 import ProjectList from './components/ProjectList'
-import useOtherUsers from '../hooks/useOtherUsers';
-import useGetAllProject from '../hooks/useGetAllProject';
-import LoadingModal from '../components/LoadingModal';
+import getUsers from '../actions/getUsers'
+import getProjects from '../actions/getProjects';
 
-function ProjectsPage() {
-
-  const {data: users, isLoading: loadingUsers} =  useOtherUsers();
-  const {data: projects, isLoading: loadingProjects} =  useGetAllProject();
-
-  if(loadingProjects && loadingUsers) {
-    return (
-      <LoadingModal />
-    )
-  }
+async function ProjectsPage() {
+  const users = await getUsers();
+  const projects = await getProjects();
   
   return (
     <div>
