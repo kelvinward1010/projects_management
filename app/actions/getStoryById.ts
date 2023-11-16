@@ -10,7 +10,11 @@ const getStoryById = async (
             },
             include: {
                 tasks: true,
-                comments: true,
+                comments: {
+                    include: {
+                        reply: true
+                    }
+                },
             }
         });
 

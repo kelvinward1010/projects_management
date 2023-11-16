@@ -1,4 +1,3 @@
-import getCurrentUser from "../actions/getCurrentUser";
 import Header from "./Header";
 import Sidebar from "./sidebar/Sidebar";
 

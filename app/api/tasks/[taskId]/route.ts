@@ -117,7 +117,11 @@ export async function GET(
                 id: params?.taskId
             },
             include: {
-                comments: true
+                comments: {
+                    include: {
+                        reply: true
+                    }
+                }
             }
         });
 

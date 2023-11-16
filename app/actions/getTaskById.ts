@@ -9,7 +9,11 @@ const getTaskById = async (
                 id: taskId
             },
             include: {
-                comments: true,
+                comments: {
+                    include: {
+                        reply: true
+                    }
+                },
             }
         });
 

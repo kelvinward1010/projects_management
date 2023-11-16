@@ -1,6 +1,6 @@
 import Avatar from '@/app/components/Avatar';
 import { Comment, User } from '@prisma/client';
-import { Col, Flex, Modal, Row, Typography } from 'antd'
+import { Col, Dropdown, Flex, Modal, Row, Typography } from 'antd'
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai';
@@ -12,13 +12,16 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import FormReply from './FormReply';
+import ReplyItem from './ReplyItem';
+import { DashOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
 
 interface Props {
     currentUser?: User;
-    comment?: Comment;
+    comment?: any;
 }
 
 function CommentItem({
@@ -30,6 +33,9 @@ function CommentItem({
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
+    const [isModalOpenReplyComment, setIsModalOpenReplyComment] = useState(false);
+    const [isCheckReplyComment, setIsCheckReplyComment] = useState(false);
+    const [openActions, setOpenActions] = useState(false);
 
     const getUser = useUser(comment?.userId as string);
     const user = getUser?.data;
@@ -61,6 +67,52 @@ function CommentItem({
             });
     }
 
+    const items = [
+        {
+          label: <>
+            <button 
+                className='
+                    w-20
+                    h-9
+                    bg-teal-600
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-md
+                    shadow-lg
+                ' 
+                onClick={()=>setIsModalOpenEditComment(true)}
+            >
+                <AiFillEdit />
+            </button>
+          </>,
+          key: '0',
+        },
+        {
+          label: <>
+            <button 
+                className='
+                    w-20
+                    h-9
+                    bg-red-600
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-md
+                    shadow-lg
+                ' 
+                onClick={handleOpenModalDelete}
+            >
+                <AiOutlineDelete />
+            </button>
+          </>,
+          key: '1',
+        },
+    ]
 
     return (
         <>
@@ -69,6 +121,19 @@ function CommentItem({
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}
             />
+            <Modal 
+                title="Edit comment" 
+                open={isModalOpenEditComment} 
+                onCancel={() => setIsModalOpenEditComment(false)}
+                className="modal-edit"
+                width={1200}
+            >
+                <BodyModalEditComment 
+                    currentUser={currentUser}
+                    onSubmit={onSubmit}
+                    comment={comment}
+                />
+            </Modal>
             <div className='w-full border-2 border-t-teal-600 py-2'>
                 <Row justify={'space-between'} className='w-full px-10'>
                     <Col span={19}>
@@ -92,12 +157,17 @@ function CommentItem({
                         </Flex>
                     </Col>
                     {currentUser?.id === comment?.userId ? (<Col span={2} className='flex justify-center items-center gap-2'>
-                        <>
-                            <button 
+                        <Dropdown
+                            menu={{
+                            items,
+                            }}
+                            trigger={['click']}
+                        >
+                            <DashOutlined
                                 className='
-                                    w-20
-                                    h-9
-                                    bg-teal-600
+                                    w-12
+                                    h-5
+                                    bg-sky-700
                                     text-white
                                     flex
                                     items-center
@@ -105,42 +175,12 @@ function CommentItem({
                                     gap-2
                                     rounded-md
                                     shadow-lg
-                                ' 
-                                onClick={()=>setIsModalOpenEditComment(true)}
-                            >
-                                <AiFillEdit />
-                            </button>
-                            <Modal 
-                                title="Edit Story Epic" 
-                                open={isModalOpenEditComment} 
-                                onCancel={() => setIsModalOpenEditComment(false)}
-                                className="modal-edit"
-                                width={1200}
-                            >
-                                <BodyModalEditComment 
-                                    currentUser={currentUser}
-                                    onSubmit={onSubmit}
-                                    comment={comment}
-                                />
-                            </Modal>
-                        </>
-                        <button 
-                            className='
-                                w-20
-                                h-9
-                                bg-red-600
-                                text-white
-                                flex
-                                items-center
-                                justify-center
-                                gap-2
-                                rounded-md
-                                shadow-lg
-                            ' 
-                            onClick={handleOpenModalDelete}
-                        >
-                            <AiOutlineDelete />
-                        </button>
+                                    text-xl 
+                                    cursor-pointer
+                                '
+                                onClick={() => setOpenActions(!openActions)}
+                            />
+                        </Dropdown>
                     </Col>) : null}
                 </Row>
                 <Row>
@@ -157,6 +197,62 @@ function CommentItem({
                         />}
                     </div>
                 </Row>
+                <Row className='px-28'>
+                    <div className='flex flex-start gap-x-3 items-center'>
+                        <button 
+                            className='
+                                w-20
+                                h-[25px]
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                            ' 
+                            onClick={() => setIsModalOpenReplyComment(!isModalOpenReplyComment)}
+                        >
+                            {isModalOpenReplyComment === true ? 'Unreply' : 'Reply'}
+                        </button>
+                        {comment?.reply?.length !== 0 ? <button 
+                            className='
+                                w-20
+                                h-[25px]
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                            ' 
+                            onClick={() => setIsCheckReplyComment(!isCheckReplyComment)}
+                        >
+                            {isCheckReplyComment === true ? 'Uncheck' : 'Check reply'}
+                        </button>: null}
+                    </div>
+                    {isModalOpenReplyComment && 
+                        <FormReply
+                            comment={comment}
+                            currentUser={currentUser}
+                            onClose={() => setIsModalOpenReplyComment(false)}
+                        />
+                    }
+                </Row>
+                <div className='px-20 mt-5'>
+                    {comment?.reply?.length !== 0 && isCheckReplyComment == true ? (
+                        <>
+                            {comment?.reply?.slice().reverse()?.map((item: any) => (
+                                <ReplyItem
+                                    key={item?.id}
+                                    reply={item}
+                                    currentUser={currentUser}
+                                />
+                            ))}
+                        </>
+                    ): null}
+                </div>
             </div>
         </>
     )

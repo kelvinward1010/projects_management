@@ -21,16 +21,7 @@ const AuthForm = () => {
 
     const [variant, setVariant] = useState<Variant>('REGISTER');
     const [isLoading, setIsloading] = useState(false);
-
-    const checkAdmin = useCurrentUser()?.data;
-
-    useEffect(() => {
-        if (session?.status === 'authenticated' && checkAdmin?.isAdmin === null) {
-            router.push('/home')
-        }else if (session?.status === 'authenticated' && checkAdmin?.isAdmin === true) {
-            router.push('/manageddata')
-        }
-    }, [session?.status, router, checkAdmin]);
+    const [isOk, setIsOk] = useState(false);
 
     const handleToggleVariant = useCallback(() => {
         variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN');
@@ -70,7 +61,10 @@ const AuthForm = () => {
                     }
                 })
                 .catch(() => toast.error("Something went wrong!"))
-                .finally(() => setIsloading(false));
+                .finally(() => {
+                    setIsloading(false)
+                    setIsOk(true)
+                });
         }
 
         if(variant === 'LOGIN'){
@@ -88,7 +82,10 @@ const AuthForm = () => {
                         toast.success("Logged In")
                     }
                 })
-                .finally(() => setIsloading(false))
+                .finally(() => {
+                    setIsloading(false)
+                    setIsOk(true)
+                })
         }
     }
 
@@ -105,8 +102,23 @@ const AuthForm = () => {
                     toast.success("Logged In")
                 }
             })
-            .finally(() => setIsloading(false))
+            .finally(() => {
+                setIsloading(false)
+                setIsOk(true);
+            })
     }
+
+    const checkAdmin = useCurrentUser()?.data;
+
+    useEffect(() => {
+        if (session?.status === 'authenticated' && checkAdmin?.isAdmin === null) {
+            router.push('/home');
+            router?.refresh();
+        }else if (session?.status === 'authenticated' && checkAdmin?.isAdmin === true) {
+            router.push('/manageddata');
+            router?.refresh();
+        }
+    }, [session?.status, router, checkAdmin]);
 
     return (
         <div

@@ -4,6 +4,7 @@ import './globals.css'
 import ToasterContext from './context/ToasterContext'
 import getCurrentUser from './actions/getCurrentUser'
 import AuthContext from './context/AuthContext'
+import LayoutHome from './components/LayoutHome'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,15 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthContext>
           <ToasterContext />
-          {children}
+          {currentUser === null ? (
+            <>
+              {children}
+            </>
+          ):(
+            <LayoutHome>
+              {children}
+            </LayoutHome>
+          )}
         </AuthContext>
       </body>
     </html>

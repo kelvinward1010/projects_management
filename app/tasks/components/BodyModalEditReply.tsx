@@ -1,51 +1,44 @@
 "use client"
-
-import Avatar from "@/app/components/Avatar";
-import { User } from "@prisma/client";
-import { Col, Flex, Row, Typography } from "antd";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import InputComment from "./InputComment";
-import Button from "@/app/components/buttons/Button";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { CldUploadButton } from "next-cloudinary";
-import { AiFillPicture } from "react-icons/ai";
-import Image from "next/image";
-import useUser from "@/app/hooks/useUser";
-
-const { Title, Text } = Typography;
+import React, { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form';
+import { Col, Flex, Row, Typography } from 'antd';
+import Button from '@/app/components/buttons/Button';
+import Avatar from '@/app/components/Avatar';
+import InputComment from './InputComment';
+import { User } from '@prisma/client';
+import { CldUploadButton } from 'next-cloudinary';
+import { AiFillPicture } from 'react-icons/ai';
+import Image from 'next/image';
 
 interface Props {
     currentUser?: User;
-    comment?: any;
-    onClose: () => void;
+    onSubmit: (data: any) => void;
+    reply?: any;
+
 }
 
-function FormReply({
-    currentUser,
-    comment,
-    onClose
+const { Text } = Typography;
+
+function BodyModalEditReply({
+    onSubmit,
+    reply,
+    currentUser
 }:Props) {
 
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const user = useUser(comment?.userId)?.data
 
     const {
         register,
         handleSubmit,
         setValue,
         watch,
-        reset,
         formState: {
             errors,
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            content: '',
-            image: '',
+            content: reply?.content,
+            image: reply?.image,
         }
     });
 
@@ -57,27 +50,28 @@ function FormReply({
         });
     }
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
-        axios.post('/api/replys', {
-            ...data,
-            commentId: comment?.id
-        })
-            .then(() => {
-                router.refresh();
-                reset();
-            })
-            .catch(() => toast.error('Something went wrong!'))
-            .finally(() => {
-                setIsLoading(false);
-                toast.success('Reply has been created!')
-            });
-    }
-    
     return (
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-            <div className="mt-2 flex justify-between items-center">
+            <Flex justify={'flex-start'} align={'center'}>
+                <Avatar 
+                    user={currentUser as User} 
+                    image={currentUser?.profileImage || currentUser?.image}
+                />
+                <div className="flex justify-center gap-2 items-center ml-4">
+                    <Text className="text-xl font-semibold">{currentUser?.name}</Text>
+                    <Text className="text-xl">@{currentUser?.name_Id}</Text>
+                </div>
+            </Flex>
+            <div className="my-5 pl-10">
+                {image && <Image
+                    width="200"
+                    height="150"
+                    className="rounded"
+                    src={image}
+                    alt="Image Comment"
+                />}
+            </div>
+            <div className="mt-5 flex justify-between items-center">
                 <div className="mt-2 flex items-center gap-x-3">
                     <CldUploadButton
                         options={{ maxFiles: 1 }}
@@ -100,11 +94,8 @@ function FormReply({
             <Row className='mt-5'>
                 <Col span={24}>
                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                        <Button disabled={isLoading} onClick={onClose} type="button" danger>
-                            Cancel
-                        </Button>
                         <Button disabled={isLoading} type="submit">
-                            Reply
+                            Update Reply
                         </Button>
                     </Flex>
                 </Col>
@@ -113,4 +104,4 @@ function FormReply({
     )
 }
 
-export default FormReply
+export default BodyModalEditReply

@@ -49,10 +49,13 @@ export async function DELETE(
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
-        const deletedComment = await prisma.comment.deleteMany({
+        const deletedComment = await prisma.comment.delete({
             where: {
                 id: params?.commentId
             },
+            include: {
+                reply: true
+            }
         });
 
         return NextResponse.json(deletedComment)
