@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
+import './globals.css';
+import 'reactflow/dist/style.css';
 import ToasterContext from './context/ToasterContext'
 import getCurrentUser from './actions/getCurrentUser'
 import AuthContext from './context/AuthContext'

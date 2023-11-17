@@ -20,6 +20,7 @@
     "axios": "^1.5.1",
     "bcrypt": "^5.1.1",
     "clsx": "^2.0.0",
+    "dagre": "^0.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
@@ -34,12 +35,14 @@
     "react-icons": "^4.11.0",
     "react-select": "^5.7.7",
     "react-spinners": "^0.13.8",
+    "reactflow": "^11.10.1",
     "recoil": "^0.7.7",
     "swr": "^2.2.4",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.1",
+    "@types/dagre": "^0.7.52",
     "@types/lodash": "^4.14.200",
     "@types/node": "^20",
     "@types/react": "^18.2.37",

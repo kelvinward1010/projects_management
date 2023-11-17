@@ -118,3 +118,8 @@ body {
   border: 2px solid teal !important;
   border-radius: 2px;
 }
+
+.fix-css.ant-progress-line{
+  margin-inline-end: 0 !important;
+  margin-bottom: 0 !important;
+}

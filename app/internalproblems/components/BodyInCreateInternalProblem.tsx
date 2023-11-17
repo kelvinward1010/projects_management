@@ -67,8 +67,6 @@ function BodyInCreateInternalProblem({
     const assignto = watch('assignto');
     const image = watch('image');
     const timework = watch('timework');
-    const desc = watch('desc');
-    const textTitle = watch('title');
     const type = watch('type');
 
     const handleUpload = (result: any) => {
@@ -76,9 +74,10 @@ function BodyInCreateInternalProblem({
             shouldValidate: true
         });
     }
-
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        (status && desc && textTitle && timework && assignto) ?
+        if(timework.length === 0){
+            return toast.error('You need to complete the information!')
+        }else{
             axios.post('/api/tasks', {
                 ...data,
                 storyId: story?.id,
@@ -94,7 +93,8 @@ function BodyInCreateInternalProblem({
                 setIsLoading(false);
                 toast.success('Internal problem in story has been created!')
             })
-        : toast.error('You need to complete the information!')
+        }
+        
     }
 
     const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listInternal;

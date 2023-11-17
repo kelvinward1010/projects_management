@@ -11,6 +11,7 @@ import useCurrentUser from '@/app/hooks/useCurrentUser';
 import BodySettings from './BodySettings';
 import GetOut from './modals/GetOut';
 import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
+import MainPage from './reactflow/MainPage';
 
 const { Title } = Typography;
 
@@ -28,6 +29,7 @@ function HeaderTop({
     const currentUser = useCurrentUser().data;
     const [openActions, setOpenActions] = useState(false);
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
+    const [isModalOpenFlows, setIsModalOpenFlows] = useState(false);
     const [isModalOpenSchedule, setIsModalOpenSchedule] = useState(false);
     const [isModalOpenAllStorys, setIsModalOpenAllStorys] = useState(false);
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
@@ -81,6 +83,29 @@ function HeaderTop({
           </>,
           key: '1',
         },
+        {
+            label: <>
+              <button
+                  className="
+                      w-48
+                      h-9
+                      bg-sky-700
+                      text-white
+                      flex
+                      items-center
+                      justify-center
+                      gap-2
+                      rounded-md
+                      shadow-lg
+                  "
+                  onClick={()=>setIsModalOpenFlows(true)}
+              >
+                  <PieChartOutlined />
+                  Flows Graph
+              </button>
+            </>,
+            key: '2',
+          },
         {
             label: <>
                 {currentUser?.id !== project?.createdByWho ? (  
@@ -186,6 +211,16 @@ function HeaderTop({
             >
                 <ChartPieEpicsInProject project={project}/>
                 <ChartPieStorysInProject project={project} />
+            </Modal>
+            <Modal
+                title="Flows"
+                open={isModalOpenFlows} 
+                onCancel={() => setIsModalOpenFlows(false)}
+                className="modal-edit"
+                width={1700}
+                style={{top: "5px"}}
+            >
+                <MainPage project={project}/>
             </Modal>
             <Modal 
                 title={`Settings for project: ${project?.title}`} 
