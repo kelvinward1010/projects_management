@@ -68,7 +68,7 @@ const nodeTypes = {
 function MainPage({
     project
 }:Props) {
-    const {dataNodes: nodesData, dataEdges: edgesData} = DataCustomFromProject(project)
+    const {dataNodes: nodesData, dataEdges: edgesData} = DataCustomFromProject(project);
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         nodesData,
         edgesData
@@ -97,6 +97,7 @@ function MainPage({
         [nodes, edges]
     );
     DataCustomFromProject(project)
+    
     return (
         <ReactFlowProvider>
             {nodesData && <div style={{height: '900px', width: '100%'}}>

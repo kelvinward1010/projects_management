@@ -120,7 +120,11 @@ export async function GET(
                     include: {
                         creator: true,
                         seen: true,
-                        storys: true,
+                        storys: {
+                            include: {
+                                tasks: true
+                            }
+                        },
                     }
                 },
                 scheduleConversation: true,

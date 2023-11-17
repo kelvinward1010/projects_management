@@ -12,6 +12,8 @@ import BodySettings from './BodySettings';
 import GetOut from './modals/GetOut';
 import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
 import MainPage from './reactflow/MainPage';
+import useProject from '@/app/hooks/useProject';
+import { useRouter } from 'next/navigation';
 
 const { Title } = Typography;
 
@@ -26,6 +28,7 @@ function HeaderTop({
     hadleDelete,
     project
 }: Props) {
+    const router = useRouter()
     const currentUser = useCurrentUser().data;
     const [openActions, setOpenActions] = useState(false);
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
@@ -35,6 +38,7 @@ function HeaderTop({
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
     const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
     const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
+    const {data: projectToRefesh, mutate: mutatePj} = useProject(project?.id)
     
     const items = [
         {
@@ -98,7 +102,9 @@ function HeaderTop({
                       rounded-md
                       shadow-lg
                   "
-                  onClick={()=>setIsModalOpenFlows(true)}
+                  onClick={()=> {
+                    setIsModalOpenFlows(true)
+                }}
               >
                   <PieChartOutlined />
                   Flows Graph
@@ -220,7 +226,7 @@ function HeaderTop({
                 width={1700}
                 style={{top: "5px"}}
             >
-                <MainPage project={project}/>
+                <MainPage project={projectToRefesh}/>
             </Modal>
             <Modal 
                 title={`Settings for project: ${project?.title}`} 
