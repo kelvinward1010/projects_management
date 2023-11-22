@@ -97,7 +97,8 @@ function EpicItem({ epic }: Props) {
                 my-2
                 h-16
                 w-full
-                border-2
+                border
+                rounded
                 border-teal-600
                 cursor-pointer
                 hover:bg-teal-500

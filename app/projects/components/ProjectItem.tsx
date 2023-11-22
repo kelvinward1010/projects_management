@@ -1,12 +1,12 @@
 "use client"
 import { workCompletionRateFormula } from '@/app/equation'
 import useUser from '@/app/hooks/useUser';
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Flex, Row, Tooltip, Typography } from 'antd';
+import { NotificationFilled, UserOutlined } from '@ant-design/icons';
+import { Avatar, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
@@ -20,6 +20,7 @@ function ProjectItem({project}:Props) {
     const router = useRouter();
     const userCreatedProject = useUser(project?.createdByWho)?.data;
     const usersInProject = project?.users;
+    const [openNoti,setOpenNoti] = useState(false)
 
     const handleGoToProject = (ev: any) => {
         ev.preventDefault();
@@ -63,17 +64,46 @@ function ProjectItem({project}:Props) {
         return formatDistanceToNowStrict(new Date(project?.createdAt));
     }, [project?.createdAt])
 
+    const items = [
+        {
+          label: <>
+            <div className='w-64 h-[400px]'>
+                Notification
+            </div>
+          </>,
+          key: '0',
+        },
+    ]
+
     const FormGotoInside = () => {
         return(
-            <AiOutlineDoubleRight 
-                className='
-                    text-2xl
-                    font-medium
-                    cursor-pointer
-                    text-white
-                '
-                onClick={(e: any) => handleGoToProject(e)}
-            />
+            <div className='flex justify-between gap-x-2 items-center'>
+                <Dropdown
+                    menu={{
+                    items,
+                    }}
+                    trigger={['click']}
+                >
+                    <NotificationFilled 
+                        className='
+                            text-2xl
+                            font-medium
+                            cursor-pointer
+                            text-white
+                        '
+                        onClick={() => setOpenNoti(!openNoti)}
+                    />
+                </Dropdown>
+                <AiOutlineDoubleRight 
+                    className='
+                        text-2xl
+                        font-medium
+                        cursor-pointer
+                        text-white
+                    '
+                    onClick={(e: any) => handleGoToProject(e)}
+                />
+            </div>
         )
     }
 

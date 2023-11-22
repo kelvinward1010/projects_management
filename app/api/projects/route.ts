@@ -198,6 +198,7 @@ export async function GET(
                         }
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
                 addStatus: true,
             }

@@ -28,11 +28,12 @@ const getProjects = async () => {
                             include: {
                                 tasks: true,
                             }
-                        }
+                        },
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
-                addStatus: true,
+                addStatus: true
             }
         });
         return projects;

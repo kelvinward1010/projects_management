@@ -152,7 +152,7 @@ function BodyTask({
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
-                <Col span={16} className="border-2 border-teal-600">
+                <Col span={16} className="border border-teal-600">
                     <div>
                         <Row className="my-3" justify={'space-between'}>
                             <Col className="ml-4" span={14}>
@@ -216,7 +216,7 @@ function BodyTask({
                         </Row>
                     </div>
                 </Col>
-                <Col span={6} className="border-2 border-teal-600 p-5">
+                <Col span={6} className="border border-teal-600 p-5">
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Story created by:</span>
                         <Text>{user?.name}</Text>

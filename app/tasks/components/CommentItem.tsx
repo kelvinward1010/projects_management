@@ -137,7 +137,7 @@ function CommentItem({
                     comment={comment}
                 />
             </Modal>
-            <div className='w-full border-2 border-t-teal-600 py-2'>
+            <div className='w-full py-2'>
                 <Row justify={'space-between'} className='w-full px-10'>
                     <Col span={19}>
                         <Flex justify={'flex-start'} align={'center'}>
@@ -153,9 +153,9 @@ function CommentItem({
                                 />
                             )}
                             <div className="flex justify-center gap-2 items-center ml-4">
-                                <Text className="text-lg font-semibold">{user?.name}</Text>
-                                <Text className="text-lg underline underline-offset-1">@{user?.name_Id}</Text>
-                                <Text className="text-lg">{createdAt}</Text>
+                                <Text className="text-base font-semibold">{user?.name}</Text>
+                                <Text className="text-base underline underline-offset-1">@{user?.name_Id}</Text>
+                                <Text className="text-base">{createdAt}</Text>
                             </div>
                         </Flex>
                     </Col>

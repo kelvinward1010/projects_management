@@ -62,8 +62,8 @@ const AuthForm = () => {
                 })
                 .catch(() => toast.error("Something went wrong!"))
                 .finally(() => {
-                    setIsloading(false)
                     setIsOk(true)
+                    setIsloading(false)
                 });
         }
 
@@ -83,8 +83,8 @@ const AuthForm = () => {
                     }
                 })
                 .finally(() => {
-                    setIsloading(false)
                     setIsOk(true)
+                    setIsloading(false)
                 })
         }
     }
@@ -103,13 +103,12 @@ const AuthForm = () => {
                 }
             })
             .finally(() => {
+                setIsOk(true)
                 setIsloading(false)
-                setIsOk(true);
             })
     }
 
     const checkAdmin = useCurrentUser()?.data;
-
     useEffect(() => {
         if (session?.status === 'authenticated' && checkAdmin?.isAdmin === null) {
             router.push('/home');

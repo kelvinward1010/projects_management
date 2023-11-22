@@ -19,6 +19,7 @@ const getProjectById = async (
                         }
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
                 addStatus: true,
             },

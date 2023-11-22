@@ -149,7 +149,7 @@ function BodyStory({
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
-                <Col span={14} className="border-2 border-teal-600">
+                <Col span={14} className="border border-teal-600">
                     <div>
                         <Row className="my-3" justify={'space-between'}>
                             <Col className="ml-4" span={14}>
@@ -204,7 +204,7 @@ function BodyStory({
                             </Text>
                         </div>
                         <Row>
-                            <Col span={24} className="border-2 border-t-teal-600 p-10">
+                            <Col span={24} className="border border-t-teal-600 p-10">
                                 <FormComment currentUser={currentUser} story={story}/>
                             </Col>
                             <Col span={24} className="my-5">
@@ -213,7 +213,7 @@ function BodyStory({
                         </Row>
                     </div>
                 </Col>
-                <Col span={9} className="border-2 border-teal-600 p-5">
+                <Col span={9} className="border border-teal-600 p-5">
                     <div className='flex gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium mr-2">Story created by:</span>
                         <Text>{user?.name}</Text>

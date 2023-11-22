@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Avatar from './Avatar'
 import getCurrentUser from '../actions/getCurrentUser';
 import SettingProfile from './SettingProfile';
 import { User } from '@prisma/client';
@@ -9,7 +8,7 @@ async function Header() {
     
     return (
         <>
-            <div className='sticky top-0 flex flex-col justify-between md:flex-row items-center p-5 border-2 border-b-teal-600'>
+            <div className='sticky top-0 flex flex-col justify-between md:flex-row items-center p-5 border border-b-teal-600'>
                 <div
                     className='
                     absolute

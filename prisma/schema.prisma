@@ -41,6 +41,7 @@ model User {
   comments        Comment[]
   scheduleConversation ScheduleConversations[]
   notifications Notification[]
+  notiProject NotiProject[]
   addStatus AddStatus[]
   reply Reply[]
 }
@@ -83,6 +84,7 @@ model Projects {
   scheduleConversationId         String[] @db.ObjectId
   scheduleConversation           ScheduleConversations[]
   addStatus AddStatus[]
+  notiProject NotiProject[]
 }
 
 model Epics {
@@ -222,4 +224,21 @@ model Notification {
   isSeen             Boolean?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model NotiProject {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId 
+  title              String
+  descNoti           String
+  userId             String @db.ObjectId
+  projectId          String? @db.ObjectId
+  epicId             String? @db.ObjectId
+  storyId            String? @db.ObjectId
+  taskId             String? @db.ObjectId
+  whocreatedId       String? @db.ObjectId
+  createdAt          DateTime @default(now())
+  isSeen             Boolean?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

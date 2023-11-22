@@ -41,6 +41,7 @@ export async function DELETE(
                         }
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
                 addStatus: true,
             }
@@ -127,6 +128,7 @@ export async function GET(
                         },
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
                 addStatus: true,
             }
@@ -184,6 +186,7 @@ export async function POST(
                         storys: true
                     }
                 },
+                notiProject: true,
                 scheduleConversation: true,
                 addStatus: true,
             }

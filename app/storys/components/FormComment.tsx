@@ -79,8 +79,8 @@ function FormComment({
                     image={currentUser?.profileImage || currentUser?.image}
                 />
                 <div className="flex justify-center gap-2 items-center ml-4">
-                    <Text className="text-xl font-semibold">{currentUser?.name}</Text>
-                    <Text className="text-xl">@{currentUser?.name_Id}</Text>
+                    <Text className="text-base font-semibold">{currentUser?.name}</Text>
+                    <Text className="text-base">@{currentUser?.name_Id}</Text>
                 </div>
             </Flex>
             <div className="my-5 pl-10">

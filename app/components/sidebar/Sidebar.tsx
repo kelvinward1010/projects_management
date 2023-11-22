@@ -13,7 +13,7 @@ const Sidebar: React.FC<Props> = ({ user }) => {
     const routes = useRoutes();
 
     return (
-        <div className="min-h-screen pl-3 border-2 border-r-teal-600">
+        <div className="min-h-screen pl-3 border border-r-teal-600">
             <div className="flex flex-col items-start">
                 <div className="lg:w-[230px]">
                     <div>
