@@ -27,7 +27,6 @@ export async function POST(
         }
 
         if(isAdminCreate && members?.length >=2){
-            console.log("oj")
             const newProject = await prisma.projects.create({
                 data: {
                     title,

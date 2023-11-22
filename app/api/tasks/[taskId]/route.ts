@@ -61,10 +61,20 @@ export async function POST(
             await prisma.notification.create({
                 data: {
                     title: `Task notification`,
-                    descNoti: `${currentUser?.name} assigned story "${task?.title}" to you!`,
+                    descNoti: `${currentUser?.name} assigned task "${task?.title}" to you!`,
                     userId: assignto,
                     whocreatedId: currentUser?.id,
                     taskId: task?.id
+                },
+            });
+            await prisma.notiProject.create({
+                data: {
+                    title: `Task notification`,
+                    descNoti: `${currentUser?.name} assigned task "${task?.title}" to you!`,
+                    userId: assignto,
+                    whocreatedId: currentUser?.id,
+                    storyId: task?.id,
+                    projectId: task?.projectId
                 },
             });
         }

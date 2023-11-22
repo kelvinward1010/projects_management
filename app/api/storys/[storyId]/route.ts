@@ -65,6 +65,16 @@ export async function POST(
                     storyId: story?.id
                 },
             });
+            await prisma.notiProject.create({
+                data: {
+                    title: `Story notification`,
+                    descNoti: `${currentUser?.name} assigned story "${story?.title}" to you!`,
+                    userId: assignto,
+                    whocreatedId: currentUser?.id,
+                    storyId: story?.id,
+                    projectId: story?.projectId
+                },
+            });
         }
 
         return NextResponse.json(updatedstory)
