@@ -60,7 +60,7 @@ export async function POST(
 
         if(scheduleConversation){
             existingProject?.userIds.forEach(async(userId) => {
-                await prisma.notification.create({
+                await prisma.notiProject.create({
                     data: {
                         title: `Schedule conversations notification`,
                         descNoti: `${currentUser?.name} has created a new schedule conversations in project: ${existingProject?.title}!`,

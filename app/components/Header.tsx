@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import getCurrentUser from '../actions/getCurrentUser';
 import SettingProfile from './SettingProfile';
 import { User } from '@prisma/client';
+import Avatar from './Avatar';
+import getCurrentUser from '../actions/getCurrentUser';
 
 async function Header() {
-    const currentUser  = await getCurrentUser();
+    
+    const currentUser = await getCurrentUser();
     
     return (
         <>
@@ -31,8 +32,13 @@ async function Header() {
                     font-medium 
                     text-4xl'
                 >Projects Management</h1>
-
-                <SettingProfile currentUser={currentUser as User}/>
+                <div className="flex flex-center items-center gap-x-2">
+                    <Avatar
+                        user={currentUser as User}   
+                        image={currentUser?.profileImage || currentUser?.image} 
+                    />
+                    <SettingProfile currentUser={currentUser as User}/>
+                </div>
             </div>
         </>
     )

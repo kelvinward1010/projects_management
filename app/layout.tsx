@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css';
 import 'reactflow/dist/style.css';
-import 'draft-js/dist/Draft.css';
 import ToasterContext from './context/ToasterContext'
 import getCurrentUser from './actions/getCurrentUser'
 import AuthContext from './context/AuthContext'
@@ -24,7 +23,7 @@ export default async function RootLayout({
   
   return (
     <html lang="en" suppressHydrationWarning={true} suppressContentEditableWarning={true}>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         <AuthContext>
           <ToasterContext />
           {currentUser === null ? (

@@ -49,8 +49,8 @@ const LoadingModal = () => {
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
                             <Dialog.Panel>
-                                <ClipLoader size={40} color="white" />
-                                <h1 className='text-white font-sans'>
+                                <ClipLoader size={40} color="black" />
+                                <h1 className='text-red-600 font-sans'>
                                     Loading...
                                 </h1>
                             </Dialog.Panel>

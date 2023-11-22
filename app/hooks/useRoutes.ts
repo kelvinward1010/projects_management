@@ -16,12 +16,6 @@ const useRoutes = () => {
             active: pathname === '/home'
         },
         {
-            label: 'Notifications',
-            onClick: () => router.push('/notifications'),
-            isNoti: AiTwotoneNotification,
-            active: pathname === '/notifications'
-        },
-        {
             label: 'Projects',
             onClick: () => router.push('/projects'),
             icon: AiFillReconciliation,

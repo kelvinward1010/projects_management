@@ -1,9 +1,17 @@
 import prisma from "@/app/libs/prismadb";
+import getCurrentUser from "./getCurrentUser";
+import { NextResponse } from "next/server";
 
 const getProjectById = async (
     projectId: string
 ) => {
     try {
+        const currentUser = await getCurrentUser();
+
+
+        if (!currentUser?.id || !currentUser?.email) {
+            return new NextResponse('Unauthorized', { status: 401 });
+        }
         const project = await prisma.projects.findUnique({
             where: {
                 id: projectId
@@ -19,7 +27,12 @@ const getProjectById = async (
                         }
                     }
                 },
-                notiProject: true,
+                notiProject: {
+                    where: {
+                        id: projectId,
+                        userId: currentUser?.id
+                    }
+                },
                 scheduleConversation: true,
                 addStatus: true,
             },

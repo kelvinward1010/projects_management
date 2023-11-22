@@ -16,7 +16,7 @@ function ProjectList({projects, users}:Props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModalCreate = () => setIsModalOpen(true);
-
+    
     return (
         <>
             <CreateModal

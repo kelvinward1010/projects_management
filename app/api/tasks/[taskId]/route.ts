@@ -58,15 +58,6 @@ export async function POST(
         }
 
         if(assignto !== task?.assignto && isAssign === true || assignto && isAssign === true){
-            await prisma.notification.create({
-                data: {
-                    title: `Task notification`,
-                    descNoti: `${currentUser?.name} assigned task "${task?.title}" to you!`,
-                    userId: assignto,
-                    whocreatedId: currentUser?.id,
-                    taskId: task?.id
-                },
-            });
             await prisma.notiProject.create({
                 data: {
                     title: `Task notification`,

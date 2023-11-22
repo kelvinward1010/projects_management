@@ -31,7 +31,11 @@ const getProjects = async () => {
                         },
                     }
                 },
-                notiProject: true,
+                notiProject: {
+                    where: {
+                        userId: currentUser?.id
+                    }
+                },
                 scheduleConversation: true,
                 addStatus: true
             }

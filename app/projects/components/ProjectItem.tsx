@@ -1,8 +1,8 @@
 "use client"
-import { workCompletionRateFormula } from '@/app/equation'
+import { takeDataNotiNotSeen, workCompletionRateFormula } from '@/app/equation'
 import useUser from '@/app/hooks/useUser';
 import { NotificationFilled, UserOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
+import { Avatar, Badge, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
@@ -21,6 +21,22 @@ function ProjectItem({project}:Props) {
     const userCreatedProject = useUser(project?.createdByWho)?.data;
     const usersInProject = project?.users;
     const [openNoti,setOpenNoti] = useState(false)
+    const [isSee, setIsSee] = useState(false);
+    const listNoti = project?.notiProject;
+
+    const notificationProjects = takeDataNotiNotSeen(listNoti);
+   
+    const handleNotiSeen = () => {
+        notificationProjects?.forEach((notificationProject) =>{
+            axios.post(`/api/notiprojects/${notificationProject?.id}`, {
+                isSeen: true,
+            })
+                .then(() => {
+                    router.refresh();
+                    setIsSee(true);
+                })
+        })
+    }
 
     const handleGoToProject = (ev: any) => {
         ev.preventDefault();
@@ -64,36 +80,25 @@ function ProjectItem({project}:Props) {
         return formatDistanceToNowStrict(new Date(project?.createdAt));
     }, [project?.createdAt])
 
-    const items = [
-        {
-          label: <>
-            <div className='w-64 h-[400px]'>
-                Notification
+    const items = listNoti?.length !== 0 ? listNoti?.slice(0,8)?.reverse().map((item: any) =>({
+        label: <>
+            <div className='w-full h-fit p-2 border border-teal-600 rounded mt-2'>
+                <Text className='w-full'>{item?.descNoti}</Text>
             </div>
-          </>,
-          key: '0',
-        },
-    ]
+        </>,
+        key: item?.id
+    })) : [{
+        label: <>
+            <div className='w-full h-[100px] flex justify-center items-center p-2 mt-2'>
+                <Text className='w-full'>Don't have any notifications</Text>
+            </div>
+        </>,
+        key: 0
+    }];
 
     const FormGotoInside = () => {
         return(
             <div className='flex justify-between gap-x-2 items-center'>
-                <Dropdown
-                    menu={{
-                    items,
-                    }}
-                    trigger={['click']}
-                >
-                    <NotificationFilled 
-                        className='
-                            text-2xl
-                            font-medium
-                            cursor-pointer
-                            text-white
-                        '
-                        onClick={() => setOpenNoti(!openNoti)}
-                    />
-                </Dropdown>
                 <AiOutlineDoubleRight 
                     className='
                         text-2xl
@@ -117,6 +122,33 @@ function ProjectItem({project}:Props) {
                 }}
                 className='cardproject'
             >
+                <Row justify={"start"}>
+                    <Col span={2}>
+                        <Dropdown
+                            menu={{
+                            items,
+                            }}
+                            trigger={['click']}
+                        >
+                            <Badge count={ isSee === true ? 0 : notificationProjects?.length}>
+                                <NotificationFilled 
+                                    className='
+                                        text-2xl
+                                        font-medium
+                                        cursor-pointer
+                                    '
+                                    onClick={() => {
+                                        setOpenNoti(!openNoti)
+                                        handleNotiSeen()
+                                    }}
+                                />
+                            </Badge>
+                        </Dropdown>
+                    </Col>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Notification:</Text>
+                    </Col>
+                </Row>
                 <Row justify={'space-between'}>
                     <Col span={10}>
                         <Text className={'font-medium'}>Percent of job completion:</Text>
