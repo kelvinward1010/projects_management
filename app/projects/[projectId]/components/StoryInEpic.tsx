@@ -8,7 +8,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
 import InputStory from '../input/InputStory';
-import TextareaStory from '../input/TextareaStory';
 import Image from 'next/image';
 import { CldUploadButton } from 'next-cloudinary';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -19,6 +18,7 @@ import HeaderInTask from './HeaderInEpic';
 import { takeDataAddStatus, totalWorkTime } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import StoryList from './StoryList';
+import ReactQuill from 'react-quill';
 
 
 interface Props {
@@ -76,6 +76,7 @@ function StoryInEpic({
     const timework = watch('timework');
     const desc = watch('desc');
     const textTitle = watch('title');
+    
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
@@ -213,14 +214,7 @@ function StoryInEpic({
                                 </Row>
                                 <Row className='mt-4'>
                                     <Col span={24}>
-                                        <TextareaStory
-                                            disabled={isLoading}
-                                            label="Description"
-                                            id="desc"
-                                            errors={errors}
-                                            required
-                                            register={register}
-                                        />
+                                        <ReactQuill theme="snow" onChange={(value) => setValue('desc', value)} />
                                     </Col>
                                 </Row>
                                 <Row className='mt-5'>

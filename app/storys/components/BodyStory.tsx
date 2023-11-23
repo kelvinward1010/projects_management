@@ -196,12 +196,13 @@ function BodyStory({
                                 src={story?.image}
                                 alt="Avatar"
                             />}
-                            <Text className="
+                            {/* <Text className="
                                 text-xl
                                 px-5
                             ">
                                 {story?.desc}
-                            </Text>
+                            </Text> */}
+                            <div dangerouslySetInnerHTML={{ __html: story?.desc }} />
                         </div>
                         <Row>
                             <Col span={24} className="border border-t-teal-600 p-10">
