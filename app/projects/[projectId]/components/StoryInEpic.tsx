@@ -19,6 +19,7 @@ import { takeDataAddStatus, totalWorkTime } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import StoryList from './StoryList';
 import ReactQuill from 'react-quill';
+import TextareaStory from '../input/TextareaStory';
 
 
 interface Props {
@@ -214,7 +215,15 @@ function StoryInEpic({
                                 </Row>
                                 <Row className='mt-4'>
                                     <Col span={24}>
-                                        <ReactQuill theme="snow" onChange={(value) => setValue('desc', value)} />
+                                        <TextareaStory
+                                            disabled={isLoading}
+                                            label="Description"
+                                            id="desc"
+                                            errors={errors}
+                                            required
+                                            register={register}
+                                        />
+                                        {/* <ReactQuill theme="snow" onChange={(value) => setValue('desc', value)} /> */}
                                     </Col>
                                 </Row>
                                 <Row className='mt-5'>
