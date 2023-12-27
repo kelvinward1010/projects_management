@@ -149,8 +149,12 @@ function BodyStory({
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
-                <Col span={14} className="border border-teal-600">
-                    <div>
+                <Col span={14}>
+                    <div style={{
+                            boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                            paddingTop: "10px",
+                            background: "white",
+                        }}>
                         <Row className="my-3" justify={'space-between'}>
                             <Col className="ml-4" span={14}>
                                 <Title level={3}>Description Story:</Title>
@@ -188,7 +192,9 @@ function BodyStory({
                                 </Modal>
                             </Col>
                         </Row>
-                        <div className="h-fit gap-2 p-10 w-full flex flex-col items-center-justify-center">
+                        <div 
+                            className="h-fit gap-2 p-10 w-full flex flex-col items-center-justify-center"
+                        >
                             {story?.image && <Image
                                 width="400"
                                 height="200"
@@ -196,16 +202,16 @@ function BodyStory({
                                 src={story?.image}
                                 alt="Avatar"
                             />}
-                            {/* <Text className="
+                            <Text className="
                                 text-xl
                                 px-5
                             ">
                                 {story?.desc}
-                            </Text> */}
-                            <div dangerouslySetInnerHTML={{ __html: story?.desc }} />
+                            </Text>
+                            {/* <div dangerouslySetInnerHTML={{ __html: story?.desc }} className="text-lg"/> */}
                         </div>
                         <Row>
-                            <Col span={24} className="border border-t-teal-600 p-10">
+                            <Col span={24} className="border border-y-teal-600 p-10">
                                 <FormComment currentUser={currentUser} story={story}/>
                             </Col>
                             <Col span={24} className="my-5">
@@ -272,12 +278,15 @@ function BodyStory({
                             </Text>
                         </div>
                         <div className="w-full h-[400px] mt-2 p-2 overflow-y-auto">
-                            {story?.tasks?.map((task: any) => (
+                            {story?.tasks?.length != 0 && story?.tasks?.map((task: any) => (
                                 <ItemInListStory
                                     task={task}
                                     key={task?.id}
                                 />
                             ))}
+                            {story?.tasks?.length == 0 && <div className="text-center">
+                                Don't have any Internal Problems
+                            </div>}
                         </div>
                     </Flex>
                 </Col>

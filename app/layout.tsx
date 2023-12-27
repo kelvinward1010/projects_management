@@ -24,7 +24,7 @@ export default async function RootLayout({
   
   return (
     <html lang="en" suppressHydrationWarning={true} suppressContentEditableWarning={true}>
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={inter.className} suppressHydrationWarning={true} suppressContentEditableWarning={true}>
         <AuthContext>
           <ToasterContext />
           {currentUser === null ? (

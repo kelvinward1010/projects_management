@@ -19,15 +19,11 @@ function SettingProfile({ currentUser }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenProfile, setIsOpenProfile] = useState(false);
     const [isOpenChangePassword, setIsOpenChangePassword] = useState(false);
-    const [isSeeNoti, setIsSeeNoti] = useState(false);
     const [openNoti,setOpenNoti] = useState(false)
     const notifications = useNotifications()?.data ?? [];
 
     const showDrawer = () => {
         setOpenNoti(true);
-    };
-    const onClose = () => {
-        setOpenNoti(false);
     };
 
     const items = [
@@ -92,7 +88,7 @@ function SettingProfile({ currentUser }: Props) {
                 width={700}
             >
                 <ChangePassword 
-                    onClose={() => setIsOpenChangePassword(false)} 
+                    onClose={setIsOpenChangePassword} 
                     currentUser={currentUser}
                 />
             </Modal>
@@ -116,7 +112,7 @@ function SettingProfile({ currentUser }: Props) {
                     <NotificationFilled />
                     Notification
                 </button>
-                <Drawer title="Notification" placement="right" onClose={onClose} open={openNoti}>
+                <Drawer title="Notification" placement="right" onClose={() => setOpenNoti(false)} open={openNoti}>
                     <div className='w-full h-full overflow-y-auto'>
                         {notifications?.slice(0,8)?.reverse()?.map((item: any) => (
                             <div key={item?.id} className='w-full h-fit p-2 border border-teal-600 rounded mt-2'>

@@ -137,8 +137,8 @@ function CommentItem({
                     comment={comment}
                 />
             </Modal>
-            <div className='w-full py-2'>
-                <Row justify={'space-between'} className='w-full px-10'>
+            <div className='w-full py-2' style={{boxShadow: "rgba(0, 0, 0, 0.15) 0 1.95px 0"}}>
+                <Row justify={'space-between'} className='w-full pl-20 pr-10'>
                     <Col span={19}>
                         <Flex justify={'flex-start'} align={'center'}>
                             {currentUser?.id === comment?.userId ? (
@@ -187,10 +187,10 @@ function CommentItem({
                     </Col>) : null}
                 </Row>
                 <Row>
-                    <Col span={24} className='px-28 py-2 text-lg'>
+                    <Col span={24} className='pr-10 py-2 text-lg px-36'>
                         {comment?.content}
                     </Col>
-                    <div className="my-2 px-28">
+                    <div className="my-2 px-36">
                         {comment?.image && <Image
                             width="200"
                             height="150"
@@ -200,7 +200,7 @@ function CommentItem({
                         />}
                     </div>
                 </Row>
-                <Row className='px-28'>
+                <Row className='px-36'>
                     <div className='flex flex-start gap-x-3 items-center'>
                         <button 
                             className='
@@ -243,7 +243,7 @@ function CommentItem({
                         />
                     }
                 </Row>
-                <div className='px-20 mt-5'>
+                <div className='px-28 mt-5'>
                     {comment?.reply?.length !== 0 && isCheckReplyComment == true ? (
                         <>
                             {comment?.reply?.slice().reverse()?.map((item: any) => (

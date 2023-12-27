@@ -6,7 +6,7 @@ import { Avatar, Badge, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } fr
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
@@ -66,7 +66,7 @@ function ProjectItem({project}:Props) {
                     router.refresh();
                 })
         }
-    },[completePrecent, unfinishedPercent, router])
+    },[completePrecent, unfinishedPercent, router, project?.id, currentDate])
 
     const style = () => {
         return completePrecent === 100 ? "green" : "red";

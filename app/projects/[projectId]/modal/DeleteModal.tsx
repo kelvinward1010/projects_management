@@ -41,7 +41,7 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
                 setIsLoading(false)
                 toast.success('Task has been deleted!')
             })
-    },[router, epicId, onClose]);
+    },[router, epicId, onClose, mutateProject()]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>

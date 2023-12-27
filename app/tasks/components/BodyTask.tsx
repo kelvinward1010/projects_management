@@ -152,8 +152,12 @@ function BodyTask({
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
-                <Col span={16} className="border border-teal-600">
-                    <div>
+                <Col span={16}>
+                    <div style={{
+                            boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                            paddingTop: "10px",
+                            background: "white",
+                        }}>
                         <Row className="my-3" justify={'space-between'}>
                             <Col className="ml-4" span={14}>
                                 <Title level={3}>Description Task:</Title>
@@ -205,9 +209,10 @@ function BodyTask({
                             ">
                                 {task?.desc}
                             </Text>
+                            {/* <div dangerouslySetInnerHTML={{ __html: task?.desc }} className="text-lg"/> */}
                         </div>
                         <Row>
-                            <Col span={24} className="border-2 border-t-teal-600 p-10">
+                            <Col span={24} className="border-2 border-y-teal-600 p-10">
                                 <FormComment currentUser={currentUser} task={task}/>
                             </Col>
                             <Col span={24} className="my-5">

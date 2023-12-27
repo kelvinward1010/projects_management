@@ -82,7 +82,7 @@ function StoryItem({
                 setIsLoading(false)
                 toast.success('Story has been deleted!')
             })
-    },[router, story?.id]);
+    },[router, story?.id, mutateEpic()]);
 
     const handleGoToStorys = (ev: any) => {
         ev.preventDefault();
