@@ -1,9 +1,9 @@
 "use client"
 
-import { Col, Flex, Modal, Row, Select, Typography } from "antd";
+import { Col, Modal, Row, Select, Typography } from "antd";
 import { useState } from "react";
 import FormSettingStatus from "./input/FormSettingStatus";
-import { takeDataAddStatus } from "@/app/equation";
+import { takeDataAddStatus, takeleader } from "@/app/equation";
 import TableSetting from "./table/TableSetting";
 import { FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import InputSettings from "./input/InputSettings";
 import { CheckOutlined } from "@ant-design/icons";
-import useCurrentUser from "@/app/hooks/useCurrentUser";
+import useUser from "@/app/hooks/useUser";
 
 const { Title, Text } = Typography;
 
@@ -29,12 +29,10 @@ function BodySettings({
     const [isOpenInternals, setIsOpenInternals] = useState(false);
     const [isOpenStorys, setIsOpenStorys] = useState(false);
     const [leaderAdd, setLeaderAdd] = useState('');
-    const [check, setCheck] = useState(false)
     const dataForEach = takeDataAddStatus(project?.addStatus);
     const users = project?.users;
-    const currentUser = useCurrentUser().data;
-    const leadersProject = project?.projectLeader;
-
+    const leader = takeleader(project?.projectLeader);
+    const userLeader = useUser(leader)?.data;
 
     const {
         register,
@@ -101,7 +99,7 @@ function BodySettings({
                 />
             </Modal>
             <div className="w-full h-full mt-5">
-                <Title level={5}>1. Leader Project</Title>
+                <Title level={5}>1. Leader Project: {userLeader?.name}</Title>
                 <Row justify={'start'} className="items-center">
                     <Col span={13}>
                         <Select
@@ -110,7 +108,6 @@ function BodySettings({
                                 value: user?.id,
                                 label: user?.name
                             }))}
-                            id="leaderAdd"
                             className='rounded select-in-table border-2 border-sky-600 w-full'
                         />
                     </Col>

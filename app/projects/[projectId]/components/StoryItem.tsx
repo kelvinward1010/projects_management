@@ -12,8 +12,9 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import useEpic from '@/app/hooks/useEpic';
 import InforStory from './InforStory';
 import useProject from '@/app/hooks/useProject';
-import { takeDataAddStatus } from '@/app/equation';
+import { takeDataAddStatus, takeleader } from '@/app/equation';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
+import useUser from '@/app/hooks/useUser';
 
 interface Props {
     story: any,
@@ -32,6 +33,12 @@ function StoryItem({
     const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
     const {data: dataProject, mutate: mutateProject } = useProject(dataEpic?.projectId as string);
     const currentUser = useCurrentUser().data;
+    const leader = takeleader(dataProject?.projectLeader);
+    const userLeader = useUser(leader)?.data;
+
+    const checkuser = () => {
+        return story?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+    }
 
     const {
         register,
@@ -129,7 +136,7 @@ function StoryItem({
                     <div className='flex gap-2 justify-center items-center w-60'>
                         <span>status:</span>
                         <Select
-                            disabled={currentUser?.id == dataProject?.createdByWho ? false : true}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionStatus}
                             style={{ width: "60%" }}
                             options={[

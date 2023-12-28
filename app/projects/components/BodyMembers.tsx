@@ -1,5 +1,5 @@
 "use client"
-import { takeMapDataMembers, takeDataMemberOthers, takeDataStorys } from "@/app/equation";
+import { takeMapDataMembers, takeDataMemberOthers, takeDataStorys, takeleader } from "@/app/equation";
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Col, Flex, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd"
 import axios from "axios";
@@ -11,6 +11,7 @@ import * as _ from "lodash/fp";
 import useUsers from "@/app/hooks/useUsers";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import useCurrentUser from "@/app/hooks/useCurrentUser";
+import useUser from "@/app/hooks/useUser";
 
 const { Title, Text } = Typography;
 
@@ -31,7 +32,8 @@ function BodyMembers({
     const currentUser = useCurrentUser()?.data;
     const dataOptionsUsers = takeDataMemberOthers(projectUsers, users);
     const dataStorys = takeDataStorys(project);
-
+    const leader = takeleader(project?.projectLeader);
+    const userLeader = useUser(leader)?.data;
     const dataSearch = _.flow(
         _.filter(
           (item: any) =>
@@ -174,7 +176,7 @@ function BodyMembers({
             render: (_: any, record: any) => {
                 return (
                     <div className='w-full flex items-center justify-center gap-x-5'>
-                        {(currentUser?.id !== record?.id && currentUser?.id === project?.createdByWho) ? <div>
+                        {(currentUser?.id !== record?.id && currentUser?.id === userLeader?.id) ? <div>
                             <Popconfirm
                                 title="Kick this member out of project"
                                 description="Are you sure to kick this member?"
@@ -208,7 +210,7 @@ function BodyMembers({
             >
                 <Row justify={'space-between'} className='my-5 items-center'>
                     <Col span={8}>
-                        <Form.Item label="Add Project" name={"status"}>
+                        <Form.Item label="Search" name={"status"}>
                             <Input 
                                 placeholder="Name, email..." 
                                 onChange={(e) => setQuery(e.target.value)}
@@ -221,7 +223,7 @@ function BodyMembers({
                         </Form.Item>
                     </Col>
                     <Col span={7}>
-                        {currentUser?.id === project?.createdByWho ? <Form.Item label="Add members" name={"status"}>
+                        {currentUser?.id === userLeader?.id ? <Form.Item label="Add members" name={"status"}>
                             <Flex className="gap-x-2" align="center" justify="center">
                                 <Select
                                     onChange={(value) => setValue('membersAdd', value, {

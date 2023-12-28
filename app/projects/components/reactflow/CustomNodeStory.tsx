@@ -15,7 +15,7 @@ export default memo((data: any, isConnectable) => {
     const router = useRouter();
     const [isModalSeeInside,setIsModalSeeInside] = useState(false);
     const [openActions,setOpenActions] = useState(false);
-    const completePrecent = Number(workCompletionRateFormula(data?.data?.tasks).toFixed(3));
+    const completePrecent = Number(workCompletionRateFormula(data?.data?.tasks).toFixed(1));
     const user = useUser(data?.data?.userId)?.data;
 
     const handleGoToStorys = (ev: any) => {

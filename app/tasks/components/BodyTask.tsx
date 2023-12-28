@@ -14,7 +14,7 @@ import useProject from "@/app/hooks/useProject";
 import useUser from "@/app/hooks/useUser";
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { daysdifference } from "@/app/equation";
+import { daysdifference, takeleader } from "@/app/equation";
 import BodyModalEditTask from "./BodyModalEditTask";
 
 
@@ -34,12 +34,16 @@ function BodyTask({
 }:Props) {
 
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
     const [isModalOpenEditTask, setIsModalOpenEditTask] = useState(false);
     const {data: dataProject} = useProject(task?.projectId);
     const {data: user} = useUser(task?.userId);
+    const users = dataProject?.users;
+    const leader = takeleader(dataProject?.projectLeader);
+    const userLeader = useUser(leader)?.data;
 
-    const users = dataProject?.users
+    const checkuser = () => {
+        return task?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+    }
     
     const {
         register,
@@ -62,9 +66,7 @@ function BodyTask({
     });
 
     const handleChangeOptionType = (data: any) => {
-        setIsLoading(true);
         setValue('type', data)
-
         axios.post(`/api/tasks/${task?.id}`, {
             type: data,
         })
@@ -73,13 +75,11 @@ function BodyTask({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Type task has been updated!')
             });
     }
 
     const handleChangeOptionStatus = (data: any) => {
-        setIsLoading(true);
         setValue('status', data)
 
         axios.post(`/api/tasks/${task?.id}`, {
@@ -90,13 +90,11 @@ function BodyTask({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Status task has been updated!')
             });
     }
 
     const handleChangeOptionAssign = (data: any) => {
-        setIsLoading(true);
         setValue('assignto', data)
 
         axios.post(`/api/tasks/${task?.id}`, {
@@ -107,14 +105,11 @@ function BodyTask({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Assigned user has been updated!')
             });
     }
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
         axios.post(`/api/tasks/${task?.id}`, {
             ...data,
         })
@@ -124,14 +119,11 @@ function BodyTask({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Story has been updated!')
             });
     }
 
     const onChange = (date: any, dateString: any) => {
-
-        setIsLoading(true);
         setValue('timework', date)
 
         axios.post(`/api/tasks/${task?.id}`, {
@@ -142,7 +134,6 @@ function BodyTask({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Time has been updated!')
             });
     };
@@ -229,7 +220,7 @@ function BodyTask({
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Type:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionType}
                             style={{ width: "100%" }}
                             options={optionsTypes}
@@ -239,7 +230,7 @@ function BodyTask({
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Status:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionStatus}
                             style={{ width: "100%" }}
                             options={optionsStatus}
@@ -249,7 +240,7 @@ function BodyTask({
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Assigned:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionAssign}
                             style={{ width: "100%" }}
                             options={users?.map((user: any) => ({

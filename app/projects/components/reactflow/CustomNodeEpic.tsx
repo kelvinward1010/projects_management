@@ -9,7 +9,7 @@ import { Handle, Position } from 'reactflow';
 const {Text} = Typography;
 
 export default memo((data: any, isConnectable) => {
-    const completePrecent = Number(workCompletionRateFormula(data?.data?.storys).toFixed(3));
+    const completePrecent = Number(workCompletionRateFormula(data?.data?.storys).toFixed(1));
     const user = useUser(data?.data?.creatorId)?.data;
     
     return (

@@ -14,7 +14,7 @@ import useProject from "@/app/hooks/useProject";
 import useUser from "@/app/hooks/useUser";
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { daysdifference } from "@/app/equation";
+import { daysdifference, takeleader } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import BodyModalEditStory from "./BodyModalEditStory";
 import ItemInListStory from "./ItemInListStory";
@@ -38,14 +38,18 @@ function BodyStory({
 }:Props) {
 
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
     const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
     const [isModalOpenEditStory, setIsModalOpenEditStory] = useState(false);
     const {data: dataProject} = useProject(dataEpic?.projectId);
     const {data: user} = useUser(story?.userId);
     const {mutate: mutateNoti} = useNotifications()
+    const users = dataProject?.users;
+    const leader = takeleader(dataProject?.projectLeader);
+    const userLeader = useUser(leader)?.data;
 
-    const users = dataProject?.users
+    const checkuser = () => {
+        return story?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+    }
     
     const {
         register,
@@ -67,7 +71,6 @@ function BodyStory({
     });
 
     const handleChangeOptionStatus = (data: any) => {
-        setIsLoading(true);
         setValue('status', data)
 
         axios.post(`/api/storys/${story?.id}`, {
@@ -79,13 +82,11 @@ function BodyStory({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Status story has been updated!')
             });
     }
 
     const handleChangeOptionAssign = (data: any) => {
-        setIsLoading(true);
         setValue('assignto', data)
 
         axios.post(`/api/storys/${story?.id}`, {
@@ -98,14 +99,11 @@ function BodyStory({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Assigned user has been updated!')
             });
     }
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
         axios.post(`/api/storys/${story?.id}`, {
             ...data,
         })
@@ -116,14 +114,11 @@ function BodyStory({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Story has been updated!')
             });
     }
 
     const onChange = (date: any, dateString: any) => {
-
-        setIsLoading(true);
         setValue('timework', date)
 
         axios.post(`/api/storys/${story?.id}`, {
@@ -135,7 +130,6 @@ function BodyStory({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Time has been updated!')
             });
     };
@@ -228,7 +222,7 @@ function BodyStory({
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Status:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionStatus}
                             style={{ width: "100%" }}
                             options={optionsStatus}
@@ -238,7 +232,7 @@ function BodyStory({
                     <div className='flex flex-col gap-y-2 justify-start mb-2'>
                         <span className="text-md font-medium">Assigned:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={checkuser()}
                             onChange={handleChangeOptionAssign}
                             style={{ width: "100%" }}
                             options={users?.map((user: any) => ({
@@ -259,6 +253,7 @@ function BodyStory({
                             }
                             format={dateFormat}
                             className="date-picker"
+                            disabled={checkuser()}
                         />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>

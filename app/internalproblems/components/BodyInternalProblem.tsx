@@ -1,5 +1,5 @@
 "use client"
-import { daysdifference, takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers, totalWorkTime, totalWorkTimeForFinish } from "@/app/equation";
+import { daysdifference, takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers, takeleader, totalWorkTime, totalWorkTimeForFinish } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import useProject from "@/app/hooks/useProject";
 import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
@@ -14,6 +14,8 @@ import { AiFillBug, AiFillLeftSquare } from "react-icons/ai";
 import useNotifications from "@/app/hooks/useNotifications";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from "dayjs";
+import useUser from "@/app/hooks/useUser";
+import useCurrentUser from "@/app/hooks/useCurrentUser";
 
 const { Text, Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -40,6 +42,13 @@ function BodyInternalProblem({
     const [chooseType, setChooseType] = useState('all');
     const users = dataProject?.users;
     const {mutate: mutateNoti} = useNotifications()
+    const currentUser = useCurrentUser()?.data
+    const leader = takeleader(dataProject?.projectLeader);
+    const userLeader = useUser(leader)?.data;
+
+    const checkuser = (keycheck: any) => {
+        return keycheck == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+    }
 
     const handleChangeSearch = (e: any) => {
         setQuery(e);
@@ -214,6 +223,7 @@ function BodyInternalProblem({
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
                     <Select
+                        disabled={checkuser(record?.assignto)}
                         onChange={(e) => {handleChangeOptionAssign(e, record)}}
                         options={users?.map((user: any) => ({
                             value: user?.id,
@@ -246,6 +256,7 @@ function BodyInternalProblem({
                             }
                             format={dateFormat}
                             className="date-picker"
+                            disabled={checkuser(record?.assignto)}
                         />}
                         <div className="flex items-center flex-start gap-x-2">
                             <Text>Time:</Text>
@@ -272,6 +283,7 @@ function BodyInternalProblem({
                         ]}
                         value={record?.status}
                         className='select-in-table'
+                        disabled={checkuser(record?.assignto)}
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
                     />
                 )
@@ -290,6 +302,7 @@ function BodyInternalProblem({
                         options={optionsTypes}
                         value={record?.type}
                         className='select-in-table'
+                        disabled={checkuser(record?.assignto)}
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
                     />
                 )
@@ -302,7 +315,7 @@ function BodyInternalProblem({
             render: (_: any, record: any) => {
                 return (
                     <div className='w-full flex items-center justify-center gap-x-5'>
-                        <div>
+                        {checkuser(record?.assignto) == false ? <div>
                             <Popconfirm
                                 title="Delete the internal"
                                 description="Are you sure to delete this internal?"
@@ -316,7 +329,7 @@ function BodyInternalProblem({
                                     style={{color:'red'}}
                                 />
                             </Popconfirm>
-                        </div>
+                        </div>: null}
                         <DoubleRightOutlined
                             className="cursor-pointer text-teal-600"
                             onClick={() => handleGoToInTask(record)}

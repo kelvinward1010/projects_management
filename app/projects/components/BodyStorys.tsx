@@ -1,5 +1,5 @@
 import { optionsStatus } from '@/app/config/options';
-import { daysdifference, takeDataAddStatus, takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
+import { daysdifference, takeDataAddStatus, takeDataOptionsUsers, takeDataStorys, takeleader } from '@/app/equation';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
 import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
@@ -10,6 +10,7 @@ import React, {useState } from 'react';
 import toast from 'react-hot-toast';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
+import useUser from '@/app/hooks/useUser';
 
 const { Text, Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -26,7 +27,6 @@ function BodyStorys({
 
     const router = useRouter();
     const [form] = Form.useForm();
-    const [isLoading, setIsLoading] = useState(false);
     const data = takeDataStorys(project);
     const OptionsUsers = takeDataOptionsUsers(project);
     const [chooseStatus, setChooseStatus] = useState('all');
@@ -34,9 +34,11 @@ function BodyStorys({
     const [query, setQuery] = useState('');
     const currentUser = useCurrentUser().data;
     const users = project?.users;
+    const leader = takeleader(project?.projectLeader);
+    const userLeader = useUser(leader)?.data;
 
     const checkuser = (keycheck: any) => {
-        return keycheck == currentUser?.id || project?.createdByWho == currentUser?.id ? false : true
+        return keycheck == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
     }
 
     const handleChangeSearch = (e: any) => {
@@ -60,7 +62,6 @@ function BodyStorys({
     )(data);
 
     const handleChangeOptionStatus = (data: any, story: any) => {
-        setIsLoading(true);
         if(data){
             axios.post(`/api/storys/${story?.id}`, {
                 status: data,
@@ -70,7 +71,6 @@ function BodyStorys({
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
-                    setIsLoading(false);
                     toast.success('Status story has been updated!')
                 });
         }else{
@@ -79,8 +79,6 @@ function BodyStorys({
     }
 
     const handleChangeOptionAssign = (data: any, story: any) => {
-        setIsLoading(true);
-
         if(data){
             axios.post(`/api/storys/${story?.id}`, {
                 assignto: data,
@@ -91,7 +89,6 @@ function BodyStorys({
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
-                    setIsLoading(false);
                     toast.success('Assigned user has been updated!')
                 });
         }else{
@@ -100,15 +97,12 @@ function BodyStorys({
     }
 
     const handleDelete = (story: any) => {
-        setIsLoading(true);
-
         axios.delete(`/api/storys/${story?.id}`)
             .then(() => {
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Story has been deleted!')
             });
     }

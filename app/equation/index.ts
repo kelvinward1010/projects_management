@@ -547,3 +547,7 @@ export const takeDataAddStatus = (data: any) =>{
         listStory
     };
 }
+
+export const takeleader = (arr: string[]) => {
+    return arr[arr.length - 1]
+}

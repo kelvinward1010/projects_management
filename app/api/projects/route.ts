@@ -82,6 +82,21 @@ export async function POST(
                 }
             });
 
+            let updatedLeaderId = [...(newProject?.projectLeader)];
+            updatedLeaderId?.push(currentUser?.id)
+
+            await prisma.projects.update({
+                where: {
+                    id: newProject?.id
+                },
+                data: {
+                    projectLeader: updatedLeaderId,
+                },
+                include: {
+                    users: true
+                }
+            });
+
             members?.forEach(async(member: any) => {
                 await prisma.notification.create({
                     data: {

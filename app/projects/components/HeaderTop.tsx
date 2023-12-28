@@ -14,6 +14,8 @@ import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
 import MainPage from './reactflow/MainPage';
 import useProject from '@/app/hooks/useProject';
 import BodyYourDuties from './BodyYourDuties';
+import { takeleader } from '@/app/equation';
+import useUser from '@/app/hooks/useUser';
 
 const { Title } = Typography;
 
@@ -39,6 +41,8 @@ function HeaderTop({
     const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
     const [isModalOpenYourDuties, setIsModalOpenYourDuties] = useState(false);
     const {data: projectToRefesh} = useProject(project?.id)
+    const leader = takeleader(project?.projectLeader);
+    const userLeader = useUser(leader)?.data;
     
     const items = [
         {
@@ -137,7 +141,7 @@ function HeaderTop({
         },
         {
             label: <>
-                {currentUser?.id !== project?.createdByWho ? (  
+                {currentUser?.id !== userLeader?.id ? (  
                 <button
                     className="
                         w-48
@@ -162,7 +166,7 @@ function HeaderTop({
         },
         {
             label: <>
-                {currentUser?.id === project?.createdByWho ? (  
+                {currentUser?.id === userLeader?.id ? (  
                 <button
                     className="
                         w-48
@@ -187,7 +191,7 @@ function HeaderTop({
         },
         {
             label: <>
-                {currentUser?.id === project?.createdByWho ? (  
+                {currentUser?.id === userLeader?.id ? (  
                 <button
                     className="
                         w-48
