@@ -344,6 +344,45 @@ export const takeDataInternalProblem = (data: any) => {
     return dataEnd;
 }
 
+export const takeDataTasks = (data: any) => {
+    
+    const epics = data?.epics;
+
+    const listStorys: any[] = [];
+
+    epics?.forEach((item: any) => {
+        item?.storys?.forEach((story: any) => {
+            listStorys.push(story);
+        })
+    })
+
+    const listTasks: any[] = [];
+
+    listStorys?.forEach((item: any) => {
+        item?.tasks?.forEach((task: any) => {
+            listTasks.push(task);
+        })
+    })
+
+    const dataEnd = listTasks?.map((item: any) => {
+
+        return ({
+            key: item?.id,
+            id: item?.id,
+            name: item?.title,
+            desc: item?.desc,
+            status: item?.status,
+            timework: item?.timework,
+            userId: item?.userId,
+            assignto: item?.assignto,
+            type: item?.type,
+            completionTime: item?.completionTime
+        })
+    })
+
+    return dataEnd;
+}
+
 export const takeDataOptionsUsers = (data: any) => {
     const users = data?.users;
 

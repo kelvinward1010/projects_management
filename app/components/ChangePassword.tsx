@@ -2,7 +2,6 @@
 
 import { Button, Form, Input } from "antd";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -101,9 +100,6 @@ const CustomizedForm: React.FC<CustomizedFormProps> = ({ onChange, fields, onFai
                     h-9
                     bg-sky-700
                     text-white
-                    flex
-                    items-center
-                    justify-center
                     gap-2
                     rounded-md
                     shadow-lg
@@ -120,8 +116,6 @@ const CustomizedForm: React.FC<CustomizedFormProps> = ({ onChange, fields, onFai
 function ChangePassword({
     onClose
 }:Props) {
-
-    const router = useRouter();
 
     const [fields, setFields] = useState<FieldData[]>([
         {
@@ -147,7 +141,6 @@ function ChangePassword({
 
         axios.post('/api/settings',data)
             .then(() => {
-                router.refresh();
                 onClose(false)
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -157,7 +150,7 @@ function ChangePassword({
     }
 
     const onFinishFailed = (errorInfo: any) => {
-        toast.error('Something went wrong!')
+        toast.error('Something went wrong!', errorInfo)
     };
 
     return (

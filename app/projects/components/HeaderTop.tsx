@@ -13,7 +13,7 @@ import GetOut from './modals/GetOut';
 import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
 import MainPage from './reactflow/MainPage';
 import useProject from '@/app/hooks/useProject';
-import { useRouter } from 'next/navigation';
+import BodyYourDuties from './BodyYourDuties';
 
 const { Title } = Typography;
 
@@ -28,7 +28,6 @@ function HeaderTop({
     hadleDelete,
     project
 }: Props) {
-    const router = useRouter()
     const currentUser = useCurrentUser().data;
     const [openActions, setOpenActions] = useState(false);
     const [isModalOpenChartPie, setIsModalOpenChartPie] = useState(false);
@@ -38,9 +37,33 @@ function HeaderTop({
     const [isModalOpenMembers, setIsModalOpenMembers] = useState(false);
     const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
     const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
-    const {data: projectToRefesh, mutate: mutatePj} = useProject(project?.id)
+    const [isModalOpenYourDuties, setIsModalOpenYourDuties] = useState(false);
+    const {data: projectToRefesh} = useProject(project?.id)
     
     const items = [
+        {
+            label: <>
+                <button
+                    className="
+                        w-48
+                        h-9
+                        bg-sky-700
+                        text-white
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-md
+                        shadow-lg
+                    "
+                    onClick={()=>setIsModalOpenYourDuties(true)}
+                >
+                    <PieChartOutlined />
+                    Your duties
+                </button>
+            </>,
+            key: '0',
+        },
         {
           label: <>
             <button
@@ -62,7 +85,7 @@ function HeaderTop({
                 Members
             </button>
           </>,
-          key: '0',
+          key: '1',
         },
         {
           label: <>
@@ -85,7 +108,7 @@ function HeaderTop({
                 Chart Pie
             </button>
           </>,
-          key: '1',
+          key: '2',
         },
         {
             label: <>
@@ -110,8 +133,8 @@ function HeaderTop({
                   Flows Graph
               </button>
             </>,
-            key: '2',
-          },
+            key: '3',
+        },
         {
             label: <>
                 {currentUser?.id !== project?.createdByWho ? (  
@@ -135,7 +158,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '3',
+            key: '4',
         },
         {
             label: <>
@@ -160,7 +183,7 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '4',
+            key: '5',
         },
         {
             label: <>
@@ -185,12 +208,21 @@ function HeaderTop({
                 </button>
                 ) : null}
             </>,
-            key: '5',
+            key: '6',
         },
     ];
 
     return (
         <>
+            <Modal
+                title="Your duties!"
+                open={isModalOpenYourDuties} 
+                onCancel={() => setIsModalOpenYourDuties(false)}
+                className="modal-edit"
+                width={1400}
+            >
+                <BodyYourDuties project={project}/>
+            </Modal>
             <Modal
                 title="Get out of this project!"
                 open={isModalOpenGetOut} 

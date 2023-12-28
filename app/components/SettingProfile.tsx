@@ -58,9 +58,6 @@ function SettingProfile({ currentUser }: Props) {
                     h-9
                     bg-sky-700
                     text-white
-                    flex
-                    items-center
-                    justify-center
                     gap-2
                     rounded-md
                     shadow-lg
