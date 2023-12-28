@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-    addstatusId?: string;
+    settingsprojectId?: string;
 }
 
 export async function DELETE(
@@ -13,7 +13,7 @@ export async function DELETE(
 
         const existingStatus = await prisma.addStatus.findUnique({
             where: {
-                id: params?.addstatusId
+                id: params?.settingsprojectId
             },
         });
 
@@ -23,7 +23,7 @@ export async function DELETE(
 
         const deletedeAddStatus = await prisma.addStatus.deleteMany({
             where: {
-                id: params?.addstatusId
+                id: params?.settingsprojectId
             },
         });
 

@@ -9,20 +9,18 @@ import { Modal, Select } from 'antd';
 import { optionsStatus } from '@/app/config/options';
 import { FieldValues, useForm } from 'react-hook-form';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Epics } from '@prisma/client';
 import useEpic from '@/app/hooks/useEpic';
 import InforStory from './InforStory';
 import useProject from '@/app/hooks/useProject';
 import { takeDataAddStatus } from '@/app/equation';
+import useCurrentUser from '@/app/hooks/useCurrentUser';
 
 interface Props {
     story: any,
-    epic: Epics,
 }
 
 function StoryItem({
-    story,
-    epic
+    story
 }:Props) {
 
     const router = useRouter();
@@ -33,6 +31,7 @@ function StoryItem({
     const handleOpenDelete = () => setIsOpenDelete(true);
     const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
     const {data: dataProject, mutate: mutateProject } = useProject(dataEpic?.projectId as string);
+    const currentUser = useCurrentUser().data;
 
     const {
         register,
@@ -130,13 +129,14 @@ function StoryItem({
                     <div className='flex gap-2 justify-center items-center w-60'>
                         <span>status:</span>
                         <Select
-                            disabled={isLoading}
+                            disabled={currentUser?.id == dataProject?.createdByWho ? false : true}
                             onChange={handleChangeOptionStatus}
                             style={{ width: "60%" }}
                             options={[
                                 ...optionsStatus,
                                 ...mapNewStatus
                             ]}
+                            className='style_status_story'
                             value={story?.status}
                         />
                     </div>

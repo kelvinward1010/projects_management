@@ -161,6 +161,24 @@ function TableDutiesTasks({
             }
         },
         {
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
+            width: '10%',
+            render: (_: any, record: any) => {
+                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
+                return (
+                    <Select
+                        onChange={(e) => {handleChangeOptionType(e, record)}}
+                        options={optionsTypes}
+                        value={record?.type}
+                        className='select-in-table'
+                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
+                    />
+                )
+            },
+        },
+        {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
@@ -175,10 +193,32 @@ function TableDutiesTasks({
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            width: '10%',
+            render: (_: any, record: any) => {
+                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
+
+                return (
+                    <Select
+                        onChange={(e) => {handleChangeOptionStatus(e, record)}}
+                        options={[
+                            ...optionsStatus,
+                            ...mapNewStatus
+                        ]}
+                        value={record?.status}
+                        className='select-in-table'
+                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
+                    />
+                )
+            },
+        },
+        {
             title: 'Assigned To',
             dataIndex: 'assignto',
             key: 'assignto',
-            width: '15%',
+            width: '10%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
@@ -196,10 +236,10 @@ function TableDutiesTasks({
             },
         },
         {
-            title: 'Estimed time to completion',
+            title: 'Estimed time',
             dataIndex: 'timework',
             key: 'timework',
-            width: '20%',
+            width: '25%',
             render: (_: any, record: any) => {
 
                 const getTime = daysdifference(record?.timework[0],record?.timework[1])
@@ -221,46 +261,6 @@ function TableDutiesTasks({
                             <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
                         </div>
                     </>
-                )
-            },
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            width: '15%',
-            render: (_: any, record: any) => {
-                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
-
-                return (
-                    <Select
-                        onChange={(e) => {handleChangeOptionStatus(e, record)}}
-                        options={[
-                            ...optionsStatus,
-                            ...mapNewStatus
-                        ]}
-                        value={record?.status}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
-                )
-            },
-        },
-        {
-            title: 'Type',
-            dataIndex: 'type',
-            key: 'type',
-            width: '15%',
-            render: (_: any, record: any) => {
-                const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
-                return (
-                    <Select
-                        onChange={(e) => {handleChangeOptionType(e, record)}}
-                        options={optionsTypes}
-                        value={record?.type}
-                        className='select-in-table'
-                        style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
-                    />
                 )
             },
         },

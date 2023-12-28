@@ -160,6 +160,8 @@ export async function POST(
             kickout,
             membersAdd,
             isAdd,
+            isChangeLeader,
+            leaderAdd,
         } = body;
 
         const updatedProject = await prisma.projects.update({
@@ -196,6 +198,35 @@ export async function POST(
             return new NextResponse('Invalid ID', { status: 400 });
         }
 
+        if(isChangeLeader) {
+            let updatedLeaderId = [...(existingProject?.projectLeader)];
+            updatedLeaderId?.push(leaderAdd)
+
+            const updatedProject = await prisma.projects.update({
+                where: {
+                    id: params?.projectId
+                },
+                data: {
+                    projectLeader: updatedLeaderId,
+                },
+                include: {
+                    users: true
+                }
+            });
+
+            await prisma.notification.create({
+                data: {
+                    title: `Project notification`,
+                    descNoti: `${currentUser?.name} transfers the right to you as project leader: ${existingProject?.title}!`,
+                    userId: leaderAdd,
+                    whocreatedId: currentUser?.id,
+                    projectId: existingProject?.id
+                },
+            });
+
+            return NextResponse.json(updatedProject);
+        }
+
         if(isAdd && existingProject?.users?.length >=1) {
             let updatedUserId = [...(existingProject?.userIds)];
             membersAdd?.forEach((it: any) => {
@@ -228,6 +259,7 @@ export async function POST(
 
             return NextResponse.json(updatedProject);
         }
+        
 
         if(kickout && existingProject?.users?.length >2) {
             let updatedUserId = [...(existingProject?.userIds || [])];

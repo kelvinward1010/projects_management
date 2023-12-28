@@ -18,6 +18,7 @@ function EpicList({project}: Props) {
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const taskArray = project?.epics;
     const reverseArray: [] = taskArray?.slice().reverse();
+    const userIdCreatedProject = project?.createdByWho
     
     return (
         <>
@@ -35,7 +36,7 @@ function EpicList({project}: Props) {
             <HeaderInProject title='Epics' create={handleOpenModalCreate}/>
             <div className='px-5'>
                 {reverseArray?.map((pjct: any) => (
-                    <EpicItem epic={pjct} key={pjct?.id}/>
+                    <EpicItem userIdCreatedProject={userIdCreatedProject} epic={pjct} key={pjct?.id}/>
                 ))}
             </div>
         </>

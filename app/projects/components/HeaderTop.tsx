@@ -219,7 +219,7 @@ function HeaderTop({
                 open={isModalOpenYourDuties} 
                 onCancel={() => setIsModalOpenYourDuties(false)}
                 className="modal-edit"
-                width={1400}
+                width={1800}
             >
                 <BodyYourDuties project={project}/>
             </Modal>
@@ -327,14 +327,14 @@ function HeaderTop({
                             onClick={()=>setIsModalOpenAllStorys(true)}
                         >
                             <AiOutlineIssuesClose />
-                            Story
+                            Stories
                         </button>
                         <Modal 
                             title={`All Story in: ${project?.title}`} 
                             open={isModalOpenAllStorys} 
                             onCancel={() => setIsModalOpenAllStorys(false)}
                             className="modal-edit"
-                            width={1400}
+                            width={1800}
                             style={{top: '15px'}}
                         >
                             <BodyStorys project={project} />

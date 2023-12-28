@@ -1,5 +1,6 @@
 "use client"
 
+import useProject from "@/app/hooks/useProject";
 import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import { Popconfirm, Table, TableColumnType, Typography } from "antd";
 import axios from "axios";
@@ -17,11 +18,13 @@ function TableSetting({
 }:Props) {
 
     const router = useRouter();
+    const {mutate: mutateProject} = useProject(data?.projectId as string)
 
     const handleDelete = (status: any) => {
 
-        axios.delete(`/api/addstatus/${status?.id}`)
+        axios.delete(`/api/settingsproject/${status?.id}`)
             .then(() => {
+                mutateProject()
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))

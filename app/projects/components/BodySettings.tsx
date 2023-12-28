@@ -1,6 +1,6 @@
 "use client"
 
-import { Col, Flex, Modal, Row, Typography } from "antd";
+import { Col, Flex, Modal, Row, Select, Typography } from "antd";
 import { useState } from "react";
 import FormSettingStatus from "./input/FormSettingStatus";
 import { takeDataAddStatus } from "@/app/equation";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import InputSettings from "./input/InputSettings";
 import { CheckOutlined } from "@ant-design/icons";
+import useCurrentUser from "@/app/hooks/useCurrentUser";
 
 const { Title, Text } = Typography;
 
@@ -27,8 +28,13 @@ function BodySettings({
     const [isOpenEpics, setIsOpenEpics] = useState(false);
     const [isOpenInternals, setIsOpenInternals] = useState(false);
     const [isOpenStorys, setIsOpenStorys] = useState(false);
-    
+    const [leaderAdd, setLeaderAdd] = useState('');
+    const [check, setCheck] = useState(false)
     const dataForEach = takeDataAddStatus(project?.addStatus);
+    const users = project?.users;
+    const currentUser = useCurrentUser().data;
+    const leadersProject = project?.projectLeader;
+
 
     const {
         register,
@@ -44,7 +50,7 @@ function BodySettings({
         }
     });
 
-    const title = watch("title")
+    const title = watch("title");
 
     const handleChangeTitleProject = () => {
         axios.post(`/api/projects/${project?.id}`, {
@@ -55,8 +61,26 @@ function BodySettings({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                toast.success('Type task has been updated!')
+                toast.success('Title project has been updated!')
             });
+    }
+
+    const handleChangeLeaderProject = () => {
+        axios.post(`/api/projects/${project?.id}`, {
+            isChangeLeader: true,
+            leaderAdd: leaderAdd,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('The project leader has been updated!')
+            });
+    }
+
+    const handleOptionLeader = (e: any) => {
+        setLeaderAdd(e)
     }
 
     return (
@@ -77,7 +101,42 @@ function BodySettings({
                 />
             </Modal>
             <div className="w-full h-full mt-5">
-                <Title level={5}>1. Settings title project</Title>
+                <Title level={5}>1. Leader Project</Title>
+                <Row justify={'start'} className="items-center">
+                    <Col span={13}>
+                        <Select
+                            onChange={(e) => handleOptionLeader(e)}
+                            options={users?.map((user: any) => ({
+                                value: user?.id,
+                                label: user?.name
+                            }))}
+                            id="leaderAdd"
+                            className='rounded select-in-table border-2 border-sky-600 w-full'
+                        />
+                    </Col>
+                    <Col span={5}>
+                        <button
+                            className="
+                                w-16
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                                ml-5
+                            "
+                            onClick={handleChangeLeaderProject}
+                        >
+                            <CheckOutlined />
+                        </button>
+                    </Col>
+                </Row>
+            </div>
+            <div className="w-full h-full mt-5">
+                <Title level={5}>2. Settings title project</Title>
                 <Row justify={'start'} className="items-center">
                     <Col span={13}>
                         <InputSettings
@@ -110,7 +169,7 @@ function BodySettings({
                 </Row>
             </div>
             <div className="w-full h-full mt-5">
-                <Title level={5}>1. Settings status in project</Title>
+                <Title level={5}>3. Settings status in project</Title>
                 <div className="ml-10 w-full">
                     <div className="mt-5">
                         <Row justify={'start'}>

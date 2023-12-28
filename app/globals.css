@@ -123,3 +123,15 @@ body {
   margin-inline-end: 0 !important;
   margin-bottom: 0 !important;
 }
+
+.ant-select-selection-item{
+  color: black;
+}
+
+.ant-picker-input input{
+  color: black !important;
+}
+
+.style_status_story .ant-select-selection-item{
+  color: white !important;
+}

@@ -16,12 +16,15 @@ import useEpic from '@/app/hooks/useEpic';
 import InfoEpic from './InfoEpic';
 import StoryInEpic from './StoryInEpic';
 import useProject from '@/app/hooks/useProject';
+import useCurrentUser from '@/app/hooks/useCurrentUser';
+
 
 interface Props {
     epic?: Epics;
+    userIdCreatedProject: any;
 }
 
-function EpicItem({ epic }: Props) {
+function EpicItem({ epic, userIdCreatedProject }: Props) {
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +37,7 @@ function EpicItem({ epic }: Props) {
     const {data: dataProject ,mutate: mutateProject } = useProject(epic?.projectId as string);
     const dataEpic = useEpic(epic?.id as string);
     const getdeep = dataEpic?.data?.storys;
+    const currentUser = useCurrentUser().data;
 
     const {
         register,
@@ -124,7 +128,7 @@ function EpicItem({ epic }: Props) {
                         <div className='flex gap-2 justify-center items-center w-60'>
                             <span>status:</span>
                             <Select
-                                disabled={isLoading}
+                                disabled={currentUser?.id == userIdCreatedProject ? false : true}
                                 onChange={handleChangeOptionStatus}
                                 style={{ width: "60%" }}
                                 options={[

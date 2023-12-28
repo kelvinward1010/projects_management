@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useProject from "@/app/hooks/useProject";
 
 
 const { Title, Text } = Typography;
@@ -29,6 +30,7 @@ function FormSettingStatus({
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const {mutate: mutateProject} = useProject(projectId as string)
 
     const {
         register,
@@ -57,13 +59,14 @@ function FormSettingStatus({
             return;
         };
 
-        {isEpics &&  axios.post('/api/addstatus', {
+        {isEpics &&  axios.post('/api/settingsproject', {
             ...data,
             isForEpics: true,
             projectId: projectId,
         })
             .then(() => {
                 router.refresh();
+                mutateProject()
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -71,13 +74,14 @@ function FormSettingStatus({
                 setIsLoading(false);
                 toast.success(`Status for epic has been updated!`)
             });}
-        {isInternals &&  axios.post('/api/addstatus', {
+        {isInternals &&  axios.post('/api/settingsproject', {
             ...data,
             isForInternals: true,
             projectId: projectId,
         })
             .then(() => {
                 router.refresh();
+                mutateProject()
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -85,13 +89,14 @@ function FormSettingStatus({
                 setIsLoading(false);
                 toast.success(`Status for internal has been updated!`)
             });}
-        {isStorys &&  axios.post('/api/addstatus', {
+        {isStorys &&  axios.post('/api/settingsproject', {
             ...data,
             isForStorys: true,
             projectId: projectId,
         })
             .then(() => {
                 router.refresh();
+                mutateProject()
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))

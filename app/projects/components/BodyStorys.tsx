@@ -1,14 +1,20 @@
 import { optionsStatus } from '@/app/config/options';
-import { takeDataAddStatus, takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
+import { daysdifference, takeDataAddStatus, takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
+import useCurrentUser from '@/app/hooks/useCurrentUser';
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
-import { Col, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
+import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
 import axios from 'axios';
 import * as _ from "lodash/fp";
 import { useRouter } from 'next/navigation';
 import React, {useState } from 'react';
 import toast from 'react-hot-toast';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
 
 const { Text, Title } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 interface Props {
     project?: any;
@@ -26,8 +32,12 @@ function BodyStorys({
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [query, setQuery] = useState('');
+    const currentUser = useCurrentUser().data;
+    const users = project?.users;
 
-    const users = project?.users
+    const checkuser = (keycheck: any) => {
+        return keycheck == currentUser?.id || project?.createdByWho == currentUser?.id ? false : true
+    }
 
     const handleChangeSearch = (e: any) => {
         setQuery(e);
@@ -103,6 +113,19 @@ function BodyStorys({
             });
     }
 
+    const onChange = (date: any, story: any) => {
+        axios.post(`/api/storys/${story?.id}`, {
+            timework: date,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Time has been updated!')
+            });
+    };
+
     const handleGoToStory = (ev: any, story: any) => {
         ev.preventDefault();
         return router.push(`/storys/${story?.id}`)
@@ -127,7 +150,7 @@ function BodyStorys({
             title: 'Description',
             dataIndex: 'desc',
             key: 'desc',
-            width: '30%',
+            width: '25%',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
@@ -145,7 +168,7 @@ function BodyStorys({
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            width: '15%',
+            width: '10%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
@@ -155,6 +178,7 @@ function BodyStorys({
                             ...optionsStatus,
                             ...mapNewStatus
                         ]}
+                        disabled= {checkuser(record?.assignto)}
                         value={record?.status}
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
@@ -166,7 +190,7 @@ function BodyStorys({
             title: 'Assigned To',
             dataIndex: 'assignto',
             key: 'assignto',
-            width: '15%',
+            width: '10%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
@@ -176,10 +200,41 @@ function BodyStorys({
                             value: user?.id,
                             label: user?.name
                         }))}
+                        disabled= {checkuser(record?.assignto)}
                         value={record?.assignto}
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
                     />
+                )
+            },
+        },
+        {
+            title: 'Estimed time',
+            dataIndex: 'timework',
+            key: 'timework',
+            width: '25%',
+            render: (_: any, record: any) => {
+
+                const getTime = daysdifference(record?.timework[0],record?.timework[1])
+                
+                return (
+                    <div className="w-full">
+                        {record?.timework && <RangePicker
+                            showTime 
+                            onChange={(e) => onChange(e, record)} 
+                            defaultValue={
+                                [dayjs(record?.timework[0], dateFormat), dayjs(record?.timework[1], dateFormat)]
+                                || null
+                            }
+                            format={dateFormat}
+                            className="date-picker"
+                            disabled= {checkuser(record?.assignto)}
+                        />}
+                        <div className="flex items-center flex-start gap-x-2">
+                            <Text>Time:</Text>
+                            <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
+                        </div>
+                    </div>
                 )
             },
         },
@@ -190,7 +245,7 @@ function BodyStorys({
             render: (_: any, record: any) => {
                 return (
                     <div className='w-full flex items-center justify-center gap-x-5'>
-                        <div>
+                        {checkuser(record?.assignto) == false ? <div>
                             <Popconfirm
                                 title="Delete the story"
                                 description="Are you sure to delete this story?"
@@ -204,7 +259,7 @@ function BodyStorys({
                                     style={{color:'red'}}
                                 />
                             </Popconfirm>
-                        </div>
+                        </div>: null}
                         <DoubleRightOutlined 
                             className='cursor-pointer text-xl' 
                             style={{color:'green'}}

@@ -1,15 +1,20 @@
 import { optionsStatus } from "@/app/config/options";
-import { takeDataAddStatus, takeDataStorys } from "@/app/equation";
+import { daysdifference, takeDataAddStatus, takeDataStorys } from "@/app/equation";
 import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
-import { Popconfirm, Select, Table, TableColumnType, Typography } from "antd";
+import { DatePicker, Popconfirm, Select, Table, TableColumnType, Typography } from "antd";
 import axios from "axios";
+import dayjs from "dayjs";
 import * as _ from "lodash/fp";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
 
 const { Text } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 interface Props {
     project?: any;
@@ -32,8 +37,6 @@ function TableDutiesStory({
     )(data);
 
     const users = project?.users
-
-    
 
     const handleChangeOptionStatus = (data: any, story: any) => {
         if(data){
@@ -81,6 +84,19 @@ function TableDutiesStory({
             });
     }
 
+    const onChange = (date: any, story: any) => {
+        axios.post(`/api/storys/${story?.id}`, {
+            timework: date,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Time has been updated!')
+            });
+    };
+
     const handleGoToStory = (ev: any, story: any) => {
         ev.preventDefault();
         return router.push(`/storys/${story?.id}`)
@@ -105,7 +121,7 @@ function TableDutiesStory({
             title: 'Description',
             dataIndex: 'desc',
             key: 'desc',
-            width: '30%',
+            width: '25%',
             render: (text: any) => <Text className='line-clamp-1'>{text}</Text>,
         },
         {
@@ -123,7 +139,7 @@ function TableDutiesStory({
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            width: '15%',
+            width: '10%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
@@ -144,7 +160,7 @@ function TableDutiesStory({
             title: 'Assigned To',
             dataIndex: 'assignto',
             key: 'assignto',
-            width: '15%',
+            width: '10%',
             render: (_: any, record: any) => {
                 const style = record?.status === 'Done' ? 'green' : record?.status === 'Improgress' ? 'blue' : 'black';
                 return (
@@ -158,6 +174,35 @@ function TableDutiesStory({
                         className='select-in-table'
                         style={{width:"100%", border: `3px solid ${style}`, borderRadius: '7px'}}
                     />
+                )
+            },
+        },
+        {
+            title: 'Estimed time',
+            dataIndex: 'timework',
+            key: 'timework',
+            width: '25%',
+            render: (_: any, record: any) => {
+
+                const getTime = daysdifference(record?.timework[0],record?.timework[1])
+                
+                return (
+                    <div className="w-full">
+                        {record?.timework && <RangePicker
+                            showTime 
+                            onChange={(e) => onChange(e, record)} 
+                            defaultValue={
+                                [dayjs(record?.timework[0], dateFormat), dayjs(record?.timework[1], dateFormat)]
+                                || null
+                            }
+                            format={dateFormat}
+                            className="date-picker"
+                        />}
+                        <div className="flex items-center flex-start gap-x-2">
+                            <Text>Time:</Text>
+                            <Text>{`${getTime.days} ngày ${getTime.hours} giờ ${getTime.minutes} phút ${getTime.seconds} giây`|| null}</Text>
+                        </div>
+                    </div>
                 )
             },
         },

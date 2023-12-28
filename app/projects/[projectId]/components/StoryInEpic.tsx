@@ -18,7 +18,6 @@ import HeaderInTask from './HeaderInEpic';
 import { takeDataAddStatus, totalWorkTime } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import StoryList from './StoryList';
-import ReactQuill from 'react-quill';
 import TextareaStory from '../input/TextareaStory';
 
 
@@ -256,7 +255,7 @@ function StoryInEpic({
             </div>
             <div className='w-full flex flex-col'>
                 <Title level={5}>2. List story</Title>
-                <StoryList epic={epic} listStory={listStory}/>
+                <StoryList listStory={listStory}/>
             </div>
         </div>
     )
