@@ -14,7 +14,7 @@ import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
 import Image from "next/image";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface Props {
     currentUser?: User;

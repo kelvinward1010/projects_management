@@ -3,7 +3,7 @@ import { User } from "@prisma/client"
 import SettingsModal from "./modals/SettingModal";
 import { useState } from "react";
 import { NotificationFilled, SettingOutlined, UserSwitchOutlined } from "@ant-design/icons";
-import { Badge, Drawer, Dropdown, Modal, Typography } from "antd";
+import { Drawer, Dropdown, Modal, Typography } from "antd";
 import ChangePassword from "./ChangePassword";
 import useNotifications from "../hooks/useNotifications";
 

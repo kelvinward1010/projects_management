@@ -25,8 +25,6 @@ function BodyModalEditReply({
     currentUser
 }:Props) {
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const {
         register,
         handleSubmit,
@@ -94,7 +92,7 @@ function BodyModalEditReply({
             <Row className='mt-5'>
                 <Col span={24}>
                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                        <Button disabled={isLoading} type="submit">
+                        <Button type="submit">
                             Update Reply
                         </Button>
                     </Flex>

@@ -42,7 +42,7 @@ function BodyTask({
     const userLeader = useUser(leader)?.data;
 
     const checkuser = () => {
-        return task?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+        return task?.assignto == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
     }
     
     const {
@@ -179,7 +179,6 @@ function BodyTask({
                                     width={1200}
                                 >
                                     <BodyModalEditTask
-                                        isOpen={isModalOpenEditTask}
                                         onSubmit={onSubmit}
                                         task={task}
                                     />

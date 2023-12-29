@@ -1,5 +1,5 @@
 import Avatar from '@/app/components/Avatar';
-import { Comment, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { Col, Dropdown, Flex, Modal, Row, Typography } from 'antd'
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useMemo, useState } from 'react';
@@ -17,7 +17,7 @@ import FormReply from './FormReply';
 import ReplyItem from './ReplyItem';
 import { DashOutlined } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 
 interface Props {
@@ -31,7 +31,6 @@ function CommentItem({
 }:Props) {
 
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
     const {mutate: mutateCmt} = useTask(comment?.taskId as string)
@@ -53,7 +52,6 @@ function CommentItem({
     }, [comment?.createdAt])
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
 
         axios.post(`/api/comments/${comment?.id}`, {
             ...data,
@@ -65,7 +63,6 @@ function CommentItem({
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Task has been updated!')
             });
     }
@@ -238,7 +235,6 @@ function CommentItem({
                     {isModalOpenReplyComment && 
                         <FormReply
                             comment={comment}
-                            currentUser={currentUser}
                             onClose={() => setIsModalOpenReplyComment(false)}
                         />
                     }

@@ -41,14 +41,12 @@ function StoryInEpic({
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const handleOpenModalCreate = () => setIsModalOpen(!isModalOpen);
-
     const {data: dataEpic, mutate: mutateEpic } = useEpic(epic?.id as string);
-
     const {data: dataProject, mutate: mutateProject} = useProject(dataEpic?.projectId)
-
     const users = dataProject?.users;
+    const timeWork = totalWorkTime(listStory);
+    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listStory;
  
     const {
         register,
@@ -105,10 +103,6 @@ function StoryInEpic({
             })
         : toast.error('You need to complete the information!')
     }
-
-    const timeWork = totalWorkTime(listStory);
-
-    const takenewStatus = takeDataAddStatus(dataProject?.addStatus)?.listStory;
 
     const mapNewStatus = takenewStatus.map((item: any) => ({
         label: item.label,

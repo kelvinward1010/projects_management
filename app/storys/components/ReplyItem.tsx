@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { DashOutlined } from "@ant-design/icons";
 import DeleteReply from "./modals/DeleteReply";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface Props {
     reply?: any;

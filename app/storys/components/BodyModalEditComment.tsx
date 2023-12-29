@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+
 import { FieldValues, useForm } from 'react-hook-form';
 import { Col, Flex, Row, Typography } from 'antd';
 import Button from '@/app/components/buttons/Button';
@@ -25,8 +25,6 @@ function BodyModalEditComment({
     currentUser
 }:Props) {
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const {
         register,
         handleSubmit,
@@ -42,7 +40,6 @@ function BodyModalEditComment({
         }
     });
 
-    const status = watch('status');
     const image = watch('image');
 
     const handleUpload = (result: any) => {
@@ -95,7 +92,7 @@ function BodyModalEditComment({
             <Row className='mt-5'>
                 <Col span={24}>
                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                        <Button disabled={isLoading} type="submit">
+                        <Button type="submit">
                             Update Comment
                         </Button>
                     </Flex>

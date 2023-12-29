@@ -1,7 +1,6 @@
 "use client"
 
-import { User } from "@prisma/client";
-import { Col, Flex, Row, Typography } from "antd";
+import { Col, Flex, Row } from "antd";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import InputComment from "./InputComment";
 import Button from "@/app/components/buttons/Button";
@@ -11,23 +10,19 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
-import useUser from "@/app/hooks/useUser";
 
 interface Props {
-    currentUser?: User;
     comment?: any;
     onClose: () => void;
 }
 
 function FormReply({
-    currentUser,
     comment,
     onClose
 }:Props) {
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const user = useUser(comment?.userId)?.data
 
     const {
         register,

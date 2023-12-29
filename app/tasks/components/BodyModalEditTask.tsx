@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Col, Flex, Row, Select, Typography } from 'antd';
 import { optionsStatus } from '@/app/config/options';
@@ -12,8 +11,6 @@ import InputStory from '@/app/projects/[projectId]/input/InputStory';
 import TextareaStory from '@/app/projects/[projectId]/input/TextareaStory';
 
 interface Props {
-    title?: string | null;
-    isOpen: boolean;
     onSubmit: (data: any) => void;
     task?: any;
 
@@ -22,13 +19,9 @@ interface Props {
 const { Title } = Typography;
 
 function BodyModalEditTask({
-    title,
-    isOpen,
     onSubmit,
     task,
 }:Props) {
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -76,7 +69,6 @@ function BodyModalEditTask({
                             <Row justify={'space-between'} style={{width:'100%'}}>
                                 <Col span={13}>
                                     <InputStory
-                                        disabled={isLoading}
                                         label="Title"
                                         id="title"
                                         errors={errors}
@@ -88,7 +80,6 @@ function BodyModalEditTask({
                                     <Flex vertical>
                                         <Title level={5}>Status story</Title>
                                         <Select
-                                            disabled={isLoading}
                                             onChange={(value) => setValue('status', value)}
                                             style={{ width: "100%" }}
                                             options={optionsStatus}
@@ -125,7 +116,6 @@ function BodyModalEditTask({
                             <Row className='mt-4'>
                                 <Col span={24}>
                                     <TextareaStory
-                                        disabled={isLoading}
                                         label="Description"
                                         id="desc"
                                         errors={errors}
@@ -137,7 +127,7 @@ function BodyModalEditTask({
                             <Row className='mt-5'>
                                 <Col span={24}>
                                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                                        <Button disabled={isLoading} type="submit">
+                                        <Button type="submit">
                                             Update Story
                                         </Button>
                                     </Flex>

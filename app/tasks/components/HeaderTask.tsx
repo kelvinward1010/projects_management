@@ -1,7 +1,7 @@
 "use client"
 import { Modal, Typography } from 'antd';
 import { useState } from 'react';
-import { AiFillBug, AiFillLeftSquare, AiOutlineFileAdd } from 'react-icons/ai';
+import { AiFillBug, AiFillLeftSquare } from 'react-icons/ai';
 import DeleteTask from './modal/DeleteTask';
 
 const { Title, Text} = Typography;

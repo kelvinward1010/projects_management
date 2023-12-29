@@ -6,7 +6,7 @@ import BodyInCreateInternalProblem from './BodyInCreateInternalProblem';
 import { PieChartOutlined } from '@ant-design/icons';
 import ChartPieIternal from './charts/ChartPieIternal';
 
-const { Title, Text} = Typography;
+const { Title } = Typography;
 
 interface Props{
     story?: any;

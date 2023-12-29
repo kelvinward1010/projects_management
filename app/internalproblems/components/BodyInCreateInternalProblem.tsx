@@ -8,7 +8,6 @@ import { useState } from "react";
 import { CldUploadButton } from "next-cloudinary";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import useEpic from "@/app/hooks/useEpic";
 import useProject from "@/app/hooks/useProject";
 import { optionsStatus, optionsTypes } from "@/app/config/options";
 import axios from "axios";
@@ -20,7 +19,7 @@ import Button from "@/app/components/buttons/Button";
 import { takeDataAddStatus } from "@/app/equation";
 
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY/MM/DD HH:mm:ss';
 dayjs.extend(customParseFormat);

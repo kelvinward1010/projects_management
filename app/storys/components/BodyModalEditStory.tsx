@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Col, Flex, Row, Select, Typography } from 'antd';
 import { optionsStatus } from '@/app/config/options';
@@ -12,8 +11,6 @@ import InputStory from '@/app/projects/[projectId]/input/InputStory';
 import TextareaStory from '@/app/projects/[projectId]/input/TextareaStory';
 
 interface Props {
-    title?: string | null;
-    isOpen: boolean;
     onSubmit: (data: any) => void;
     story?: any;
 
@@ -22,8 +19,6 @@ interface Props {
 const { Title } = Typography;
 
 function BodyModalEditStory({
-    title,
-    isOpen,
     onSubmit,
     story,
 }:Props) {

@@ -549,5 +549,5 @@ export const takeDataAddStatus = (data: any) =>{
 }
 
 export const takeleader = (arr: string[]) => {
-    return arr[arr.length - 1]
+    return arr[arr?.length - 1]
 }

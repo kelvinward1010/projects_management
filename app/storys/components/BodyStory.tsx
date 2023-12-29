@@ -179,7 +179,6 @@ function BodyStory({
                                     width={1200}
                                 >
                                     <BodyModalEditStory
-                                        isOpen={isModalOpenEditStory}
                                         onSubmit={onSubmit}
                                         story={story}
                                     />

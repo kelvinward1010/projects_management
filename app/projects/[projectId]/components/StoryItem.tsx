@@ -37,7 +37,7 @@ function StoryItem({
     const userLeader = useUser(leader)?.data;
 
     const checkuser = () => {
-        return story?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+        return story?.assignto == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
     }
 
     const {

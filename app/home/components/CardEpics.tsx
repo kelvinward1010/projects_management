@@ -2,7 +2,7 @@
 
 import { Card, Col, Collapse, Row, Space, Typography } from "antd";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface Props{
     titleLevel1?: string;

@@ -1,8 +1,6 @@
 "use client"
 import { User } from "@prisma/client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
 
 interface AvatarProps {
     user: User;
@@ -13,14 +11,11 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({
-    user,
     isLarge,
     hasBorders,
     image,
     onClick
 }) => {
-
-    const router = useRouter();
     
     return (
         <div

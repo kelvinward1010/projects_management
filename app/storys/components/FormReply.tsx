@@ -1,7 +1,5 @@
 "use client"
 
-import Avatar from "@/app/components/Avatar";
-import { User } from "@prisma/client";
 import { Col, Flex, Row, Typography } from "antd";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import InputComment from "./InputComment";
@@ -12,26 +10,19 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
-import Image from "next/image";
-import useUser from "@/app/hooks/useUser";
-
-const { Title, Text } = Typography;
 
 interface Props {
-    currentUser?: User;
     comment?: any;
     onClose: () => void;
 }
 
 function FormReply({
-    currentUser,
     comment,
     onClose
 }:Props) {
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const user = useUser(comment?.userId)?.data
 
     const {
         register,
@@ -48,8 +39,6 @@ function FormReply({
             image: '',
         }
     });
-
-    const image = watch('image');
 
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {

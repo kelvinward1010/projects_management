@@ -1,5 +1,4 @@
 import { takeLengthStatus } from '@/app/equation';
-import useEpic from '@/app/hooks/useEpic';
 import PieChart from '@ant-design/plots/es/components/pie';
 
 interface Props {

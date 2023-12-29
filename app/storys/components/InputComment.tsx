@@ -1,5 +1,5 @@
 'use client'
-import { Input } from "antd";
+
 import {
     FieldErrors,
     FieldValues,
@@ -14,8 +14,6 @@ interface PostInputProps {
     register: UseFormRegister<FieldValues>,
     errors: FieldErrors
 }
-
-const { TextArea } = Input;
 
 
 const InputComment: React.FC<PostInputProps> = ({

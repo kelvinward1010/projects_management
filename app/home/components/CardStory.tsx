@@ -4,7 +4,7 @@ import { DoubleRightOutlined } from "@ant-design/icons";
 import { Card, Col, Collapse, Row, Space, Typography } from "antd";
 import { useRouter } from "next/navigation";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface Props{
     titleLevel1?: string;
