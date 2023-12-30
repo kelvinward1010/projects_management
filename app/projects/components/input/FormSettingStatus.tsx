@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import useProject from "@/app/hooks/useProject";
 
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 interface Props{
     isEpics?: boolean;
     isInternals?: boolean;

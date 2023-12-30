@@ -69,7 +69,7 @@ function BodySettings({
             leaderAdd: leaderAdd,
         })
             .then(() => {
-                router.refresh();
+                location.reload();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -103,6 +103,7 @@ function BodySettings({
                 <Row justify={'start'} className="items-center">
                     <Col span={13}>
                         <Select
+                            placeholder="Select a person to change leader project"
                             onChange={(e) => handleOptionLeader(e)}
                             options={users?.map((user: any) => ({
                                 value: user?.id,

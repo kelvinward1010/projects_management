@@ -27,7 +27,6 @@ interface Props {
 function EpicItem({ epic, userIdCreatedProject }: Props) {
 
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
 
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenInfo, setIsModalOpenInfo] = useState(false);
@@ -55,7 +54,6 @@ function EpicItem({ epic, userIdCreatedProject }: Props) {
     });
 
     const handleChangeOptionStatus = (data: any) => {
-        setIsLoading(true);
         setValue('status', data)
 
         axios.post(`/api/epics/${epic?.id}`, {
@@ -67,7 +65,6 @@ function EpicItem({ epic, userIdCreatedProject }: Props) {
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Status in epic has been updated!')
             });
     }

@@ -6,7 +6,7 @@ import { Avatar, Badge, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } fr
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 interface Props {
@@ -44,29 +44,6 @@ function ProjectItem({project}:Props) {
     };
 
     const completePrecent = Number(workCompletionRateFormula(project?.epics).toFixed(3));
-    const unfinishedPercent = 100 - completePrecent;
-
-    const currentDate = new Date();
-
-    useEffect(() => {
-        if(unfinishedPercent === 0){
-            axios.post(`/api/projects/${project?.id}`, {
-                completionTime: currentDate,
-                status: 'Done',
-            })
-                .then(() => {
-                    router.refresh();
-                })
-        }else{
-            axios.post(`/api/projects/${project?.id}`, {
-                completionTime: '',
-                status: '',
-            })
-                .then(() => {
-                    router.refresh();
-                })
-        }
-    },[completePrecent, unfinishedPercent, router, project?.id, currentDate])
 
     const style = () => {
         return completePrecent === 100 ? "green" : "red";
