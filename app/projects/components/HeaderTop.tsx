@@ -40,7 +40,7 @@ function HeaderTop({
     const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
     const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
     const [isModalOpenYourDuties, setIsModalOpenYourDuties] = useState(false);
-    const {data: projectToRefesh} = useProject(project?.id)
+    const {data: dataProject, mutate: mutateProject} = useProject(project?.id)
     const leader = takeleader(project?.projectLeader);
     const userLeader = useUser(leader)?.data;
     
@@ -225,7 +225,7 @@ function HeaderTop({
                 className="modal-edit"
                 width={1800}
             >
-                <BodyYourDuties project={project}/>
+                <BodyYourDuties project={dataProject}/>
             </Modal>
             <Modal
                 title="Get out of this project!"
@@ -262,7 +262,7 @@ function HeaderTop({
                 width={1700}
                 style={{top: "5px"}}
             >
-                <MainPage project={projectToRefesh}/>
+                <MainPage project={dataProject}/>
             </Modal>
             <Modal 
                 title={`Settings for project: ${project?.title}`} 

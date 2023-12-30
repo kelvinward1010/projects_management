@@ -1,15 +1,23 @@
-import getStoryById from "@/app/actions/getStoryById";
+"use client"
 import HeaderInternalProblem from "../components/HeaderInternalProblem"
 import BodyInternalProblem from "../components/BodyInternalProblem";
+import useStory from "@/app/hooks/useStory";
+import LoadingModal from "@/app/components/LoadingModal";
 
 interface Props {
   internalproblemId: string
 }
 
-async function InternalProblemsPage({ params }: { params: Props }) {
+function InternalProblemsPage({ params }: { params: Props }) {
   
-  const story = await getStoryById(params?.internalproblemId);
-  
+  const {data: story, isLoading: loadingStory} = useStory(params?.internalproblemId);
+
+  if(loadingStory){
+    return(
+      <LoadingModal />
+    )
+  }
+
   return (
     <div className="w-full h-full">
       <HeaderInternalProblem story={story}/>

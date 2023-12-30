@@ -1,5 +1,4 @@
 import useSWR from 'swr';
-
 import fetcher from '@/app/libs/fetcher';
 
 const useStory = (storyId: string) => {

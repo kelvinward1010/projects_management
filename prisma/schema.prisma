@@ -71,6 +71,7 @@ model Projects {
   projectLeader   String[]
   completionTime  String?
   status          String?
+  timework        String[]
   createdAt       DateTime @default(now())
   isGroup         Boolean?
   isAdminCreate   Boolean?

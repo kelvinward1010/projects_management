@@ -111,6 +111,8 @@ export async function GET(
     { params }: { params: IParams }
 ) {
     try {
+        const currentUser = await getCurrentUser();
+        
         const project = await prisma.projects.findUnique({
             where: {
                 id: params?.projectId
@@ -128,7 +130,12 @@ export async function GET(
                         },
                     }
                 },
-                notiProject: true,
+                notiProject: {
+                    where: {
+                        id: params?.projectId,
+                        userId: currentUser?.id
+                    }
+                },
                 scheduleConversation: true,
                 addStatus: true,
             }

@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
 import Image from "next/image";
+import useTask from "@/app/hooks/useTask";
 
 const { Text } = Typography;
 
@@ -23,11 +24,12 @@ interface Props {
 
 function FormComment({
     currentUser,
-    task
+    task,
 }:Props) {
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const {mutate: mutateTask} = useTask(task?.id as string)
 
     const {
         register,
@@ -62,6 +64,7 @@ function FormComment({
         })
             .then(() => {
                 router.refresh();
+                mutateTask();
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))

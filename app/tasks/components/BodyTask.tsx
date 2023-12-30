@@ -17,6 +17,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { daysdifference, takeleader } from "@/app/equation";
 import BodyModalEditTask from "./BodyModalEditTask";
 import { disableDateRanges } from "@/app/equation/datetime";
+import useTask from "@/app/hooks/useTask";
 
 
 const { Title, Text } = Typography;
@@ -38,8 +39,9 @@ function BodyTask({
     const [isModalOpenEditTask, setIsModalOpenEditTask] = useState(false);
     const {data: dataProject} = useProject(task?.projectId);
     const {data: user} = useUser(task?.userId);
+    const {mutate: mutateTask} = useTask(task?.id as string)
     const users = dataProject?.users;
-    const leader = takeleader(dataProject?.projectLeader);
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
     const userLeader = useUser(leader)?.data;
 
     const checkuser = () => {
@@ -72,7 +74,8 @@ function BodyTask({
             type: data,
         })
             .then(() => {
-                router.refresh();
+                router.refresh()
+                mutateTask();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -87,7 +90,8 @@ function BodyTask({
             status: data,
         })
             .then(() => {
-                router.refresh();
+                router.refresh()
+                mutateTask();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -102,7 +106,8 @@ function BodyTask({
             assignto: data,
         })
             .then(() => {
-                router.refresh();
+                router.refresh()
+                mutateTask();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -115,7 +120,8 @@ function BodyTask({
             ...data,
         })
             .then(() => {
-                router.refresh();
+                router.refresh()
+                mutateTask();
                 setIsModalOpenEditTask(false);
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -131,7 +137,8 @@ function BodyTask({
             timework: date,
         })
             .then(() => {
-                router.refresh();
+                router.refresh()
+                mutateTask();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

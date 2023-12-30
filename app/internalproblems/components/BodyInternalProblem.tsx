@@ -1,6 +1,5 @@
 "use client"
-import { daysdifference, takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers, takeleader, totalWorkTime, totalWorkTimeForFinish } from "@/app/equation";
-import useEpic from "@/app/hooks/useEpic";
+import { daysdifference, takeDataAddStatus, takeDataInternalProblem, takeDataOptionsUsers, totalWorkTime, totalWorkTimeForFinish } from "@/app/equation";
 import useProject from "@/app/hooks/useProject";
 import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from "antd";
 import { useRouter } from "next/navigation";
@@ -16,6 +15,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from "dayjs";
 import useUser from "@/app/hooks/useUser";
 import useCurrentUser from "@/app/hooks/useCurrentUser";
+import useStory from "@/app/hooks/useStory";
 
 const { Text, Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -33,19 +33,19 @@ function BodyInternalProblem({
     const router = useRouter();
     const [form] = Form.useForm();
     const data = takeDataInternalProblem(story?.tasks);
-    const {data: dataEpic } = useEpic(story?.epicId as string);
-    const {data: dataProject} = useProject(dataEpic?.projectId);
+    const {data: dataProject} = useProject(story?.projectId);
     const OptionsUsers = takeDataOptionsUsers(dataProject);
     const [query, setQuery] = useState('');
     const [chooseStatus, setChooseStatus] = useState('all');
     const [chooseUser, setChooseUser] = useState('all');
     const [chooseType, setChooseType] = useState('all');
     const users = dataProject?.users;
-    const {mutate: mutateNoti} = useNotifications()
+    const {mutate: mutateNoti} = useNotifications();
+    const { mutate: mutateStory } = useStory(story?.id);
     const currentUser = useCurrentUser()?.data
-    const leader = takeleader(dataProject?.projectLeader);
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
     const userLeader = useUser(leader)?.data;
-
+    
     const checkuser = (keycheck: any) => {
         return keycheck == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
     }
@@ -83,6 +83,7 @@ function BodyInternalProblem({
             })
                 .then(() => {
                     router.refresh();
+                    mutateStory()
                     mutateNoti();
                 })
                 .catch(() => toast.error('Something went wrong!'))
@@ -104,6 +105,7 @@ function BodyInternalProblem({
             })
                 .then(() => {
                     router.refresh();
+                    mutateStory();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -116,6 +118,7 @@ function BodyInternalProblem({
             })
                 .then(() => {
                     router.refresh();
+                    mutateStory()
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -133,6 +136,7 @@ function BodyInternalProblem({
             })
                 .then(() => {
                     router.refresh();
+                    mutateStory()
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -148,6 +152,7 @@ function BodyInternalProblem({
         axios.delete(`/api/tasks/${internals?.id}`)
             .then(() => {
                 router.refresh();
+                mutateStory()
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -161,6 +166,7 @@ function BodyInternalProblem({
         })
             .then(() => {
                 router.refresh();
+                mutateStory()
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

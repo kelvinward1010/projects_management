@@ -296,7 +296,7 @@ export const takeDataStorys = (data: any) => {
     
     const epics = data?.epics;
 
-    const listStorys: any[] = [];
+    let listStorys: any[] = [];
 
     epics?.forEach((item: any) => {
         item?.storys?.forEach((story: any) => {
@@ -348,7 +348,7 @@ export const takeDataTasks = (data: any) => {
     
     const epics = data?.epics;
 
-    const listStorys: any[] = [];
+    let listStorys: any[] = [];
 
     epics?.forEach((item: any) => {
         item?.storys?.forEach((story: any) => {
@@ -356,7 +356,7 @@ export const takeDataTasks = (data: any) => {
         })
     })
 
-    const listTasks: any[] = [];
+    let listTasks: any[] = [];
 
     listStorys?.forEach((item: any) => {
         item?.tasks?.forEach((task: any) => {

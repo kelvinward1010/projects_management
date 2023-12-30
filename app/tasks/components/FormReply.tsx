@@ -14,11 +14,13 @@ import { AiFillPicture } from "react-icons/ai";
 interface Props {
     comment?: any;
     onClose: () => void;
+    mutate?: any;
 }
 
 function FormReply({
     comment,
-    onClose
+    onClose,
+    mutate
 }:Props) {
 
     const router = useRouter();
@@ -40,8 +42,6 @@ function FormReply({
         }
     });
 
-    const image = watch('image');
-
     const handleUpload = (result: any) => {
         setValue('image', result.info.secure_url, {
             shouldValidate: true
@@ -57,6 +57,7 @@ function FormReply({
         })
             .then(() => {
                 router.refresh();
+                mutate();
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))

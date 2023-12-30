@@ -9,8 +9,6 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import BodyModalEditReply from "./BodyModalEditReply";
-import { useRouter } from "next/navigation";
-import useTask from "@/app/hooks/useTask";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -22,18 +20,18 @@ const { Text } = Typography;
 interface Props {
     reply?: any;
     currentUser?: User;
+    mutate?: any;
 }
 
 function ReplyItem({
     reply,
-    currentUser
+    currentUser,
+    mutate
 }:Props) {
 
-    const router = useRouter();
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditReply, setIsModalOpenEditReply] = useState(false);
     const user = useUser(reply?.userId as string)?.data;
-    const {mutate: mutateCmt} = useTask(reply?.commentId as string);
     const [openActions, setOpenActions] = useState(false);
 
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
@@ -52,8 +50,7 @@ function ReplyItem({
             ...data,
         })
             .then(() => {
-                mutateCmt();
-                router.refresh();
+                mutate();
                 setIsModalOpenEditReply(false);
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -115,6 +112,7 @@ function ReplyItem({
                 relyId={reply?.id}
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}
+                mutate={mutate}
             />
             <Modal
                 title="Edit reply" 

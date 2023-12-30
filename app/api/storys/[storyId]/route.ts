@@ -115,18 +115,17 @@ export async function GET(
     { params }: { params: IParams }
 ) {
     try {
-        const currentUser = await getCurrentUser();
-
-        if (!currentUser?.id) {
-            return NextResponse.json(null);
-        }
-
         const story = await prisma.storys.findUnique({
             where: {
                 id: params?.storyId
             },
             include: {
                 tasks: true,
+                comments: {
+                    include: {
+                        reply: true
+                    }
+                },
             }
         });
 

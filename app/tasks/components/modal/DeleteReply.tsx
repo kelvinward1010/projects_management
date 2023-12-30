@@ -13,12 +13,14 @@ interface ConfirmModalProps {
     isOpen?: boolean;
     onClose: () => void;
     relyId?: string;
+    mutate?: any;
 }
 
 const DeleteReply: React.FC<ConfirmModalProps> = ({
     isOpen,
     onClose,
-    relyId
+    relyId,
+    mutate
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +32,7 @@ const DeleteReply: React.FC<ConfirmModalProps> = ({
             .then(() => {
                 onClose();
                 router.refresh();
+                mutate();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

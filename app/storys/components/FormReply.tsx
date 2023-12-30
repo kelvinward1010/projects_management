@@ -1,6 +1,6 @@
 "use client"
 
-import { Col, Flex, Row, Typography } from "antd";
+import { Col, Flex, Row } from "antd";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import InputComment from "./InputComment";
 import Button from "@/app/components/buttons/Button";
@@ -14,11 +14,13 @@ import { AiFillPicture } from "react-icons/ai";
 interface Props {
     comment?: any;
     onClose: () => void;
+    mutate?: any;
 }
 
 function FormReply({
     comment,
-    onClose
+    onClose,
+    mutate
 }:Props) {
 
     const router = useRouter();
@@ -54,7 +56,7 @@ function FormReply({
             commentId: comment?.id
         })
             .then(() => {
-                router.refresh();
+                mutate();
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))

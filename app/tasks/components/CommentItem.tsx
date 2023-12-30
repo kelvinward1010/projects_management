@@ -12,10 +12,10 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-import useTask from '@/app/hooks/useTask';
 import FormReply from './FormReply';
 import ReplyItem from './ReplyItem';
 import { DashOutlined } from '@ant-design/icons';
+import useTask from '@/app/hooks/useTask';
 
 const { Text } = Typography;
 
@@ -27,16 +27,16 @@ interface Props {
 
 function CommentItem({
     comment,
-    currentUser
+    currentUser,
 }:Props) {
 
     const router = useRouter();
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
-    const {mutate: mutateCmt} = useTask(comment?.taskId as string)
     const [isModalOpenReplyComment, setIsModalOpenReplyComment] = useState(false);
     const [isCheckReplyComment, setIsCheckReplyComment] = useState(false);
     const [openActions, setOpenActions] = useState(false);
+    const {mutate: mutateTask} = useTask(comment?.taskId as string)
 
     const getUser = useUser(comment?.userId as string);
     const user = getUser?.data;
@@ -57,7 +57,7 @@ function CommentItem({
             ...data,
         })
             .then(() => {
-                mutateCmt();
+                mutateTask();
                 router.refresh();
                 setIsModalOpenEditComment(false);
             })
@@ -120,6 +120,7 @@ function CommentItem({
                 commentId={comment?.id}
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}
+                mutate={mutateTask}
             />
             <Modal 
                 title="Edit comment" 
@@ -236,6 +237,7 @@ function CommentItem({
                         <FormReply
                             comment={comment}
                             onClose={() => setIsModalOpenReplyComment(false)}
+                            mutate={mutateTask}
                         />
                     }
                 </Row>
@@ -247,6 +249,7 @@ function CommentItem({
                                     key={item?.id}
                                     reply={item}
                                     currentUser={currentUser}
+                                    mutate={mutateTask}
                                 />
                             ))}
                         </>

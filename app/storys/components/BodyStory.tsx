@@ -14,13 +14,14 @@ import useProject from "@/app/hooks/useProject";
 import useUser from "@/app/hooks/useUser";
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { daysdifference, takeleader } from "@/app/equation";
+import { daysdifference } from "@/app/equation";
 import useEpic from "@/app/hooks/useEpic";
 import BodyModalEditStory from "./BodyModalEditStory";
 import ItemInListStory from "./ItemInListStory";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import useNotifications from "@/app/hooks/useNotifications";
 import { disableDateRanges } from "@/app/equation/datetime";
+import useStory from "@/app/hooks/useStory";
 
 
 const { Title, Text } = Typography;
@@ -45,8 +46,9 @@ function BodyStory({
     const {data: user} = useUser(story?.userId);
     const {mutate: mutateNoti} = useNotifications()
     const users = dataProject?.users;
-    const leader = takeleader(dataProject?.projectLeader);
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
     const userLeader = useUser(leader)?.data;
+    const { mutate: mutateStory } = useStory(story?.id)
 
     const checkuser = () => {
         return story?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
@@ -79,7 +81,7 @@ function BodyStory({
         })
             .then(() => {
                 mutateEpic()
-                router.refresh();
+                mutateStory()
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -96,7 +98,7 @@ function BodyStory({
             .then(() => {
                 mutateEpic()
                 mutateNoti();
-                router.refresh();
+                mutateStory();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -109,8 +111,8 @@ function BodyStory({
             ...data,
         })
             .then(() => {
-                router.refresh();
                 mutateEpic();
+                mutateStory();
                 setIsModalOpenEditStory(false);
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -126,8 +128,8 @@ function BodyStory({
             timework: date,
         })
             .then(() => {
-                mutateEpic()
-                router.refresh();
+                mutateEpic();
+                mutateStory();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

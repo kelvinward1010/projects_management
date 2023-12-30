@@ -1,3 +1,4 @@
+"use client"
 import { optionsStatus } from "@/app/config/options";
 import { daysdifference, takeDataAddStatus, takeDataStorys } from "@/app/equation";
 import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
@@ -20,16 +21,21 @@ dayjs.extend(customParseFormat);
 interface Props {
     project?: any;
     currentUser?: any;
+    mutate?: any;
 }
 
 
 function TableDutiesStory({
     project,
-    currentUser
+    currentUser,
+    mutate,
 }: Props) {
 
-    const data = takeDataStorys(project);
+    
     const router = useRouter();
+    const data = takeDataStorys(project);
+    const users = project?.users;
+
     const dataSelect = _.flow(
         _.filter(
         (item: any) =>
@@ -37,17 +43,19 @@ function TableDutiesStory({
         ),
     )(data);
 
-    const users = project?.users
-
     const handleChangeOptionStatus = (data: any, story: any) => {
+        
         if(data){
             axios.post(`/api/storys/${story?.id}`, {
                 status: data,
             })
                 .then(() => {
+                    mutate();
                     router.refresh();
                 })
-                .catch(() => toast.error('Something went wrong!'))
+                .catch(() => {
+                    toast.error('Something went wrong!')
+                })
                 .finally(() => {
                     toast.success('Status story has been updated!')
                 });
@@ -64,6 +72,7 @@ function TableDutiesStory({
             })
                 .then(() => {
                     router.refresh();
+                    mutate();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -78,6 +87,7 @@ function TableDutiesStory({
         axios.delete(`/api/storys/${story?.id}`)
             .then(() => {
                 router.refresh();
+                mutate();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -91,6 +101,7 @@ function TableDutiesStory({
         })
             .then(() => {
                 router.refresh();
+                mutate();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

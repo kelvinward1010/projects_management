@@ -1,5 +1,5 @@
 import { optionsStatus } from '@/app/config/options';
-import { daysdifference, takeDataAddStatus, takeDataOptionsUsers, takeDataStorys, takeleader } from '@/app/equation';
+import { daysdifference, takeDataAddStatus, takeDataOptionsUsers, takeDataStorys } from '@/app/equation';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
 import { DeleteOutlined, DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
 import { Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table, TableColumnType, Typography } from 'antd';
@@ -35,7 +35,7 @@ function BodyStorys({
     const [query, setQuery] = useState('');
     const currentUser = useCurrentUser().data;
     const users = project?.users;
-    const leader = takeleader(project?.projectLeader);
+    const leader = project?.projectLeader[project?.projectLeader -1]
     const userLeader = useUser(leader)?.data;
 
     const checkuser = (keycheck: any) => {

@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { FiAlertTriangle } from 'react-icons/fi'
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import Modal from '@/app/components/modals/Modal';
 import { toast } from 'react-hot-toast';
 import Button from '@/app/components/buttons/Button';
@@ -13,14 +12,16 @@ interface ConfirmModalProps {
     isOpen?: boolean;
     onClose: () => void;
     relyId?: string;
+    mutate?: any;
 }
 
 const DeleteReply: React.FC<ConfirmModalProps> = ({
     isOpen,
     onClose,
-    relyId
+    relyId,
+    mutate
 }) => {
-    const router = useRouter();
+    
     const [isLoading, setIsLoading] = useState(false);
 
     const handleDelete = useCallback(() => {
@@ -29,14 +30,14 @@ const DeleteReply: React.FC<ConfirmModalProps> = ({
         axios.delete(`/api/replys/${relyId}`)
             .then(() => {
                 onClose();
-                router.refresh();
+                mutate();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 setIsLoading(false)
                 toast.success('Reply has been deleted!')
             })
-    },[router, relyId, onClose]);
+    },[mutate ,relyId, onClose]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>

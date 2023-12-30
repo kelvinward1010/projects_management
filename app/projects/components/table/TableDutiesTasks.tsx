@@ -1,3 +1,5 @@
+"use client"
+
 import { daysdifference, takeDataAddStatus, takeDataTasks } from "@/app/equation"
 import useNotifications from "@/app/hooks/useNotifications";
 import { DatePicker, Popconfirm, Select, Table, TableColumnType, Typography } from "antd";
@@ -11,6 +13,7 @@ import { optionsStatus, optionsTypes } from "@/app/config/options";
 import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import * as _ from "lodash/fp";
 import { disableDateRanges } from "@/app/equation/datetime";
+import useProject from "@/app/hooks/useProject";
 
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -27,10 +30,13 @@ function TableDutiesTasks({
     project,
     currentUser
 }:Props) {
+
+    const router = useRouter();
+
     const data = takeDataTasks(project)
     const users = project?.users;
     const {mutate: mutateNoti} = useNotifications()
-    const router = useRouter();
+    const { mutate: mutateProject } = useProject(project?.id);
 
     const dataSelect = _.flow(
         _.filter(
@@ -48,6 +54,7 @@ function TableDutiesTasks({
                 isAssign: true,
             })
                 .then(() => {
+                    mutateProject();
                     router.refresh();
                     mutateNoti();
                 })
@@ -69,6 +76,7 @@ function TableDutiesTasks({
                 completionTime: '',
             })
                 .then(() => {
+                    mutateProject();
                     router.refresh();
                 })
                 .catch(() => toast.error('Something went wrong!'))
@@ -81,6 +89,7 @@ function TableDutiesTasks({
                 completionTime: currentDate,
             })
                 .then(() => {
+                    mutateProject();
                     router.refresh();
                 })
                 .catch(() => toast.error('Something went wrong!'))
@@ -98,6 +107,7 @@ function TableDutiesTasks({
                 type: data,
             })
                 .then(() => {
+                    mutateProject();
                     router.refresh();
                 })
                 .catch(() => toast.error('Something went wrong!'))
@@ -113,6 +123,7 @@ function TableDutiesTasks({
 
         axios.delete(`/api/tasks/${internals?.id}`)
             .then(() => {
+                mutateProject();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -126,6 +137,7 @@ function TableDutiesTasks({
             timework: date,
         })
             .then(() => {
+                mutateProject();
                 router.refresh();
             })
             .catch(() => toast.error('Something went wrong!'))

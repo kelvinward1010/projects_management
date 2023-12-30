@@ -9,12 +9,13 @@ import useUser from '@/app/hooks/useUser';
 import BodyModalEditComment from './BodyModalEditComment';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import FormReply from './FormReply';
 import ReplyItem from './ReplyItem';
 import { DashOutlined } from '@ant-design/icons';
+import useStory from '@/app/hooks/useStory';
+import { mutate } from 'swr';
 
 const { Text } = Typography;
 
@@ -29,13 +30,12 @@ function CommentItem({
     currentUser
 }:Props) {
 
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [isModalOpenEditComment, setIsModalOpenEditComment] = useState(false);
     const [isModalOpenReplyComment, setIsModalOpenReplyComment] = useState(false);
     const [isCheckReplyComment, setIsCheckReplyComment] = useState(false);
     const [openActions, setOpenActions] = useState(false);
+    const { mutate: mutateStory } = useStory(comment?.storyId)
 
     const getUser = useUser(comment?.userId as string);
     const user = getUser?.data;
@@ -51,18 +51,15 @@ function CommentItem({
     }, [comment?.createdAt])
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-
         axios.post(`/api/comments/${comment?.id}`, {
             ...data,
         })
             .then(() => {
-                router.refresh();
+                mutateStory()
                 setIsModalOpenEditComment(false);
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
-                setIsLoading(false);
                 toast.success('Story has been updated!')
             });
     }
@@ -120,6 +117,7 @@ function CommentItem({
                 commentId={comment?.id}
                 isOpen={isModalOpenDelete}
                 onClose={() => setIsModalOpenDelete(false)}
+                mutate={mutateStory}
             />
             <Modal 
                 title="Edit comment" 
@@ -236,6 +234,7 @@ function CommentItem({
                         <FormReply
                             comment={comment}
                             onClose={() => setIsModalOpenReplyComment(false)}
+                            mutate={mutateStory}
                         />
                     }
                 </Row>
@@ -247,6 +246,7 @@ function CommentItem({
                                     key={item?.id}
                                     reply={item}
                                     currentUser={currentUser}
+                                    mutate={mutateStory}
                                 />
                             ))}
                         </>

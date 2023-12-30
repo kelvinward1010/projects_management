@@ -13,7 +13,6 @@ import TextareaStory from '@/app/projects/[projectId]/input/TextareaStory';
 interface Props {
     onSubmit: (data: any) => void;
     story?: any;
-
 }
 
 const { Title } = Typography;
@@ -22,8 +21,6 @@ function BodyModalEditStory({
     onSubmit,
     story,
 }:Props) {
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -71,7 +68,6 @@ function BodyModalEditStory({
                             <Row justify={'space-between'} style={{width:'100%'}}>
                                 <Col span={13}>
                                     <InputStory
-                                        disabled={isLoading}
                                         label="Title"
                                         id="title"
                                         errors={errors}
@@ -83,7 +79,6 @@ function BodyModalEditStory({
                                     <Flex vertical>
                                         <Title level={5}>Status story</Title>
                                         <Select
-                                            disabled={isLoading}
                                             onChange={(value) => setValue('status', value)}
                                             style={{ width: "100%" }}
                                             options={optionsStatus}
@@ -120,7 +115,6 @@ function BodyModalEditStory({
                             <Row className='mt-4'>
                                 <Col span={24}>
                                     <TextareaStory
-                                        disabled={isLoading}
                                         label="Description"
                                         id="desc"
                                         errors={errors}
@@ -132,7 +126,7 @@ function BodyModalEditStory({
                             <Row className='mt-5'>
                                 <Col span={24}>
                                     <Flex className='gap-x-2' align={'center'} justify={'flex-end'}>
-                                        <Button disabled={isLoading} type="submit">
+                                        <Button type="submit">
                                             Update Story
                                         </Button>
                                     </Flex>

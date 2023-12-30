@@ -8,11 +8,12 @@ import InputComment from "./InputComment";
 import Button from "@/app/components/buttons/Button";
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CldUploadButton } from "next-cloudinary";
 import { AiFillPicture } from "react-icons/ai";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import useStory from "@/app/hooks/useStory";
 
 const { Text } = Typography;
 
@@ -23,11 +24,11 @@ interface Props {
 
 function FormComment({
     currentUser,
-    story
+    story,
 }:Props) {
-
-    const router = useRouter();
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false);
+    const { mutate: mutateStory } = useStory(story?.id)
 
     const {
         register,
@@ -62,6 +63,7 @@ function FormComment({
         })
             .then(() => {
                 router.refresh();
+                mutateStory();
                 reset();
             })
             .catch(() => toast.error('Something went wrong!'))

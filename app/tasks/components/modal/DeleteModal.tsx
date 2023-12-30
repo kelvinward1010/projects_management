@@ -13,12 +13,14 @@ interface ConfirmModalProps {
     isOpen?: boolean;
     onClose: () => void;
     commentId?: string;
+    mutate?: any;
 }
 
 const DeleteModal: React.FC<ConfirmModalProps> = ({
     isOpen,
     onClose,
-    commentId
+    commentId,
+    mutate,
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -28,8 +30,9 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
 
         axios.delete(`/api/comments/${commentId}`)
             .then(() => {
-                onClose();
                 router.refresh();
+                mutate();
+                onClose();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {

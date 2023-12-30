@@ -1,22 +1,29 @@
+"use client"
 import HeaderStory from "../components/HeaderStory"
 import BodyStory from "../components/BodyStory"
-import getCurrentUser from "@/app/actions/getCurrentUser"
-import getStoryById from "@/app/actions/getStoryById"
+import useStory from "@/app/hooks/useStory"
+import useCurrentUser from "@/app/hooks/useCurrentUser"
+import LoadingModal from "@/app/components/LoadingModal"
 
 
 interface Props {
   storyId: string
 }
 
-const StoryPage = async ({ params }: { params: Props }) =>{
-  const storyId = params.storyId
-  const story = await getStoryById(storyId);
-  const currentUser = await getCurrentUser();
+const StoryPage = ({ params }: { params: Props }) =>{
+  const {data: story, isLoading: loadingStory} = useStory(params.storyId);
+  const {data: user, isLoading: loadingCurrent} = useCurrentUser();
+
+  if(loadingStory && loadingCurrent){
+    return(
+      <LoadingModal />
+    )
+  }
 
   return (
     <div>
       <HeaderStory story={story}/>
-      <BodyStory story={story} currentUser={currentUser}/>
+      <BodyStory story={story} currentUser={user}/>
     </div>
   )
 }

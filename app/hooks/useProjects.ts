@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
-const useProject = () => {
+const useProjects = () => {
     const params = useParams();
 
     const projectId = useMemo(() => {
@@ -20,4 +20,4 @@ const useProject = () => {
     }), [isOpen, projectId]);
 };
 
-export default useProject;
+export default useProjects;
