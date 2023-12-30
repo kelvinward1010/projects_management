@@ -20,6 +20,7 @@ import BodyModalEditStory from "./BodyModalEditStory";
 import ItemInListStory from "./ItemInListStory";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import useNotifications from "@/app/hooks/useNotifications";
+import { disableDateRanges } from "@/app/equation/datetime";
 
 
 const { Title, Text } = Typography;
@@ -140,6 +141,11 @@ function BodyStory({
         return router.push(`/internalproblems/${story?.id}`)
     };
 
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(dataProject?.createdAt),
+    }
+
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
@@ -253,6 +259,7 @@ function BodyStory({
                             format={dateFormat}
                             className="date-picker"
                             disabled={checkuser()}
+                            disabledDate={disableDateRanges(configdate)}
                         />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>

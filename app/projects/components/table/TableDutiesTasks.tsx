@@ -10,6 +10,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { optionsStatus, optionsTypes } from "@/app/config/options";
 import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import * as _ from "lodash/fp";
+import { disableDateRanges } from "@/app/equation/datetime";
 
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -144,6 +145,11 @@ function TableDutiesTasks({
         value: item.value,
     })) ?? [];
 
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(project?.createdAt),
+    }
+
     const columns: TableColumnType<any>[] = [
         {
             title: 'Icon',
@@ -255,6 +261,7 @@ function TableDutiesTasks({
                             }
                             format={dateFormat}
                             className="date-picker"
+                            disabledDate={disableDateRanges(configdate)}
                         />}
                         <div className="flex items-center flex-start gap-x-2">
                             <Text>Time:</Text>

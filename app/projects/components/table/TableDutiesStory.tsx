@@ -8,6 +8,7 @@ import * as _ from "lodash/fp";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { disableDateRanges } from "@/app/equation/datetime";
 
 
 
@@ -108,6 +109,11 @@ function TableDutiesStory({
         label: item.label,
         value: item.value,
     })) ?? [];
+
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(project?.createdAt),
+    }
     
     const columns: TableColumnType<any>[] = [
         {
@@ -197,6 +203,7 @@ function TableDutiesStory({
                             }
                             format={dateFormat}
                             className="date-picker"
+                            disabledDate={disableDateRanges(configdate)}
                         />}
                         <div className="flex items-center flex-start gap-x-2">
                             <Text>Time:</Text>

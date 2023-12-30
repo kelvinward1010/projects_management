@@ -1,5 +1,5 @@
 "use client"
-import { takeDataNotiNotSeen, workCompletionRateFormula } from '@/app/equation'
+import { takeDataNotiNotSeen, takeleader, workCompletionRateFormula } from '@/app/equation'
 import useUser from '@/app/hooks/useUser';
 import { NotificationFilled, UserOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
@@ -22,9 +22,12 @@ function ProjectItem({project}:Props) {
     const usersInProject = project?.users;
     const [openNoti,setOpenNoti] = useState(false)
     const [isSee, setIsSee] = useState(false);
-    const listNoti = project?.notiProject;
 
+    const listNoti = project?.notiProject;
     const notificationProjects = takeDataNotiNotSeen(listNoti);
+
+    const leader = takeleader(project?.projectLeader);
+    const userLeader = useUser(leader)?.data;
    
     const handleNotiSeen = () => {
         notificationProjects?.forEach((notificationProject) =>{
@@ -140,6 +143,14 @@ function ProjectItem({project}:Props) {
                     </Col>
                     <Col span={10}>
                         <Text>{userCreatedProject?.name}</Text>
+                    </Col>
+                </Row>
+                <Row justify={'space-between'}>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Leader Project:</Text>
+                    </Col>
+                    <Col span={10}>
+                        <Text>{userLeader?.name}</Text>
                     </Col>
                 </Row>
                 <Row justify={'space-between'}>

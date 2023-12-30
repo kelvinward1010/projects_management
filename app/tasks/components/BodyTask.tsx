@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { daysdifference, takeleader } from "@/app/equation";
 import BodyModalEditTask from "./BodyModalEditTask";
+import { disableDateRanges } from "@/app/equation/datetime";
 
 
 const { Title, Text } = Typography;
@@ -140,6 +141,11 @@ function BodyTask({
 
     const getTime = daysdifference(task?.timework[0],task?.timework[1])
 
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(dataProject?.createdAt),
+    }
+
     return (
         <>
             <Row className="p-5 h-fit w-full" justify={'space-between'}>
@@ -260,6 +266,7 @@ function BodyTask({
                             }
                             format={dateFormat}
                             className="date-picker"
+                            disabledDate={disableDateRanges(configdate)}
                         />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>

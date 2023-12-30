@@ -19,8 +19,7 @@ import { takeDataAddStatus, totalWorkTime } from '@/app/equation';
 import useEpic from '@/app/hooks/useEpic';
 import StoryList from './StoryList';
 import TextareaStory from '../input/TextareaStory';
-import { RangePickerProps } from 'antd/es/date-picker';
-import moment from 'moment';
+import { disableDateRanges } from '@/app/equation/datetime';
 
 
 interface Props {
@@ -114,21 +113,6 @@ function StoryInEpic({
         endDate: new Date('2024-01-01T24:22:08.621Z'),
         startDate:new Date(dataProject?.createdAt),
     }
-    
-    function disableDateRanges() {
-        const { startDate, endDate } = configdate;
-        return function disabledDate(current: any) {
-            let startCheck = true;
-            let endCheck = true;
-            if (startDate) {
-                startCheck = current && current < moment(startDate, dateFormat);
-            }
-            if (endDate) {
-                endCheck = current && current > moment(endDate, dateFormat);
-            }
-            return (startDate && startCheck) || (endDate && endCheck);
-        };
-    }
 
     return (
         <div>
@@ -198,7 +182,7 @@ function StoryInEpic({
                                                 onChange={(value) => setValue('timework', value)}
                                                 format={dateFormat}
                                                 value={timework}
-                                                disabledDate={disableDateRanges()}
+                                                disabledDate={disableDateRanges(configdate)}
                                             />
                                         </Flex>
                                     </Col>

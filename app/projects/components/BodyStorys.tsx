@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
 import useUser from '@/app/hooks/useUser';
+import { disableDateRanges } from '@/app/equation/datetime';
 
 const { Text, Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -131,6 +132,11 @@ function BodyStorys({
         label: item.label,
         value: item.value,
     })) ?? [];
+
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(project?.createdAt),
+    }
     
     const columns: TableColumnType<any>[] = [
         {
@@ -223,6 +229,7 @@ function BodyStorys({
                             format={dateFormat}
                             className="date-picker"
                             disabled= {checkuser(record?.assignto)}
+                            disabledDate={disableDateRanges(configdate)}
                         />}
                         <div className="flex items-center flex-start gap-x-2">
                             <Text>Time:</Text>
