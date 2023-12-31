@@ -3,7 +3,7 @@ import { DatePicker, Flex, Row, Typography } from "antd";
 import dayjs from "dayjs";
 
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY/MM/DD HH:mm:ss';
 

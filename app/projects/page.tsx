@@ -1,11 +1,11 @@
 "use client"
 import ProjectList from './components/ProjectList'
-import useUsers from '../hooks/useUsers';
 import useGetAllProject from '../hooks/useGetAllProject';
 import LoadingModal from '../components/LoadingModal';
+import useOtherUsers from '../hooks/useOtherUsers';
 
 function ProjectsPage() {
-  const {data: users, isLoading: loadingUsers} = useUsers();
+  const {data: users, isLoading: loadingUsers} = useOtherUsers();
   const {data: projects, isLoading: loadingProjects} = useGetAllProject();
   
   if(loadingProjects && loadingUsers){

@@ -169,6 +169,7 @@ export async function POST(
             isAdd,
             isChangeLeader,
             leaderAdd,
+            timework,
         } = body;
 
         const updatedProject = await prisma.projects.update({
@@ -179,6 +180,7 @@ export async function POST(
                 status: status,
                 title: title,
                 completionTime: completionTime,
+                timework: timework,
             },
         });
 

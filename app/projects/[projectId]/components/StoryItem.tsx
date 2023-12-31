@@ -12,7 +12,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import useEpic from '@/app/hooks/useEpic';
 import InforStory from './InforStory';
 import useProject from '@/app/hooks/useProject';
-import { takeDataAddStatus, takeleader } from '@/app/equation';
+import { takeDataAddStatus } from '@/app/equation';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
 import useUser from '@/app/hooks/useUser';
 
@@ -33,7 +33,7 @@ function StoryItem({
     const {data: dataEpic, mutate: mutateEpic } = useEpic(story?.epicId as string);
     const {data: dataProject, mutate: mutateProject } = useProject(dataEpic?.projectId as string);
     const currentUser = useCurrentUser().data;
-    const leader = takeleader(dataProject?.projectLeader);
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
 
     const checkuser = () => {
@@ -41,10 +41,7 @@ function StoryItem({
     }
 
     const {
-        register,
-        handleSubmit,
         setValue,
-        watch,
         formState: {
             errors,
         }

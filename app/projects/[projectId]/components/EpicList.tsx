@@ -5,7 +5,6 @@ import CreateEpicModel from '../modal/CreateEpicModel';
 import DeleteModal from '../../components/modals/DeleteModal';
 import HeaderTop from '../../components/HeaderTop';
 import EpicItem from './EpicItem';
-import { takeleader } from '@/app/equation';
 import useUser from '@/app/hooks/useUser';
 
 interface Props{
@@ -20,7 +19,7 @@ function EpicList({project}: Props) {
     const handleOpenModalDelete = () => setIsModalOpenDelete(true);
     const taskArray = project?.epics;
     const reverseArray: [] = taskArray?.slice().reverse();
-    const leader = takeleader(project?.projectLeader);
+    const leader = project?.projectLeader[project?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
     
     return (

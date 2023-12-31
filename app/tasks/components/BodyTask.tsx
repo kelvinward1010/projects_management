@@ -41,7 +41,7 @@ function BodyTask({
     const {data: user} = useUser(task?.userId);
     const {mutate: mutateTask} = useTask(task?.id as string)
     const users = dataProject?.users;
-    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
 
     const checkuser = () => {
@@ -49,10 +49,7 @@ function BodyTask({
     }
     
     const {
-        register,
-        handleSubmit,
         setValue,
-        watch,
         formState: {
             errors,
         }
@@ -150,7 +147,7 @@ function BodyTask({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(dataProject?.createdAt),
+        startDate:new Date(dataProject?.timework[0]),
     }
 
     return (

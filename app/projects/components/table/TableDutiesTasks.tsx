@@ -159,7 +159,7 @@ function TableDutiesTasks({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(project?.createdAt),
+        startDate:new Date(project?.timework[0]),
     }
 
     const columns: TableColumnType<any>[] = [

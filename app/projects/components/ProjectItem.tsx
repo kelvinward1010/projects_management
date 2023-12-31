@@ -1,13 +1,18 @@
 "use client"
-import { takeDataNotiNotSeen, takeleader, workCompletionRateFormula } from '@/app/equation'
+import { takeDataNotiNotSeen, workCompletionRateFormula } from '@/app/equation'
 import useUser from '@/app/hooks/useUser';
 import { NotificationFilled, UserOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Card, Col, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
+import { Avatar, Badge, Card, Col, DatePicker, Dropdown, Flex, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react';
 import { AiOutlineDoubleRight } from 'react-icons/ai'
+import dayjs from "dayjs";
+
+
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
 
 interface Props {
     project: any;
@@ -26,7 +31,7 @@ function ProjectItem({project}:Props) {
     const listNoti = project?.notiProject;
     const notificationProjects = takeDataNotiNotSeen(listNoti);
 
-    const leader = takeleader(project?.projectLeader);
+    const leader = project?.projectLeader[project?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
    
     const handleNotiSeen = () => {
@@ -161,7 +166,20 @@ function ProjectItem({project}:Props) {
                         <Text>{createdAt} ago</Text>
                     </Col>
                 </Row>
-                <Flex vertical>
+                <Flex align={'flex-start'} justify={'flex-start'} vertical className="w-full h-9">
+                    <Text className="font-medium">Time project to be completed:</Text>
+                    <RangePicker 
+                        className="range-time"
+                        showTime 
+                        defaultValue={
+                            [dayjs(project?.timework[0], dateFormat), dayjs(project?.timework[1], dateFormat)]
+                            || null
+                        }
+                        format={dateFormat}
+                        disabled
+                    />
+                </Flex>
+                <Flex vertical className='mt-5'>
                     <Text className={'font-medium'}>Members currently participating:</Text>
                     <Avatar.Group maxCount={7}>
                         {usersInProject?.map((user: any) => (

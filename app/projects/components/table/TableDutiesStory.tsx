@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { disableDateRanges } from "@/app/equation/datetime";
+import useProject from "@/app/hooks/useProject";
 
 
 
@@ -21,20 +22,19 @@ dayjs.extend(customParseFormat);
 interface Props {
     project?: any;
     currentUser?: any;
-    mutate?: any;
 }
 
 
 function TableDutiesStory({
     project,
     currentUser,
-    mutate,
 }: Props) {
 
     
     const router = useRouter();
     const data = takeDataStorys(project);
     const users = project?.users;
+    const { mutate: mutateProject } = useProject(project?.id);
 
     const dataSelect = _.flow(
         _.filter(
@@ -50,7 +50,7 @@ function TableDutiesStory({
                 status: data,
             })
                 .then(() => {
-                    mutate();
+                    mutateProject();
                     router.refresh();
                 })
                 .catch(() => {
@@ -72,7 +72,7 @@ function TableDutiesStory({
             })
                 .then(() => {
                     router.refresh();
-                    mutate();
+                    mutateProject();
                 })
                 .catch(() => toast.error('Something went wrong!'))
                 .finally(() => {
@@ -87,7 +87,7 @@ function TableDutiesStory({
         axios.delete(`/api/storys/${story?.id}`)
             .then(() => {
                 router.refresh();
-                mutate();
+                mutateProject();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -101,7 +101,7 @@ function TableDutiesStory({
         })
             .then(() => {
                 router.refresh();
-                mutate();
+                mutateProject();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -123,7 +123,7 @@ function TableDutiesStory({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(project?.createdAt),
+        startDate:new Date(project?.timework[0]),
     }
     
     const columns: TableColumnType<any>[] = [

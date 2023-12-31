@@ -43,7 +43,7 @@ function BodyInternalProblem({
     const {mutate: mutateNoti} = useNotifications();
     const { mutate: mutateStory } = useStory(story?.id);
     const currentUser = useCurrentUser()?.data
-    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
     
     const checkuser = (keycheck: any) => {

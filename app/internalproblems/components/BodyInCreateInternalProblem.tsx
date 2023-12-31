@@ -17,6 +17,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import TextareaInternalBroblem from "./input/TextareaInternalBroblem";
 import Button from "@/app/components/buttons/Button";
 import { takeDataAddStatus } from "@/app/equation";
+import { disableDateRanges } from "@/app/equation/datetime";
+import useStory from "@/app/hooks/useStory";
 
 
 const { Title } = Typography;
@@ -36,7 +38,7 @@ function BodyInCreateInternalProblem({
 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-
+    const { mutate: mutateStory } = useStory(story?.id);
     const {data: dataProject} = useProject(story?.projectId)
 
     const users = dataProject?.users;
@@ -84,6 +86,7 @@ function BodyInCreateInternalProblem({
             })
             .then(() => {
                 router.refresh();
+                mutateStory();
                 reset();
                 onClose();
             })
@@ -102,6 +105,11 @@ function BodyInCreateInternalProblem({
         label: item.label,
         value: item.value,
     })) ?? [];
+
+    const configdate = {
+        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        startDate:new Date(dataProject?.timework[0]),
+    }
 
     return (
         <div className="w-full">
@@ -175,6 +183,7 @@ function BodyInCreateInternalProblem({
                                             onChange={(value) => setValue('timework', value)}
                                             format={dateFormat}
                                             value={timework}
+                                            disabledDate={disableDateRanges(configdate)}
                                         />
                                     </Flex>
                                 </Col>

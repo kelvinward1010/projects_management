@@ -50,25 +50,25 @@ function SettingProfile({ currentUser }: Props) {
           </>,
           key: '0',
         },
-        {
-          label: <>
-            <button
-                className="
-                    w-48
-                    h-9
-                    bg-sky-700
-                    text-white
-                    gap-2
-                    rounded-md
-                    shadow-lg
-                "
-                onClick={()=>setIsOpenChangePassword(true)}
-            >
-                Change Password
-            </button>
-          </>,
-          key: '1',
-        },
+        // {
+        //   label: <>
+        //     <button
+        //         className="
+        //             w-48
+        //             h-9
+        //             bg-sky-700
+        //             text-white
+        //             gap-2
+        //             rounded-md
+        //             shadow-lg
+        //         "
+        //         onClick={()=>setIsOpenChangePassword(true)}
+        //     >
+        //         Change Password
+        //     </button>
+        //   </>,
+        //   key: '1',
+        // },
     ]
     return (
         <>
@@ -77,7 +77,7 @@ function SettingProfile({ currentUser }: Props) {
                 isOpen={isOpenProfile} 
                 onClose={() => setIsOpenProfile(false)} 
             />
-            <Modal
+            {/* <Modal
                 title="Change Password"
                 open={isOpenChangePassword} 
                 onCancel={() => setIsOpenChangePassword(false)}
@@ -88,7 +88,7 @@ function SettingProfile({ currentUser }: Props) {
                     onClose={setIsOpenChangePassword} 
                     currentUser={currentUser}
                 />
-            </Modal>
+            </Modal> */}
             <div className="flex flex-center items-center">
                 <button
                     className="

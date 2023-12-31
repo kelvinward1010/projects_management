@@ -15,6 +15,15 @@ import Modal from '@/app/components/modals/Modal';
 import Input from '@/app/components/inputs/Input';
 import SelectConFig from '@/app/components/inputs/SelectConFig';
 import Button from '@/app/components/buttons/Button';
+import { DatePicker, Flex, Typography } from 'antd';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
+import useGetAllProject from '@/app/hooks/useGetAllProject';
+
+const { Title } = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 interface Props {
     isOpen?: boolean;
@@ -29,6 +38,7 @@ const CreateModal: React.FC<Props> = ({
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const { mutate: mutateProjects } = useGetAllProject()
 
     const {
         register,
@@ -42,12 +52,14 @@ const CreateModal: React.FC<Props> = ({
     } = useForm<FieldValues>({
         defaultValues: {
             title: '',
-            members: []
+            members: [],
+            timework: [],
         }
     });
 
     const members = watch('members');
     const title = watch('title');
+    const timework = watch('timework');
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
@@ -59,6 +71,7 @@ const CreateModal: React.FC<Props> = ({
             })
                 .then(() => {
                     router.refresh();
+                    mutateProjects();
                     onClose();
                     reset();
                 })
@@ -113,6 +126,15 @@ const CreateModal: React.FC<Props> = ({
                                 required
                                 register={register}
                             />
+                            <Flex vertical>
+                                <Title level={5}>Time Project:</Title>
+                                <RangePicker 
+                                    showTime 
+                                    onChange={(value) => setValue('timework', value)}
+                                    format={dateFormat}
+                                    value={timework}
+                                />
+                            </Flex>
                             <SelectConFig
                                 disabled={isLoading}
                                 label="Members"

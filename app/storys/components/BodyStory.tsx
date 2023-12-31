@@ -46,7 +46,7 @@ function BodyStory({
     const {data: user} = useUser(story?.userId);
     const {mutate: mutateNoti} = useNotifications()
     const users = dataProject?.users;
-    const leader = dataProject?.projectLeader[dataProject?.projectLeader -1]
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
     const { mutate: mutateStory } = useStory(story?.id)
 
@@ -145,7 +145,7 @@ function BodyStory({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(dataProject?.createdAt),
+        startDate:new Date(dataProject?.timework[0]),
     }
 
     return (

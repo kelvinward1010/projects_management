@@ -1,21 +1,19 @@
-"use client"
 import LoadingModal from '@/app/components/LoadingModal'
 import EpicList from './components/EpicList'
-import useProject from '@/app/hooks/useProject'
+import getProjectById from '@/app/actions/getProjectById'
 
 interface Props {
     projectId: string
 }
-const ProjectPageId = ({ params }: { params: Props }) => {
-    const projectId = params.projectId
-    const {data: project, isLoading: loadingProject } = useProject(projectId);
+const ProjectPageId = async ({ params }: { params: Props }) => {
+    const project = await getProjectById(params.projectId)
     
-    if(loadingProject){
+    if(!project){
         return(
           <LoadingModal />
         )
     }
-    
+
     return (
         <div>
             <EpicList project={project}/>

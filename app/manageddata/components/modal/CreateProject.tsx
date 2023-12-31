@@ -5,17 +5,22 @@ import SelectConFig from "@/app/components/inputs/SelectConFig";
 import useManageddata from "@/app/hooks/useMannageddata";
 import useUsers from "@/app/hooks/useUsers";
 import { ReconciliationOutlined } from "@ant-design/icons";
-import { Modal, Select, Typography } from "antd";
+import { DatePicker, Flex, Modal, Select, Typography } from "antd";
 import axios from "axios";
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
 
-const {Title, Text} = Typography;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
+
+const {Title} = Typography;
 
 function CreateProject() {
 
-    const [isLoading, setIsloading] = useState(false);
     const [isModalOpenCreateProject, setIsModalOpenCreateProject] = useState(false);
     const {mutate: mutateProject} = useManageddata();
     const {data: users} = useUsers();
@@ -32,12 +37,14 @@ function CreateProject() {
         defaultValues: {
             title: '',
             members: [],
+            timework: [],
             assignedTo: '',
         }
     });
 
     const members = watch('members');
     const title = watch('title');
+    const timework = watch('timework');
     const assignedTo = watch('title');
 
     const onSubmit = () => {
@@ -99,15 +106,22 @@ function CreateProject() {
                 '>
                     <div className='px-2 w-full'>
                         <Input
-                            disabled={isLoading}
                             label="Title"
                             id="title"
                             errors={errors}
                             required
                             register={register}
                         />
+                        <Flex vertical>
+                            <Title level={5}>Time Project:</Title>
+                            <RangePicker 
+                                showTime 
+                                onChange={(value) => setValue('timework', value)}
+                                format={dateFormat}
+                                value={timework}
+                            />
+                        </Flex>
                         <SelectConFig
-                            disabled={isLoading}
                             label="Members"
                             options={users.map((user: any) => ({
                                 value: user?.id,

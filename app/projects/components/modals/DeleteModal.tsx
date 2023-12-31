@@ -26,7 +26,6 @@ const DeleteModal: React.FC<ConfirmModalProps> = ({
 
     const handleDelete = useCallback(() => {
         setIsLoading(true);
-
         axios.delete(`/api/projects/${projectId}`)
             .then(() => {
                 onClose();

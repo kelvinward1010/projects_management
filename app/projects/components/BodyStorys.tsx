@@ -35,7 +35,7 @@ function BodyStorys({
     const [query, setQuery] = useState('');
     const currentUser = useCurrentUser().data;
     const users = project?.users;
-    const leader = project?.projectLeader[project?.projectLeader -1]
+    const leader = project?.projectLeader[project?.projectLeader?.length - 1]
     const userLeader = useUser(leader)?.data;
 
     const checkuser = (keycheck: any) => {
@@ -135,7 +135,7 @@ function BodyStorys({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(project?.createdAt),
+        startDate:new Date(project?.timework[0]),
     }
     
     const columns: TableColumnType<any>[] = [

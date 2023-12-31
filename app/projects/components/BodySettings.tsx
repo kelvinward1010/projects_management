@@ -1,9 +1,9 @@
 "use client"
 
-import { Col, Modal, Row, Select, Typography } from "antd";
+import { Col, DatePicker, Modal, Row, Select, Typography } from "antd";
 import { useState } from "react";
 import FormSettingStatus from "./input/FormSettingStatus";
-import { takeDataAddStatus, takeleader } from "@/app/equation";
+import { takeDataAddStatus } from "@/app/equation";
 import TableSetting from "./table/TableSetting";
 import { FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
@@ -12,6 +12,12 @@ import toast from "react-hot-toast";
 import InputSettings from "./input/InputSettings";
 import { CheckOutlined } from "@ant-design/icons";
 import useUser from "@/app/hooks/useUser";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
+
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+dayjs.extend(customParseFormat);
 
 const { Title, Text } = Typography;
 
@@ -31,12 +37,11 @@ function BodySettings({
     const [leaderAdd, setLeaderAdd] = useState('');
     const dataForEach = takeDataAddStatus(project?.addStatus);
     const users = project?.users;
-    const leader = takeleader(project?.projectLeader);
+    const leader = project?.projectLeader[project?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
 
     const {
         register,
-        handleSubmit,
         setValue,
         watch,
         formState: {
@@ -45,10 +50,12 @@ function BodySettings({
     } = useForm<FieldValues>({
         defaultValues: {
             title: project?.title,
+            timework: project?.timework,
         }
     });
 
     const title = watch("title");
+    const timework = watch('timework');
 
     const handleChangeTitleProject = () => {
         axios.post(`/api/projects/${project?.id}`, {
@@ -79,6 +86,19 @@ function BodySettings({
 
     const handleOptionLeader = (e: any) => {
         setLeaderAdd(e)
+    }
+
+    const handleChangeTimeProject = () => {
+        axios.post(`/api/projects/${project?.id}`, {
+            timework: timework,
+        })
+            .then(() => {
+                router.refresh();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('Time project has been updated!')
+            });
     }
 
     return (
@@ -134,7 +154,7 @@ function BodySettings({
                 </Row>
             </div>
             <div className="w-full h-full mt-5">
-                <Title level={5}>2. Settings title project</Title>
+                <Title level={5}>2. Setting title project</Title>
                 <Row justify={'start'} className="items-center">
                     <Col span={13}>
                         <InputSettings
@@ -167,7 +187,44 @@ function BodySettings({
                 </Row>
             </div>
             <div className="w-full h-full mt-5">
-                <Title level={5}>3. Settings status in project</Title>
+                <Title level={5}>3. Setting time project</Title>
+                <Row justify={'start'} className="items-center">
+                    <Col span={13}>
+                        {project?.timework && <RangePicker 
+                            showTime 
+                            onChange={(value) => setValue('timework', value)}
+                            defaultValue={
+                                [dayjs(project?.timework[0], dateFormat), dayjs(project?.timework[1], dateFormat)]
+                                || null
+                            }
+                            format={dateFormat}
+                            className="date-picker w-full"
+                        />}
+                    </Col>
+                    <Col span={5}>
+                        <button
+                            className="
+                                w-16
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                                ml-5
+                                mt-2
+                            "
+                            onClick={handleChangeTimeProject}
+                        >
+                            <CheckOutlined />
+                        </button>
+                    </Col>
+                </Row>
+            </div>
+            <div className="w-full h-full mt-5">
+                <Title level={5}>4. Setting status in project</Title>
                 <div className="ml-10 w-full">
                     <div className="mt-5">
                         <Row justify={'start'}>

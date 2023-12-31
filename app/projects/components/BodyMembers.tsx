@@ -32,7 +32,7 @@ function BodyMembers({
     const currentUser = useCurrentUser()?.data;
     const dataOptionsUsers = takeDataMemberOthers(projectUsers, users);
     const dataStorys = takeDataStorys(project);
-    const leader = takeleader(project?.projectLeader);
+    const leader = project?.projectLeader[project?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
     const dataSearch = _.flow(
         _.filter(

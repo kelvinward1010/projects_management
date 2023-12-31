@@ -14,7 +14,6 @@ import ChartPieStorysInProject from './charts/ChartPieStorysInProject';
 import MainPage from './reactflow/MainPage';
 import useProject from '@/app/hooks/useProject';
 import BodyYourDuties from './BodyYourDuties';
-import { takeleader } from '@/app/equation';
 import useUser from '@/app/hooks/useUser';
 
 const { Title } = Typography;
@@ -40,8 +39,8 @@ function HeaderTop({
     const [isModalOpenSettings, setIsModalOpenSettings] = useState(false);
     const [isModalOpenGetOut, setIsModalOpenGetOut] = useState(false);
     const [isModalOpenYourDuties, setIsModalOpenYourDuties] = useState(false);
-    const {data: dataProject, mutate: mutateProject} = useProject(project?.id)
-    const leader = takeleader(project?.projectLeader);
+    const {data: dataProject} = useProject(project?.id)
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
     
     const items = [
@@ -225,7 +224,7 @@ function HeaderTop({
                 className="modal-edit"
                 width={1800}
             >
-                <BodyYourDuties project={dataProject}/>
+                <BodyYourDuties project={project}/>
             </Modal>
             <Modal
                 title="Get out of this project!"

@@ -91,9 +91,9 @@ function StoryInEpic({
             })
             .then(() => {
                 router.refresh();
-                reset();
                 mutateProject();
                 mutateEpic();
+                reset();
                 setIsModalOpen(false);
             })
             .catch(() => toast.error('Something went wrong!'))
@@ -111,7 +111,7 @@ function StoryInEpic({
 
     const configdate = {
         endDate: new Date('2024-01-01T24:22:08.621Z'),
-        startDate:new Date(dataProject?.createdAt),
+        startDate:new Date(dataProject?.timework[0]),
     }
 
     return (
