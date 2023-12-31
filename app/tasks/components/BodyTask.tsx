@@ -271,6 +271,7 @@ function BodyTask({
                             format={dateFormat}
                             className="date-picker"
                             disabledDate={disableDateRanges(configdate)}
+                            disabled={checkuser()}
                         />}
                     </div>
                     <div className='flex gap-y-2 justify-start mb-2'>

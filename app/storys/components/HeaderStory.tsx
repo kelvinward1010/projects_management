@@ -3,18 +3,30 @@ import { Typography } from "antd";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteStoryModal from "./modals/DeleteStoryModal";
+import useProject from "@/app/hooks/useProject";
+import useUser from "@/app/hooks/useUser";
 
 
 const { Title } = Typography;
 
 interface Props {
     story?: any;
+    currentUser?: any;
 }
 
 function HeaderStory({
-    story
+    story,
+    currentUser
 }:Props) {
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+    const {data: dataProject} = useProject(story?.projectId);
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
+    const userLeader = useUser(leader)?.data;
+
+    const checkuser = () => {
+        return story?.assignto == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+    }
+
     return (
         <>
             <DeleteStoryModal
@@ -34,7 +46,7 @@ function HeaderStory({
                 '
             >
                 <Title level={2}>{story?.title}</Title>  
-                <button
+                {checkuser() === false ? <button
                     className="
                         w-52
                         h-9
@@ -51,7 +63,7 @@ function HeaderStory({
                 >
                     <AiOutlineDelete />
                     Delete
-                </button>
+                </button>: null}
             </div>
         </>
     )

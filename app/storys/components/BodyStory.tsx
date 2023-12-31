@@ -51,7 +51,7 @@ function BodyStory({
     const { mutate: mutateStory } = useStory(story?.id)
 
     const checkuser = () => {
-        return story?.userId == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
+        return story?.assignto == currentUser?.id || userLeader?.id == currentUser?.id ? false : true
     }
     
     const {

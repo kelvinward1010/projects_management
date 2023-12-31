@@ -17,6 +17,7 @@ import InfoEpic from './InfoEpic';
 import StoryInEpic from './StoryInEpic';
 import useProject from '@/app/hooks/useProject';
 import useCurrentUser from '@/app/hooks/useCurrentUser';
+import useUser from '@/app/hooks/useUser';
 
 
 interface Props {
@@ -37,12 +38,15 @@ function EpicItem({ epic, userIdCreatedProject }: Props) {
     const dataEpic = useEpic(epic?.id as string);
     const getdeep = dataEpic?.data?.storys;
     const currentUser = useCurrentUser().data;
+    const leader = dataProject?.projectLeader[dataProject?.projectLeader?.length -1]
+    const userLeader = useUser(leader)?.data;
+
+    const checkuser = () => {
+        return userLeader?.id == currentUser?.id ? false : true
+    }
 
     const {
-        register,
-        handleSubmit,
         setValue,
-        watch,
         formState: {
             errors,
         }
@@ -170,7 +174,7 @@ function EpicItem({ epic, userIdCreatedProject }: Props) {
                                 />
                             </Modal>
                         </div>
-                        <button
+                        {checkuser() == false ? <button
                             className='
                                 text-2xl
                                 hover:text-red-600
@@ -180,7 +184,7 @@ function EpicItem({ epic, userIdCreatedProject }: Props) {
                             onClick={handleOpenModalDelete}
                         >
                             <AiOutlineDelete />
-                        </button>
+                        </button>:null}
                     </div>
                 </div>
                 {(completePrecent || unfinishedPercent) ? <div className='

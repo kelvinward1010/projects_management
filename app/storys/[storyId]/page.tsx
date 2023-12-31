@@ -22,7 +22,7 @@ const StoryPage = ({ params }: { params: Props }) =>{
 
   return (
     <div>
-      <HeaderStory story={story}/>
+      <HeaderStory story={story} currentUser={user}/>
       <BodyStory story={story} currentUser={user}/>
     </div>
   )

@@ -192,6 +192,7 @@ function StoryItem({
                             pr-2
                         '
                         onClick={handleOpenDelete}
+                        disabled={checkuser()}
                     >
                         <AiOutlineDelete />
                     </button>

@@ -15,7 +15,7 @@ const TaskPage = async ({ params }: { params: Props }) => {
     const currentUser = await getCurrentUser();
     return (
         <div>
-            <HeaderTask task={task}  />
+            <HeaderTask task={task} currentUser={currentUser} />
             <BodyTask task={task} currentUser={currentUser} />
         </div>
     )
