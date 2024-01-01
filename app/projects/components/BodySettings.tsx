@@ -14,6 +14,8 @@ import { CheckOutlined } from "@ant-design/icons";
 import useUser from "@/app/hooks/useUser";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
+import { optionsStatusProject } from "@/app/config/options";
+import useProject from "@/app/hooks/useProject";
 
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY/MM/DD HH:mm:ss';
@@ -35,10 +37,12 @@ function BodySettings({
     const [isOpenInternals, setIsOpenInternals] = useState(false);
     const [isOpenStorys, setIsOpenStorys] = useState(false);
     const [leaderAdd, setLeaderAdd] = useState('');
+    const [statusProject, setStatusProject] = useState('');
     const dataForEach = takeDataAddStatus(project?.addStatus);
     const users = project?.users;
     const leader = project?.projectLeader[project?.projectLeader?.length -1]
     const userLeader = useUser(leader)?.data;
+    const {mutate: mutateProject} = useProject(project?.id)
 
     const {
         register,
@@ -51,11 +55,20 @@ function BodySettings({
         defaultValues: {
             title: project?.title,
             timework: project?.timework,
+            status: project?.status,
         }
     });
 
     const title = watch("title");
     const timework = watch('timework');
+
+    const handleOptionLeader = (e: any) => {
+        setLeaderAdd(e)
+    }
+
+    const handleOptionStatus = (e: any) => {
+        setStatusProject(e)
+    }
 
     const handleChangeTitleProject = () => {
         axios.post(`/api/projects/${project?.id}`, {
@@ -63,6 +76,7 @@ function BodySettings({
         })
             .then(() => {
                 router.refresh();
+                mutateProject();
             })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
@@ -84,10 +98,6 @@ function BodySettings({
             });
     }
 
-    const handleOptionLeader = (e: any) => {
-        setLeaderAdd(e)
-    }
-
     const handleChangeTimeProject = () => {
         axios.post(`/api/projects/${project?.id}`, {
             timework: timework,
@@ -98,6 +108,20 @@ function BodySettings({
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => {
                 toast.success('Time project has been updated!')
+            });
+    }
+
+    const handleChangeStatusProject = () => {
+        axios.post(`/api/projects/${project?.id}`, {
+            status: statusProject
+        })
+            .then(() => {
+                router.refresh();
+                mutateProject();
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => {
+                toast.success('The project status has been updated!')
             });
     }
 
@@ -224,7 +248,39 @@ function BodySettings({
                 </Row>
             </div>
             <div className="w-full h-full mt-5">
-                <Title level={5}>4. Setting status in project</Title>
+                <Title level={5}>4. Status Project: {project?.status}</Title>
+                <Row justify={'start'} className="items-center">
+                    <Col span={13}>
+                        <Select
+                            placeholder="Select status to change status project"
+                            options={optionsStatusProject}
+                            className='rounded select-in-table border-2 border-sky-600 w-full'
+                            onChange={(e) =>handleOptionStatus(e)}
+                        />
+                    </Col>
+                    <Col span={5}>
+                        <button
+                            className="
+                                w-16
+                                h-9
+                                bg-sky-700
+                                text-white
+                                flex
+                                items-center
+                                justify-center
+                                rounded-md
+                                shadow-lg
+                                ml-5
+                            "
+                            onClick={handleChangeStatusProject}
+                        >
+                            <CheckOutlined />
+                        </button>
+                    </Col>
+                </Row>
+            </div>
+            <div className="w-full h-full mt-5">
+                <Title level={5}>5. Setting status in project</Title>
                 <div className="ml-10 w-full">
                     <div className="mt-5">
                         <Row justify={'start'}>

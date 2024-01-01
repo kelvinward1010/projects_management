@@ -97,6 +97,14 @@ function ProjectItem({project}:Props) {
         )
     }
 
+    const stylestatus = () => {
+        return project?.status === 'Dự án đã hoàn thành' 
+                                    ? "green" 
+                                    : project?.status === 'Dự án đang bị tạm dừng'
+                                    ? "red"
+                                    : "blue";
+    }
+
     return (
         <div>
             <Card
@@ -140,6 +148,14 @@ function ProjectItem({project}:Props) {
                     </Col>
                     <Col span={10}>
                         <Text style={{color: `${style()}`}}>{completePrecent || 0} %</Text>
+                    </Col>
+                </Row>
+                <Row justify={'space-between'}>
+                    <Col span={10}>
+                        <Text className={'font-medium'}>Status Project:</Text>
+                    </Col>
+                    <Col span={10}>
+                        <Text style={{color: `${stylestatus()}`}}>{project?.status}</Text>
                     </Col>
                 </Row>
                 <Row justify={'space-between'}>

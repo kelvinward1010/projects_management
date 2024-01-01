@@ -158,6 +158,7 @@ export async function POST(
                 title,
                 isGroup,
                 createdByWho: currentUser?.id,
+                timework,
                 users: {
                     connect: [
                         {
@@ -168,6 +169,21 @@ export async function POST(
                         }
                     ]
                 }
+            },
+            include: {
+                users: true
+            }
+        });
+
+        let updatedLeaderId = [...(newProject?.projectLeader)];
+        updatedLeaderId?.push(currentUser?.id)
+
+        await prisma.projects.update({
+            where: {
+                id: newProject?.id
+            },
+            data: {
+                projectLeader: updatedLeaderId,
             },
             include: {
                 users: true

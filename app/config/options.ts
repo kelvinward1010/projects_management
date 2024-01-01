@@ -23,3 +23,18 @@ export const optionsTypes = [
         title: 'Tasks',
     },
 ]
+
+export const optionsStatusProject = [
+    {
+        value: 'Dự án đang triển khai',
+        label: 'Dự án đang triển khai',
+    },
+    {
+        value: 'Dự án đang bị tạm dừng',
+        label: 'Dự án đang bị tạm dừng',
+    },
+    {
+        value: 'Dự án đã hoàn thành',
+        label: 'Dự án đã hoàn thành',
+    },
+]

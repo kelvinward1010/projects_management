@@ -5,6 +5,7 @@ import HeaderProjects from './HeaderProjects'
 import { Projects, User } from '@prisma/client'
 import CreateModal from './modals/CreateModal'
 import { Flex } from 'antd'
+import * as _ from "lodash/fp";
 
 interface Props {
     projects?: Projects[],
@@ -14,8 +15,21 @@ interface Props {
 function ProjectList({projects, users}:Props) {
     
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [chooseStatusProject, setChooseStatusProject] = useState('all');
+    const [queryNameProject, setQueryNameProject] = useState('');
     const handleOpenModalCreate = () => setIsModalOpen(true);
+
+    const dataSelect = _.flow(
+        _.filter(
+        (item: any) =>
+            item.status === chooseStatusProject || chooseStatusProject === 'all'
+        ),
+        _.filter(
+            (item: any) =>
+                item?.title?.includes(queryNameProject) ||
+                (queryNameProject ?? "") === "",
+        ),
+    )(projects);
     
     return (
         <>
@@ -28,10 +42,13 @@ function ProjectList({projects, users}:Props) {
                 create={handleOpenModalCreate} 
                 title='Projects'
                 projects={projects}
+                setStatusProject={setChooseStatusProject}
+                chooseStatusProject={chooseStatusProject}
+                setQueryNameProject={setQueryNameProject}
             />
             <div className='px-5 mt-5'>
                 <Flex wrap="wrap" className='gap-10'>
-                    {projects?.map((project) => (
+                    {dataSelect?.map((project: any) => (
                         <ProjectItem key={project?.id} project={project} />
                     ))}
                 </Flex>

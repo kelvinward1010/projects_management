@@ -85,6 +85,7 @@ const CreateModal: React.FC<Props> = ({
                 title: title,
                 userId: members[0]?.value,
                 isGroup: false,
+                timework: timework,
             })
                 .then(() => {
                     router.refresh();
