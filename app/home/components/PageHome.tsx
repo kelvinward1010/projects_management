@@ -2,23 +2,23 @@
 import { Col, Row, Typography } from 'antd'
 import React from 'react'
 import CardProjects from './CardProjects';
-import { takeDataDoneOrImprogressOrTodoInEpics, takeDataDoneOrImprogressOrTodoInStorys, takeDataFollowDoneOrNot } from '@/app/equation';
+import { takeDataDoneOrImprogressOrTodoInStorys, takeDataFollowDoneOrNot } from '@/app/equation';
 import CardStory from './CardStory';
-import CardEpics from './CardEpics';
 
 interface Props {
     projects?: any;
+    currentUser?: any;
 }
 
 const { Title } = Typography;
 
 function PageHome({
-    projects
+    projects,
+    currentUser,
 }:Props) {
 
     const dataForProjects = takeDataFollowDoneOrNot(projects);
-    const dataForEpic = takeDataDoneOrImprogressOrTodoInEpics(projects);
-    const dataForStory = takeDataDoneOrImprogressOrTodoInStorys(projects)
+    const dataForStory = takeDataDoneOrImprogressOrTodoInStorys(projects, currentUser?.id);
     
     return (
         <Row className='w-full mt-10 h-full overflow-y-auto' justify={'center'}>
@@ -46,39 +46,7 @@ function PageHome({
                 </Row>
             </div>
             <div className='w-full px-10 mt-10'>
-                <Title level={2}>2. Epics</Title>
-                <Row justify={'space-between'}>
-                    <Col span={7}>
-                        <CardEpics 
-                            titleLevel1='Done'
-                            titleLevel2='Quantity:'
-                            number={dataForEpic?.listDone.length || 0}
-                            epicsForCard={dataForEpic?.listDone}
-                            active={'3'}
-                        />
-                    </Col>
-                    <Col span={7}>
-                        <CardEpics 
-                            titleLevel1='Improgress'
-                            titleLevel2='Quantity:'
-                            number={dataForEpic?.listImprogress.length || 0}
-                            epicsForCard={dataForEpic?.listImprogress}
-                            active={'4'}
-                        />
-                    </Col>
-                    <Col span={7}>
-                        <CardEpics 
-                            titleLevel1='Todo'
-                            titleLevel2='Quantity:'
-                            number={dataForEpic?.listTodo.length || 0}
-                            epicsForCard={dataForEpic?.listTodo}
-                            active={'5'}
-                        />
-                    </Col>
-                </Row>
-            </div>
-            <div className='w-full px-10 mt-10'>
-                <Title level={2}>3. Storys</Title>
+                <Title level={2}>2. Storys</Title>
                 <Row justify={'space-between'}>
                 <Col span={7}>
                         <CardStory 

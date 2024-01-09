@@ -165,18 +165,23 @@ export const takeLengthStatus = (arr: any[]) => {
 export const takeLengthStatusProjects = (arr: any[]) => {
     let lengthDone = 0;
     let lengthTodo = 0;
+    let lengthBlock = 0;
 
     arr?.forEach((item) => {
-        if(item?.status === ''){
+        if(item?.status === 'Dự án đang triển khai'){
             lengthTodo += 1;
         } 
-        if(item?.status === 'Done'){
+        if(item?.status === 'Dự án đã hoàn thành'){
             lengthDone += 1;
+        } 
+        if(item?.status === 'Dự án đang bị tạm dừng'){
+            lengthBlock += 1;
         } 
     })
     return {
         lengthTodo,
-        lengthDone
+        lengthDone,
+        lengthBlock,
     }
 }
 
@@ -451,28 +456,6 @@ export const takeDataAllEpics = (arr: any) => {
     return listAllEpic;
 }
 
-export const takeDataDoneOrImprogressOrTodoInEpics = (arr: any) => {
-    const listall = takeDataAllEpics(arr)
-    let listDone: any[] = [];
-    let listImprogress: any[] = [];
-    let listTodo: any[] = [];
-
-    listall?.forEach((item: any) => {
-        if(item?.status === 'Done'){
-            listDone?.push(item)
-        }else if(item?.status === 'Improgress'){
-            listImprogress?.push(item)
-        }else{
-            listTodo?.push(item)
-        }
-    })
-    return {
-        listDone,
-        listImprogress,
-        listTodo
-    }
-}
-
 export const takeDataAllStorys = (arr: any) => {
 
     const listall = takeDataAllEpics(arr)
@@ -488,18 +471,18 @@ export const takeDataAllStorys = (arr: any) => {
     return listAllStory;
 }
 
-export const takeDataDoneOrImprogressOrTodoInStorys = (arr: any) => {
+export const takeDataDoneOrImprogressOrTodoInStorys = (arr: any, currentUser_id: any) => {
     const listall = takeDataAllStorys(arr)
     let listDone: any[] = [];
     let listImprogress: any[] = [];
     let listTodo: any[] = [];
 
     listall?.forEach((item: any) => {
-        if(item?.status === 'Done'){
+        if(item?.status === 'Done' && item?.assignto == currentUser_id){
             listDone?.push(item)
-        }else if(item?.status === 'Improgress'){
+        }else if(item?.status === 'Improgress' && item?.assignto == currentUser_id){
             listImprogress?.push(item)
-        }else{
+        }else if(item?.status === 'Todo' && item?.assignto == currentUser_id){
             listTodo?.push(item)
         }
     })

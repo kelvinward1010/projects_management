@@ -158,7 +158,7 @@ function TableDutiesTasks({
     })) ?? [];
 
     const configdate = {
-        endDate: new Date('2024-01-01T24:22:08.621Z'),
+        endDate: new Date(project?.timework[1]),
         startDate:new Date(project?.timework[0]),
     }
 

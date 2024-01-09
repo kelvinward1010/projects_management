@@ -25,7 +25,7 @@ function SettingProfile({ currentUser }: Props) {
     const showDrawer = () => {
         setOpenNoti(true);
     };
-
+    console.log(notifications)
     const items = [
         {
           label: <>
@@ -111,7 +111,7 @@ function SettingProfile({ currentUser }: Props) {
                 </button>
                 <Drawer title="Notification" width={600} placement="right" onClose={() => setOpenNoti(false)} open={openNoti}>
                     <div className='w-full h-full overflow-y-auto'>
-                        {notifications?.slice(0,8)?.reverse()?.map((item: any) => (
+                        {notifications?.slice(0,8)?.map((item: any) => (
                             <div key={item?.id} className='w-full h-fit p-2 border border-teal-600 rounded mt-2'>
                                 <Text className='w-full'>{item?.descNoti}</Text>
                             </div>

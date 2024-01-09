@@ -17,14 +17,19 @@ function ChartPieProjects({
     
     const data = [
         {
-            type: 'Todo',
+            type: 'Dự án đang triển khai',
             value: lengthInStatusProjects.lengthTodo,
         },
         {
-            type: 'Done',
+            type: 'Dự án đã hoàn thành',
             value: lengthInStatusProjects.lengthDone,
         },
+        {
+            type: 'Dự án đang bị tạm dừng',
+            value: lengthInStatusProjects.lengthBlock,
+        },
     ];
+
     const config = {
         appendPadding: 10,
         data,
@@ -36,14 +41,20 @@ function ChartPieProjects({
             content: '{name} {percentage}',
         },
         pieStyle: ({ type }: {type: any}) => {
-            if (type === 'Done') {
+            if (type == 'Dự án đã hoàn thành') {
                 return {
                     fill: '#07e607',
                 };
             }
+
+            if (type == 'Dự án đang bị tạm dừng') {
+                return {
+                    fill: 'red',
+                };
+            }
         
             return {
-                fill: 'red',
+                fill: 'blue',
             };
         },
         interactions: [
